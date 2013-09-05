@@ -1,0 +1,115 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>se.triad.kickass</groupId>
+	<artifactId>cruncher-plugins</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Cruncher-plugins</name>
+	<description>Cruncher-plugins for Kick Assembler</description>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<verbose>true</verbose>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<excludes>
+									<exclude>org.kickasssember:kickass</exclude>
+								</excludes>
+							</artifactSet>
+							<filters>
+								<filter>
+									<artifact>net.java.dev.jna:jna</artifact>
+									<excludes>
+										<exclude>com/sun/jna/linux-arm/**</exclude>
+										<exclude>com/sun/jna/sun-os*/**</exclude>
+										<exclude>com/sun/jna/freebsd*/**</exclude>
+										<exclude>com/sun/jna/openbsd*/**</exclude>
+										<exclude>com/sun/jna/w32ce-arm/**</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.2</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>2.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.kickassembler</groupId>
+			<artifactId>kickass</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.kickassembler</groupId>
+				<artifactId>kickass</artifactId>
+				<version>3.3.0</version>
+				<scope>system</scope>
+				<systemPath>${project.basedir}/deps/KickAss.jar</systemPath>
+			</dependency>
+			<dependency>
+				<groupId>org.testng</groupId>
+				<artifactId>testng</artifactId>
+				<version>6.3.1</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.java.dev.jna</groupId>
+				<artifactId>jna</artifactId>
+				<version>4.0.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>
