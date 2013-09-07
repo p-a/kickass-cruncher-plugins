@@ -1,6 +1,9 @@
 package se.triad.kickass.common;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -18,5 +21,18 @@ public final class TestUtils {
 		}
 		is.close();
 		return baos.toByteArray();
+	}
+	
+	public static void writeByteArray(String filename, byte[] data) throws IOException{
+		
+		File f = new File(filename);
+		if (f.exists()){
+			f.delete();
+		}
+		
+		FileOutputStream fos = new FileOutputStream(f);
+		fos.write(data);
+		fos.flush();
+		fos.close();
 	}
 }

@@ -17,7 +17,8 @@ public abstract class AbstractExomizer implements IModifier {
 		FORWARD_CRUNCHING,
 		USE_LITERALS, 
 		APPEND_IN_LOAD, 
-		VALIDATE_SAFETY_OFFSET
+		VALIDATE_SAFETY_OFFSET, 
+		REVERSE_OUTPUT
 	}
 
 	@Override
