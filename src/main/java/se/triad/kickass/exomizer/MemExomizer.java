@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.List;
 
 import se.triad.kickass.exomizer.ExoHelper.ExoObject;
@@ -35,35 +34,12 @@ public class MemExomizer extends AbstractExomizer {
 	@Override
 	protected void validateResult(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts,
 			IEngine engine, List<ExoObject> exoObjects) {
+		
 		if (exoObjects.size() != 1){
 			engine.error("Fault in " + NAME + "! There are " + exoObjects.size() + " exomized blobs (should be one single item)");
 		}
-
-		if (opts.containsKey(Options.VALIDATE_SAFETY_OFFSET)){
-
-			for (int i = 0; i < blocks.size(); i++){
-				final int safeAddr = exoObjects.get(i).safetyOffset;
-				final int finalSize = exoObjects.get(i).data.length;
-				final int memAddr = (Integer) opts.get(Options.VALIDATE_SAFETY_OFFSET);
-				final boolean forwardCrunching = opts.containsKey(Options.FORWARD_CRUNCHING);
-				final int min = blocks.get(i).getStartAddress();
-				final int max = blocks.get(i).getStartAddress()+blocks.get(i).getBytes().length;
-
-				if ( (!forwardCrunching && memAddr > safeAddr && memAddr < max) ||
-						(forwardCrunching && memAddr < safeAddr && memAddr+finalSize-1 >= min ))
-
-				{
-					String error = "WARNING! Exomized data '" + blocks.get(i).getName() + "' in block["+i+"] cannot be decompressed from location $"+asHex(memAddr) + 
-							" Safety distance is $" + asHex(!forwardCrunching ? min - safeAddr : safeAddr - min) + " Decompressed data span $" + asHex(min) + " - $" + asHex(max);
-					if (forwardCrunching)
-						error = error + "\nPlace your data <= $" + asHex(min - finalSize ) + " or >= $" + asHex(safeAddr);
-					else
-						error = error + "\nPlace your data <= $"+asHex(safeAddr) + " or >= $" + asHex(max);
-
-					engine.error(error);
-				}	
-			}
-		}
+		
+		super.validateResult(blocks, opts, engine, exoObjects);
 	}
 
 	/* Mem merges all blocks to a single one */
@@ -82,7 +58,7 @@ public class MemExomizer extends AbstractExomizer {
 		int endAddress = blocks.get(blocks.size()-1).getStartAddress()+blocks.get(blocks.size()-1).getBytes().length;
 
 		final byte[] buf = new byte[endAddress-startAddress];
-
+		
 		StringBuilder name = new StringBuilder();
 		for (IMemoryBlock block : blocks){
 			System.arraycopy(block.getBytes(), 0, buf, block.getStartAddress()-startAddress, block.getBytes().length);
@@ -98,24 +74,8 @@ public class MemExomizer extends AbstractExomizer {
 
 		final String blobName = name.toString();
 
-		IMemoryBlock block = new IMemoryBlock() {
-
-			@Override
-			public int getStartAddress() {
-				return startAddress;
-			}
-
-			@Override
-			public String getName() {
-				return blobName;
-			}
-
-			@Override
-			public byte[] getBytes() {
-				return buf;
-			}
-		};
-
+		IMemoryBlock block = new MemBlock(blobName, buf, startAddress);
+		
 		List<IMemoryBlock> retVal = new ArrayList<IMemoryBlock>();
 		retVal.add(block);
 
@@ -124,7 +84,7 @@ public class MemExomizer extends AbstractExomizer {
 
 	@Override
 	protected String getSyntax() {
-		return getName()+"( boolean forwardCrunching [false], boolean useLiterals [true] ) ";
+		return getName()+"( boolean forwardCrunching [false], boolean useLiterals [true], int startAddress [no check] ) ";
 	}
 
 	@Override

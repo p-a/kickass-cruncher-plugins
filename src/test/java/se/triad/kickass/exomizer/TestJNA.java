@@ -1,3 +1,4 @@
+package se.triad.kickass.exomizer;
 import junit.framework.Assert;
 import net.magli143.exo.ExoLibrary;
 import net.magli143.exo.crunch_info;

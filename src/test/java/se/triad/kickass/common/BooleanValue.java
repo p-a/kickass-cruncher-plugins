@@ -1,4 +1,4 @@
-package se.triad.kickass.exomizer;
+package se.triad.kickass.common;
 
 import java.util.List;
 
@@ -19,13 +19,11 @@ public class BooleanValue implements IValue {
 
 	@Override
 	public double getDouble() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getInt() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -37,37 +35,31 @@ public class BooleanValue implements IValue {
 
 	@Override
 	public String getString() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean hasBooleanRepresentation() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean hasDoubleRepresentation() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean hasIntRepresentation() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean hasListRepresentation() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean hasStringRepresentation() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
