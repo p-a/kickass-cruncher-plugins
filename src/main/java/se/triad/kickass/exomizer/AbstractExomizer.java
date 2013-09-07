@@ -63,22 +63,22 @@ public abstract class AbstractExomizer implements IModifier {
 		if (opts.containsKey(Options.VALIDATE_SAFETY_OFFSET)){
 
 			for (int i = 0; i < blocks.size(); i++){
-				final int safeAddr = exoObjects.get(i).safetyOffset;
+				final int safetyOffset = exoObjects.get(i).safetyOffset;
 				final int finalSize = exoObjects.get(i).data.length;
 				final int memAddr = (Integer) opts.get(Options.VALIDATE_SAFETY_OFFSET);
 				final boolean forwardCrunching = opts.containsKey(Options.FORWARD_CRUNCHING);
 				final int min = blocks.get(i).getStartAddress();
 				final int max = blocks.get(i).getStartAddress()+blocks.get(i).getBytes().length;
 
-				if ( (!forwardCrunching && memAddr > min-safeAddr && memAddr < max) ||
-					(forwardCrunching && !(memAddr+finalSize >= max-safeAddr || min >= memAddr+finalSize))) 
+				if ( (!forwardCrunching && memAddr > min-safetyOffset && memAddr < max) ||
+					(forwardCrunching && !(memAddr+finalSize >= max-safetyOffset || min >= memAddr+finalSize))) 
 				{
 					String error = "WARNING! Exomized data '" + blocks.get(i).getName() + "' in block["+i+"] cannot be decompressed at $"+asHex(memAddr) + 
-							" Safety distance is $" + asHex(safeAddr) + " Decompressed data span $" + asHex(min) + " - $" + asHex(max);
+							" Safety distance is $" + asHex(safetyOffset) + " Decompressed data span $" + asHex(min) + " - $" + asHex(max);
 					if (forwardCrunching)
-						error = error + "\nPlace your data >= $" + asHex(max+safeAddr - finalSize ) + " or <= $" + asHex(min-finalSize);
+						error = error + "\nPlace your data >= $" + asHex(max+safetyOffset - finalSize ) + " or <= $" + asHex(min-finalSize);
 					else
-						error = error + "\nPlace your data <= $"+asHex(min-safeAddr) + " or >= $" + asHex(max);
+						error = error + "\nPlace your data <= $"+asHex(min-safetyOffset) + " or >= $" + asHex(max);
 
 					engine.error(error);
 				}	

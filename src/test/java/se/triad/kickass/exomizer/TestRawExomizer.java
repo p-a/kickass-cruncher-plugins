@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 
 import se.triad.kickass.common.BooleanValue;
 import se.triad.kickass.common.StubEngine;
-import se.triad.kickass.common.TestUtils;
 
 import cml.kickass.plugins.interf.IMemoryBlock;
 import cml.kickass.plugins.interf.IValue;
