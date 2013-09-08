@@ -1,6 +1,8 @@
 package se.triad.kickass.byteboozer;
 
-class ByteBoozerImpl {
+import se.triad.kickass.CrunchedObject;
+
+class JByteBoozer {
 
 
 	public final static int memSize = 65536;
@@ -22,25 +24,14 @@ class ByteBoozerImpl {
 	private int curByte;
 	private int curCnt;
 	private int plainLen;
-	
+
 	private int theMatchLen, theMatchOffset; 
 
 	// private boolean errorFlag;
 
 
-	public ByteBoozerImpl(){
-		
-	}
-		
-	private void init () {
-		
-		get = ibufSize - 1;
-		put = memSize - 1;
-		curByte = 0;
-		curCnt = 8;
+	public JByteBoozer(){
 
-		plainLen = 0;
-		
 	}
 
 	private void out(int b)
@@ -203,18 +194,23 @@ class ByteBoozerImpl {
 		plainLen = 0;
 	}
 
-	BBObject crunch(byte[] source, int startAdress)
+	CrunchedObject crunch(byte[] source, int startAdress)
 	{
 		int i;
 		int packLen;
 
 		ibufSize = source.length;
 		ibuf = new byte[ibufSize];
-		
+
 		System.arraycopy(source,0, ibuf, 0, ibufSize);
 
-		init();
-		
+		get = ibufSize - 1;
+		put = memSize - 1;
+		curByte = 0;
+		curCnt = 8;
+
+		plainLen = 0;
+
 		outLen(0xff); // Put end of file.
 		copyFlag = true;
 
@@ -232,7 +228,6 @@ class ByteBoozerImpl {
 
 		//Copy obuf into aTarget!!
 		packLen = memSize - put - 1;
-		System.out.println("packlen: "  + packLen);
 		int size = packLen + 3;
 		byte[] target = new byte[size];
 
@@ -243,10 +238,10 @@ class ByteBoozerImpl {
 		for(i = 0; i < packLen; ++i) {
 			target[i + 3] = obuf[put + i + 1];
 		}
-		
+
 		int packStart = 0xfffa;
 		packStart -= (packLen + 3);
-		
-		return new BBObject(target, packStart);
+
+		return new CrunchedObject(target, packStart);
 	}
 }

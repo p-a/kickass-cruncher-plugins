@@ -3,7 +3,8 @@ package se.triad.kickass.exomizer;
 import java.util.EnumMap;
 import java.util.List;
 
-import se.triad.kickass.exomizer.ExoHelper.ExoObject;
+import se.triad.kickass.CrunchedObject;
+
 
 import cml.kickass.plugins.interf.IEngine;
 import cml.kickass.plugins.interf.IMemoryBlock;
@@ -22,17 +23,17 @@ public class LevelExomizer extends AbstractExomizer {
 
 	@Override
 	protected byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts,
-			List<ExoObject> exoObjects) {
+			List<CrunchedObject> exoObjects) {
 
 		int size = 0;
-		for (ExoObject obj: exoObjects){
+		for (CrunchedObject obj: exoObjects){
 			size+=obj.data.length;
 		}
 
 		byte[] output = new byte [size];
 
 		int i = 0;
-		for (ExoObject obj: exoObjects){
+		for (CrunchedObject obj: exoObjects){
 
 			byte[] buf;
 			if (!opts.containsKey(Options.FORWARD_CRUNCHING)){
@@ -54,7 +55,7 @@ public class LevelExomizer extends AbstractExomizer {
 
 	@Override
 	protected void validateResult(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts,
-			IEngine engine, List<ExoObject> exoObjects) {
+			IEngine engine, List<CrunchedObject> exoObjects) {
 
 		if (exoObjects.size() != blocks.size()){
 			engine.error("Fault in " + NAME + "! There are " + exoObjects.size() + " exomized blobs, should be " + blocks.size());

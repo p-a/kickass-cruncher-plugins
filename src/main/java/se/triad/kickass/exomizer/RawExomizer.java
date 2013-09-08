@@ -3,7 +3,8 @@ package se.triad.kickass.exomizer;
 import java.util.EnumMap;
 import java.util.List;
 
-import se.triad.kickass.exomizer.ExoHelper.ExoObject;
+import se.triad.kickass.CrunchedObject;
+
 
 import cml.kickass.plugins.interf.IEngine;
 import cml.kickass.plugins.interf.IMemoryBlock;
@@ -23,9 +24,9 @@ public class RawExomizer extends AbstractExomizer {
 
 	@Override
 	protected byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts,
-			List<ExoObject> exoObjects) {
+			List<CrunchedObject> exoObjects) {
 
-		ExoObject obj = exoObjects.get(0);
+		CrunchedObject obj = exoObjects.get(0);
 
 		byte buf[];
 		if (opts.containsKey(Options.REVERSE_OUTPUT)){

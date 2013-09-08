@@ -1,5 +1,6 @@
 package se.triad.kickass.exomizer;
 
+import se.triad.kickass.CrunchedObject;
 import net.magli143.exo.*;
 
 import com.sun.jna.Memory;
@@ -10,16 +11,10 @@ public final class ExoHelper  {
 	private static final int MAX_OFFSET = 65535;
 	private static final int PASSES = 65535;
 
-	public static class ExoObject {
-		public byte[] data;
-		public int safetyOffset;
-	}
-
-
-	public static ExoObject crunch(byte[] data, boolean forward, boolean useLiterals){
+	public static CrunchedObject crunch(byte[] data, boolean forward, boolean useLiterals){
 		return crunch(data, forward, useLiterals,-1);
 	}
-	public static ExoObject crunch(byte[] data, boolean forward, boolean useLiterals, int in_load){
+	public static CrunchedObject crunch(byte[] data, boolean forward, boolean useLiterals, int in_load){
 
 		final ExoLibrary exolib = ExoLibrary.INSTANCE;
 
@@ -58,9 +53,7 @@ public final class ExoHelper  {
 
 		int length = exolib.membuf_memlen(crunched);
 
-		ExoObject retval = new ExoObject();
-		retval.data = exolib.membuf_get(crunched).getByteArray(0, length);
-		retval.safetyOffset = info.needed_safety_offset;
+		CrunchedObject retval = new CrunchedObject(exolib.membuf_get(crunched).getByteArray(0, length), info.needed_safety_offset);
 
 		return retval;
 	}

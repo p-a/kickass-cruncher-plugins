@@ -6,7 +6,9 @@ import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 
-import se.triad.kickass.exomizer.ExoHelper.ExoObject;
+import se.triad.kickass.CrunchedObject;
+import se.triad.kickass.Utils;
+
 
 import cml.kickass.plugins.interf.IEngine;
 import cml.kickass.plugins.interf.IMemoryBlock;
@@ -26,14 +28,14 @@ public class MemExomizer extends AbstractExomizer {
 
 	@Override
 	protected byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts,
-			List<ExoObject> exoObjects) {
+			List<CrunchedObject> exoObjects) {
 
 		return exoObjects.get(0).data;
 	}
 
 	@Override
 	protected void validateResult(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts,
-			IEngine engine, List<ExoObject> exoObjects) {
+			IEngine engine, List<CrunchedObject> exoObjects) {
 		
 		if (exoObjects.size() != 1){
 			engine.error("Fault in " + NAME + "! There are " + exoObjects.size() + " exomized blobs (should be one single item)");
@@ -46,40 +48,7 @@ public class MemExomizer extends AbstractExomizer {
 	@Override
 	protected List<IMemoryBlock> preTransformBlocks(final List<IMemoryBlock> blocks) {
 
-		Collections.sort(blocks, new Comparator<IMemoryBlock>() {
-
-			@Override
-			public int compare(IMemoryBlock o1, IMemoryBlock o2) {
-				return o1.getStartAddress() - o2.getStartAddress();
-			}
-		});
-
-		final int startAddress = blocks.get(0).getStartAddress();
-		int endAddress = blocks.get(blocks.size()-1).getStartAddress()+blocks.get(blocks.size()-1).getBytes().length;
-
-		final byte[] buf = new byte[endAddress-startAddress];
-		
-		StringBuilder name = new StringBuilder();
-		for (IMemoryBlock block : blocks){
-			System.arraycopy(block.getBytes(), 0, buf, block.getStartAddress()-startAddress, block.getBytes().length);
-			name.append(block.getName());
-			name.append(", ");
-		}
-		name.setLength(name.length()-2);
-
-		if (blocks.size() > 1){
-			name.append(" ]");
-			name.insert(0, "Blob: [ ");
-		}
-
-		final String blobName = name.toString();
-
-		IMemoryBlock block = new MemBlock(blobName, buf, startAddress);
-		
-		List<IMemoryBlock> retVal = new ArrayList<IMemoryBlock>();
-		retVal.add(block);
-
-		return retVal;
+		return Utils.mergeBlocks(blocks);
 	}
 
 	@Override
