@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import se.triad.kickass.exomizer.ExoHelper;
 import cml.kickass.plugins.interf.IEngine;
 import cml.kickass.plugins.interf.IMemoryBlock;
 import cml.kickass.plugins.interf.IModifier;
@@ -40,7 +39,7 @@ public abstract class AbstractCruncher implements IModifier{
 
 			int percent = 100 * crunchedObj.data.length / block.getBytes().length;
 			engine.printNow(getName() + ": " +block.getName() +  " $" +asHex(block.getStartAddress()) + " - $" + asHex(block.getStartAddress()-1+block.getBytes().length) + 
-					" Packed size $" + asHex(crunchedObj.data.length)+" ("+percent+ "%) " + "Safety distance: $"+asHex(crunchedObj.address));
+					" Packed size $" + asHex(crunchedObj.data.length)+" ("+percent+ "%) " + formatAddress(crunchedObj.address));
 		}
 
 		validateResult(blocks, opts, engine, crunchedObjects);
@@ -48,6 +47,8 @@ public abstract class AbstractCruncher implements IModifier{
 		return finalizeData(blocks, opts, crunchedObjects);
 
 	}
+
+	protected abstract String formatAddress(int address);
 
 	protected abstract CrunchedObject crunch(IMemoryBlock block,
 			EnumMap<Options, Object> opts, IEngine iEngine);

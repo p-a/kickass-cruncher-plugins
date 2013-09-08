@@ -21,6 +21,11 @@ public abstract class AbstractExomizer extends AbstractCruncher {
 				opts.containsKey(Options.USE_LITERALS),
 				opts.containsKey(Options.APPEND_IN_LOAD) ? block.getStartAddress() : -1);
 	}
+	
+	@Override
+	protected String formatAddress(int address) {
+		return "Safety distance: $"+asHex(address);
+	}
 
 	@Override
 	protected void validateResult(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts, IEngine engine,

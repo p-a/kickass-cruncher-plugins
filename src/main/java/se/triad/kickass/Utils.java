@@ -39,7 +39,7 @@ public class Utils {
 
 		if (blocks.size() > 1){
 			name.append(" ]");
-			name.insert(0, "Blob: [ ");
+			name.insert(0, "[ ");
 		}
 
 		final String blobName = name.toString();

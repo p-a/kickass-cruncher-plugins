@@ -1,5 +1,7 @@
 package se.triad.kickass.byteboozer;
 
+import static se.triad.kickass.Utils.asHex;
+
 import java.util.EnumMap;
 import java.util.List;
 
@@ -29,14 +31,14 @@ public class ByteBoozer extends AbstractCruncher {
 	@Override
 	protected CrunchedObject crunch(IMemoryBlock block,
 			EnumMap<Options, Object> opts, IEngine iEngine) {
-		
+
 		return new JByteBoozer().crunch(block.getBytes(), block.getStartAddress());
 	}
 
 	@Override
 	protected byte[] finalizeData(List<IMemoryBlock> blocks,
-			EnumMap<Options, Object> options, List<CrunchedObject> exoObjects) {
-		return exoObjects.get(0).data;
+			EnumMap<Options, Object> options, List<CrunchedObject> objects) {
+		return objects.get(0).data;
 	}
 
 	@Override
@@ -44,7 +46,7 @@ public class ByteBoozer extends AbstractCruncher {
 			EnumMap<Options, Object> opts, IEngine engine,
 			List<CrunchedObject> exoObjects) {
 	}
-	
+
 	@Override
 	protected List<IMemoryBlock> preTransformBlocks(List<IMemoryBlock> blocks) {
 		return Utils.mergeBlocks(blocks);
@@ -54,6 +56,12 @@ public class ByteBoozer extends AbstractCruncher {
 	protected EnumMap<Options, Object> validateArguments(
 			List<IMemoryBlock> blocks, IValue[] values, IEngine engine) {
 		return new EnumMap<AbstractCruncher.Options, Object>(Options.class);
+	}
+
+	@Override
+	protected String formatAddress(int address) {
+
+		return "";
 	}
 
 }
