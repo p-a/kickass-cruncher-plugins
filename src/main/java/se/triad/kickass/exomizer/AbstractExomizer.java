@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 import se.triad.kickass.exomizer.ExoHelper.ExoObject;
+import static se.triad.kickass.Utils.*;
 
 import cml.kickass.plugins.interf.IEngine;
 import cml.kickass.plugins.interf.IMemoryBlock;
@@ -91,10 +92,6 @@ public abstract class AbstractExomizer implements IModifier {
 
 	protected abstract EnumMap<Options,Object> validateArguments(List<IMemoryBlock> blocks, IValue[] values,
 			IEngine engine);
-
-	protected static String asHex(int i){
-		return Integer.toHexString(0x10000 | i).substring(1);
-	}
 
 	protected static void addBooleanOption(IValue[] values, int index, EnumMap<Options, Object> opts,
 			Options opt, boolean defaultValue) {
