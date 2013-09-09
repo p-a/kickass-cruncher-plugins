@@ -1,7 +1,5 @@
 package se.triad.kickass.byteboozer;
 
-import static se.triad.kickass.Utils.asHex;
-
 import java.util.EnumMap;
 import java.util.List;
 

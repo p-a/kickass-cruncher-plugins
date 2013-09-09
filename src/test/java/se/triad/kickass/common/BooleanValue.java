@@ -29,7 +29,6 @@ public class BooleanValue implements IValue {
 
 	@Override
 	public List<IValue> getList() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
