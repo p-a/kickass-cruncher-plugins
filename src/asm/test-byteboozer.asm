@@ -1,9 +1,9 @@
 .plugin "se.triad.kickass.byteboozer.ByteBoozer"
 
 .const KOALA_TEMPLATE = "C64FILE, Bitmap=$0000, ScreenRam=$1f40, ColorRam=$2328, BackgroundColor = $2710"
-.var picture = LoadBinary("test.koa", KOALA_TEMPLATE)
+.var picture = LoadBinary("res/test.koa", KOALA_TEMPLATE)
 
-.var music = LoadSid("Ruk - J.sid")
+.var music = LoadSid("res/Ruk - J.sid")
 
 .pc = $0801
 :BasicUpstart(start)
