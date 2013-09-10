@@ -10,6 +10,7 @@ else
     ifeq ($(UNAME_S),Linux)
         LIBFILE_EXT = so
         LIB_LDFLAGS = -shared
+        CFLAGS_OPT = -fPIC
     endif
     ifeq ($(UNAME_S),Darwin)
         LIBFILE_EXT = dylib
@@ -18,11 +19,8 @@ else
 endif
 
 WFLAGS = -Wall -Wstrict-prototypes
-CFLAGS = $(WFLAGS) -O3 -ffast-math -mtune=i686 -fomit-frame-pointer -fgcse -pedantic
+CFLAGS = $(WFLAGS) -O3 $(CFLAGS_OPT) -ffast-math -mtune=i686 -fomit-frame-pointer -fgcse -pedantic
 LDFLAGS = -s
-
-#CFLAGS = -g -mtune=i686 $(WFLAGS)
-#LDFLAGS = -g -mtune=i686
 
 LIBFILE =  libexo.$(LIBFILE_EXT)
 
