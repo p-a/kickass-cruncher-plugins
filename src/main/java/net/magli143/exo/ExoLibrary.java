@@ -3,6 +3,7 @@ import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
+import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 import com.sun.jna.PointerType;
 import com.sun.jna.ptr.IntByReference;
@@ -16,7 +17,11 @@ import net.magli143.exo.membuf.ByReference;
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
 public interface ExoLibrary extends Library {
-	public static final String JNA_LIBRARY_NAME = "Exo";
+	public static final String JNA_LIBRARY_NAME =
+			Platform.isMac() ? "libexo.dylib" :
+			Platform.isLinux() ? "libexo.so" :
+			Platform.isWindows() ? "libexo.dll" : "die";
+	
 	public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(ExoLibrary.JNA_LIBRARY_NAME);
 	public static final ExoLibrary INSTANCE = (ExoLibrary)Native.loadLibrary(ExoLibrary.JNA_LIBRARY_NAME, ExoLibrary.class);
 	/**

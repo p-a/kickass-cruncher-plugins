@@ -21,6 +21,9 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<verbose>true</verbose>
+					<systemPropertyVariables>
+						<jna.debug_load>true</jna.debug_load>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 
