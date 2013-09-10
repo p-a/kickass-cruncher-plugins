@@ -1,0 +1,28 @@
+Build instructions for Exomizer library-files
+---------------------------------------------
+
+Download Exomizer from the Exomizer 2 website:
+http://hem.bredband.net/magli143/exo/
+
+Unzip the src-directory.
+
+The library file is then built by issuing `make lib SRC_DIR={path to sources}`.
+Copy the resulting library-file to the correct directory for the current architecture which must be one of:
+${project.basedir}/src/main/resources/darwin
+${project.basedir}/src/main/resources/linux-x86
+${project.basedir}/src/main/resources/linux-x86-64
+${project.basedir}/src/main/resources/win32-x86
+${project.basedir}/src/main/resources/win32-x86-64
+
+
+Rebuild the supporting JNA java-files
+-------------------------------------
+
+In order to rebuild the java-files using JNA for the plugin, please download the latest version of the jnaerator jar:
+https://code.google.com/p/jnaerator/downloads/list
+
+Update the reference to the jar in the Makefile.
+`make jar` will generate java files. Copy these files to the src/main/java directory (the 'net' directory and all its contents).
+
+
+
