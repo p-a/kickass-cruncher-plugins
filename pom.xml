@@ -46,7 +46,7 @@
 									<artifact>net.java.dev.jna:jna</artifact>
 									<excludes>
 										<exclude>com/sun/jna/linux-arm/**</exclude>
-										<exclude>com/sun/jna/sun-os*/**</exclude>
+										<exclude>com/sun/jna/sunos*/**</exclude>
 										<exclude>com/sun/jna/freebsd*/**</exclude>
 										<exclude>com/sun/jna/openbsd*/**</exclude>
 										<exclude>com/sun/jna/w32ce-arm/**</exclude>
