@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>se.triad.kickass</groupId>
 	<artifactId>cruncher-plugins</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-beta</version>
 	<name>Cruncher-plugins</name>
 	<description>Cruncher-plugins for Kick Assembler</description>
 

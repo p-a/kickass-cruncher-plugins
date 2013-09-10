@@ -10,6 +10,8 @@ public final class ExoHelper  {
 
 	private static final int MAX_OFFSET = 65535;
 	private static final int PASSES = 65535;
+	private static final int MAX_LENGTH = 65535;
+	private static final int USE_IMPRECISE_RLE = 0;
 
 	public static CrunchedObject crunch(byte[] data, boolean forward, boolean useLiterals){
 		return crunch(data, forward, useLiterals,-1);
@@ -18,7 +20,7 @@ public final class ExoHelper  {
 
 		final ExoLibrary exolib = ExoLibrary.INSTANCE;
 
-		crunch_options options = new crunch_options(null, PASSES, MAX_OFFSET, useLiterals ? 1 : 0);
+		crunch_options options = new crunch_options(null, PASSES, MAX_OFFSET, MAX_LENGTH, useLiterals ? 1 : 0, USE_IMPRECISE_RLE);
 		crunch_info info = new crunch_info();
 
 		membuf in = new membuf();
