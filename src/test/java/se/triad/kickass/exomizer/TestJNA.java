@@ -45,9 +45,13 @@ public class TestJNA {
 				info.needed_safety_offset);
 
 		exolib.decrunch(0, crunched, out);
+		
+		final String actual = exolib.membuf_get(out).getString(0);
 
 		Assert.assertEquals(txt.length(), exolib.membuf_memlen(out));
-		Assert.assertEquals(txt, exolib.membuf_get(out).getString(0));
+		if (!txt.equals(actual)){
+			System.err.println("Comparison failed. Actual was: " + actual);
+		}
 
 	}
 
