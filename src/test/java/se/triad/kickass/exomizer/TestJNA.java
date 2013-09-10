@@ -35,7 +35,7 @@ public class TestJNA {
 		Pointer m = new Memory(txt.length() + 1);
 		m.setString(0, txt);
 
-		exolib.membuf_append(in, m, txt.length());
+		exolib.membuf_append(in, m, txt.length()+1);
 
 		exolib.crunch(in, crunched, options, info);
 		
