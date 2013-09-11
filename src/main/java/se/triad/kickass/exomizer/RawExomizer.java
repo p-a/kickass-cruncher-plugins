@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 import se.triad.kickass.CrunchedObject;
+import se.triad.kickass.Utils;
 
 
 import cml.kickass.plugins.interf.IEngine;
@@ -28,17 +29,11 @@ public class RawExomizer extends AbstractExomizer {
 
 		CrunchedObject obj = exoObjects.get(0);
 
-		byte buf[];
 		if (opts.containsKey(Options.REVERSE_OUTPUT)){
-			buf = new byte[obj.data.length];
-			for(int b = buf.length-1; b >= 0; b--){
-				buf[buf.length-1-b] = obj.data[b];
-			}
-		} else {
-			buf = obj.data;
-		}
-
-		return buf;
+			obj = Utils.reverseBuffer(obj);
+		} 
+		
+		return obj.data;
 	}
 
 	@Override
@@ -47,7 +42,7 @@ public class RawExomizer extends AbstractExomizer {
 	}
 
 	@Override
-	protected EnumMap<Options, Object> validateArguments(List<IMemoryBlock> blocks,
+	protected void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks,
 			IValue[] values, IEngine engine) {
 
 		if (blocks.size() > 1){
@@ -55,8 +50,6 @@ public class RawExomizer extends AbstractExomizer {
 		}
 
 		//else
-
-		EnumMap<Options, Object> opts = new EnumMap<Options, Object>(Options.class);
 		try {
 			addBooleanOption(values, ARGNUM_FORWARD_CRUNCHING, opts, Options.FORWARD_CRUNCHING, false); 
 			addBooleanOption(values, ARGNUM_USE_LITERALS, opts, Options.USE_LITERALS, true); 
@@ -64,8 +57,6 @@ public class RawExomizer extends AbstractExomizer {
 		} catch (Exception ex){
 			engine.error(ex.getMessage() + "\n" + getSyntax());
 		}
-
-		return opts;
 	}
 
 

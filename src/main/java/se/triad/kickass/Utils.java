@@ -51,4 +51,13 @@ public class Utils {
 		
 		return retVal;
 	}
+	
+	public static CrunchedObject reverseBuffer(CrunchedObject obj) {
+		byte[] buf;
+		buf = new byte[obj.data.length];
+		for(int b = buf.length-1; b >= 0; b--){
+			buf[buf.length-1-b] = obj.data[b];
+		}
+		return new CrunchedObject(buf, obj.address);
+	}
 }

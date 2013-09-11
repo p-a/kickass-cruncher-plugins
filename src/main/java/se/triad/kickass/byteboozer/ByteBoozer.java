@@ -23,20 +23,25 @@ public class ByteBoozer extends AbstractCruncher {
 
 	@Override
 	protected String getSyntax() {
-		return NAME + " ()";
+		return NAME + " (boolean reversed [false])";
 	}
 
 	@Override
 	protected CrunchedObject crunch(IMemoryBlock block,
 			EnumMap<Options, Object> opts, IEngine iEngine) {
 
-		return new JByteBoozer().crunch(block.getBytes(), block.getStartAddress());
+		return JByteBoozer.crunch(block.getBytes(), block.getStartAddress());
 	}
 
 	@Override
 	protected byte[] finalizeData(List<IMemoryBlock> blocks,
 			EnumMap<Options, Object> options, List<CrunchedObject> objects) {
-		return objects.get(0).data;
+		
+		CrunchedObject obj = objects.get(0);
+		if (options.containsValue(Options.REVERSE_OUTPUT))
+			obj = Utils.reverseBuffer(obj);
+		
+		return obj.data;
 	}
 
 	@Override
@@ -51,9 +56,10 @@ public class ByteBoozer extends AbstractCruncher {
 	}
 
 	@Override
-	protected EnumMap<Options, Object> validateArguments(
+	protected void validateArguments(EnumMap<Options, Object> opts,
 			List<IMemoryBlock> blocks, IValue[] values, IEngine engine) {
-		return new EnumMap<AbstractCruncher.Options, Object>(Options.class);
+		
+		addBooleanOption(values, 0, opts, Options.REVERSE_OUTPUT, false);
 	}
 
 	@Override

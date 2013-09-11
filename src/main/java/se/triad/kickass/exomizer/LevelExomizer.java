@@ -73,10 +73,9 @@ public class LevelExomizer extends AbstractExomizer {
 	}
 
 	@Override
-	protected EnumMap<Options, Object> validateArguments(List<IMemoryBlock> blocks,
+	protected void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks,
 			IValue[] values, IEngine engine) {
 
-		EnumMap<Options, Object> opts = new EnumMap<Options, Object>(Options.class);
 		try {
 			opts.put(Options.APPEND_IN_LOAD,null);
 			addBooleanOption(values, ARGNUM_FORWARD_CRUNCHING, opts, Options.FORWARD_CRUNCHING, false); 
@@ -84,10 +83,6 @@ public class LevelExomizer extends AbstractExomizer {
 		} catch (Exception ex){
 			engine.error(ex.getMessage() + "\n" + getSyntax());
 		}
-
-		return opts;
 	}
-
-
 
 }

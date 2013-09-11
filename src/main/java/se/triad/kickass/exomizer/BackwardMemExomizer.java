@@ -23,10 +23,9 @@ public class BackwardMemExomizer extends MemExomizer {
 	}
 
 	@Override
-	protected EnumMap<Options, Object> validateArguments(List<IMemoryBlock> blocks,
+	protected void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks,
 			IValue[] values, IEngine engine) {
 
-		EnumMap<Options, Object> opts = new EnumMap<Options, Object>(Options.class);
 		try {
 			opts.put(Options.APPEND_IN_LOAD,null);
 			opts.put(Options.USE_LITERALS, null);
@@ -34,10 +33,6 @@ public class BackwardMemExomizer extends MemExomizer {
 		} catch (Exception ex){
 			engine.error(ex.getMessage() + "\n" + getSyntax());
 		}
-
-		return opts;
 	}
-
-
 
 }

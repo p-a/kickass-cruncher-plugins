@@ -27,7 +27,9 @@ public abstract class AbstractCruncher implements IModifier{
 	@Override
 	public byte[] execute(List<IMemoryBlock> blocks, IValue[] values, IEngine engine) {
 
-		EnumMap<Options,Object> opts = validateArguments(blocks,values,engine);
+		EnumMap<Options,Object> opts = new EnumMap<AbstractCruncher.Options, Object>(Options.class);
+				
+		validateArguments(opts, blocks,values,engine);
 
 		blocks = preTransformBlocks(blocks);
 		List<CrunchedObject> crunchedObjects = new ArrayList<CrunchedObject>();
@@ -63,7 +65,7 @@ public abstract class AbstractCruncher implements IModifier{
 	protected abstract void validateResult(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts, IEngine engine,
 			List<CrunchedObject> exoObjects);
 
-	protected abstract EnumMap<Options,Object> validateArguments(List<IMemoryBlock> blocks, IValue[] values,
+	protected abstract void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks, IValue[] values,
 			IEngine engine);
 
 	protected static void addBooleanOption(IValue[] values, int index,
