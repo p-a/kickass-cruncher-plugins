@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>se.triad.kickass</groupId>
-	<artifactId>cruncher-plugins</artifactId>
+	<artifactId>kickass-cruncher-plugins</artifactId>
 	<version>1.0-beta</version>
-	<name>Cruncher-plugins</name>
+	<name>Kick Assembler cruncher-plugins</name>
 	<description>Cruncher-plugins for Kick Assembler</description>
 
 	<build>
@@ -36,9 +36,11 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
 							<artifactSet>
 								<excludes>
 									<exclude>org.kickasssember:kickass</exclude>
+									<exclude>se.triad.kickass:cruncher-plugins-KickAss.jar</exclude>
 								</excludes>
 							</artifactSet>
 							<filters>
@@ -60,16 +62,13 @@
 
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
 				<configuration>
-					<filters>
-						<filter>src/assemble/filter.properties</filter>
-					</filters>
 					<descriptors>
 						<descriptor>src/assemble/distribution.xml</descriptor>
 					</descriptors>
 				</configuration>
 			</plugin>
+
 		</plugins>
 
 		<pluginManagement>
@@ -85,6 +84,10 @@
 				<plugin>
 					<artifactId>maven-shade-plugin</artifactId>
 					<version>2.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.4</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
