@@ -10,6 +10,10 @@
             jsr byteboozer.Decrunch
 }
 
+.macro BB_DECRUNCH_NEXT(){
+            jsr byteboozer.Decrunch_next
+}
+
 .namespace byteboozer {
 
 .label cpl	= BB_ZP_BASE+0 //1
@@ -23,7 +27,7 @@
 Decrunch:
 	sty get
 	stx get+1
-
+Decrunch_next:
 	ldy #2
 	lda (get),y
 	sta cur,y

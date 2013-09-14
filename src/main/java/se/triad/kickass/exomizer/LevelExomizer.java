@@ -3,7 +3,10 @@ package se.triad.kickass.exomizer;
 import java.util.EnumMap;
 import java.util.List;
 
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
+
 import se.triad.kickass.CrunchedObject;
+import se.triad.kickass.Utils;
 
 
 import cml.kickass.plugins.interf.IEngine;
@@ -22,7 +25,7 @@ public class LevelExomizer extends AbstractExomizer {
 	}
 
 	@Override
-	protected byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts,
+	protected byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts, IEngine engine,
 			List<CrunchedObject> exoObjects) {
 
 		int size = 0;
@@ -33,6 +36,8 @@ public class LevelExomizer extends AbstractExomizer {
 		byte[] output = new byte [size];
 
 		int i = 0;
+		int j = 0;
+		engine.print("\nCrunched Memory layout:");
 		for (CrunchedObject obj: exoObjects){
 
 			byte[] buf;
@@ -45,11 +50,13 @@ public class LevelExomizer extends AbstractExomizer {
 			} else {
 				buf = obj.data;
 			}
-
+			engine.print("$"+Utils.asHex(i) + " : ["+ j + "] " + blocks.get(j++).getName());
 			System.arraycopy(buf, 0, output, i, obj.data.length);
 			i+=obj.data.length;
 		}
 
+		//TODO output as bytes
+		
 		return output;
 	}
 

@@ -46,7 +46,7 @@ public abstract class AbstractCruncher implements IModifier{
 
 		validateResult(blocks, opts, engine, crunchedObjects);
 
-		return finalizeData(blocks, opts, crunchedObjects);
+		return finalizeData(blocks, opts, engine, crunchedObjects);
 
 	}
 
@@ -55,7 +55,7 @@ public abstract class AbstractCruncher implements IModifier{
 	protected abstract CrunchedObject crunch(IMemoryBlock block,
 			EnumMap<Options, Object> opts, IEngine iEngine);
 
-	protected abstract byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> options,
+	protected abstract byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> options, IEngine engine,
 			List<CrunchedObject> exoObjects);
 
 	protected List<IMemoryBlock> preTransformBlocks(List<IMemoryBlock> blocks) {

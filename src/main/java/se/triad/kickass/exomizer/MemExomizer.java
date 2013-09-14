@@ -24,7 +24,7 @@ public class MemExomizer extends AbstractExomizer {
 	}
 
 	@Override
-	protected byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts,
+	protected byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts, IEngine engine,
 			List<CrunchedObject> exoObjects) {
 
 		return exoObjects.get(0).data;

@@ -35,7 +35,7 @@ public class ByteBoozer extends AbstractCruncher {
 
 	@Override
 	protected byte[] finalizeData(List<IMemoryBlock> blocks,
-			EnumMap<Options, Object> options, List<CrunchedObject> objects) {
+			EnumMap<Options, Object> options, IEngine engine, List<CrunchedObject> objects) {
 		
 		CrunchedObject obj = objects.get(0);
 		if (options.containsValue(Options.REVERSE_OUTPUT))

@@ -24,7 +24,7 @@ public class RawExomizer extends AbstractExomizer {
 	}
 
 	@Override
-	protected byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts,
+	protected byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts, IEngine engine,
 			List<CrunchedObject> exoObjects) {
 
 		CrunchedObject obj = exoObjects.get(0);
