@@ -1,6 +1,6 @@
 package se.triad.kickass;
 
-import static se.triad.kickass.Utils.asHex;
+import static se.triad.kickass.Utils.toHexString;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -18,7 +18,8 @@ public abstract class AbstractCruncher implements IModifier{
 		USE_LITERALS, 
 		APPEND_IN_LOAD, 
 		VALIDATE_SAFETY_OFFSET, 
-		REVERSE_OUTPUT
+		REVERSE_OUTPUT, 
+		OUTPUT_BLOCK_OFFSETS
 	}
 
 
@@ -40,8 +41,8 @@ public abstract class AbstractCruncher implements IModifier{
 			crunchedObjects.add(crunchedObj);
 
 			int percent = 100 * crunchedObj.data.length / block.getBytes().length;
-			engine.printNow(getName() + ": " +block.getName() +  " $" +asHex(block.getStartAddress()) + " - $" + asHex(block.getStartAddress()-1+block.getBytes().length) + 
-					" Packed size $" + asHex(crunchedObj.data.length)+" ("+percent+ "%) " + formatAddress(crunchedObj.address));
+			engine.printNow(getName() + ": " +block.getName() +  " " +toHexString(block.getStartAddress()) + " - " + toHexString(block.getStartAddress()-1+block.getBytes().length) + 
+					" Packed size " + toHexString(crunchedObj.data.length)+" ("+percent+ "%) " + formatAddress(crunchedObj.address));
 		}
 
 		validateResult(blocks, opts, engine, crunchedObjects);
@@ -56,14 +57,14 @@ public abstract class AbstractCruncher implements IModifier{
 			EnumMap<Options, Object> opts, IEngine iEngine);
 
 	protected abstract byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> options, IEngine engine,
-			List<CrunchedObject> exoObjects);
+			List<CrunchedObject> crunchedObjects);
 
 	protected List<IMemoryBlock> preTransformBlocks(List<IMemoryBlock> blocks) {
 		return blocks;
 	}
 
 	protected abstract void validateResult(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts, IEngine engine,
-			List<CrunchedObject> exoObjects);
+			List<CrunchedObject> crunchedObjects);
 
 	protected abstract void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks, IValue[] values,
 			IEngine engine);

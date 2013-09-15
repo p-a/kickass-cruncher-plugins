@@ -11,8 +11,8 @@ import cml.kickass.plugins.interf.IMemoryBlock;
 
 public class Utils {
 
-	public static String asHex(int i){
-		return Integer.toHexString(0x10000 | i).substring(1);
+	public static String toHexString(int i){
+		return "$"+Integer.toHexString(0x10000 | i).substring(1);
 	}
 
 	public static List<IMemoryBlock> mergeBlocks(List<IMemoryBlock> blocks) {

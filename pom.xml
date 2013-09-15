@@ -4,8 +4,8 @@
 	<groupId>se.triad.kickass</groupId>
 	<artifactId>kickass-cruncher-plugins</artifactId>
 	<version>1.0-beta</version>
-	<name>Kick Assembler cruncher-plugins</name>
-	<description>Cruncher-plugins for Kick Assembler</description>
+	<name>KickAss Cruncher Plugins</name>
+	<description>Cruncher plugins for Kick Assembler</description>
 
 	<build>
 		<plugins>

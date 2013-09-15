@@ -3,8 +3,6 @@ package se.triad.kickass.exomizer;
 import java.util.EnumMap;
 import java.util.List;
 
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
-
 import se.triad.kickass.CrunchedObject;
 import se.triad.kickass.Utils;
 
@@ -15,6 +13,7 @@ import cml.kickass.plugins.interf.IValue;
 
 public class LevelExomizer extends AbstractExomizer {
 
+	private static final int ARGNUM_OUTPUT_OFFSETS = 2;
 	private static final int ARGNUM_USE_LITERALS = 1;
 	private static final int ARGNUM_FORWARD_CRUNCHING = 0;
 	private static final String NAME = "LevelExomizer";
@@ -33,13 +32,17 @@ public class LevelExomizer extends AbstractExomizer {
 			size+=obj.data.length;
 		}
 
+		if (opts.containsKey(Options.OUTPUT_BLOCK_OFFSETS)){
+			size = size + 2*exoObjects.size();
+		}
 		byte[] output = new byte [size];
-
-		int i = 0;
-		int j = 0;
+		
+		int addr = 0;
 		engine.print("\nCrunched Memory layout:");
-		for (CrunchedObject obj: exoObjects){
+		for (int i = 0; i < exoObjects.size(); i++){
 
+			CrunchedObject obj = exoObjects.get(i);
+			IMemoryBlock block = blocks.get(i);
 			byte[] buf;
 			if (!opts.containsKey(Options.FORWARD_CRUNCHING)){
 				buf = new byte[obj.data.length];
@@ -50,12 +53,22 @@ public class LevelExomizer extends AbstractExomizer {
 			} else {
 				buf = obj.data;
 			}
-			engine.print("$"+Utils.asHex(i) + " : ["+ j + "] " + blocks.get(j++).getName());
-			System.arraycopy(buf, 0, output, i, obj.data.length);
-			i+=obj.data.length;
+			engine.print(Utils.toHexString(addr) + " : ["+ i + "] " + block.getName());
+			System.arraycopy(buf, 0, output, addr, obj.data.length);
+			addr+=obj.data.length;
+			
+			if (opts.containsKey(Options.OUTPUT_BLOCK_OFFSETS)){
+				
+				int offset = addr;
+				if (opts.containsKey(Options.FORWARD_CRUNCHING)){
+					offset -= obj.data.length;
+				}
+				
+				int pos = size-2*exoObjects.size();
+				output[pos+2*i] = (byte)(offset & 0xFF);
+				output[pos+2*i+1] = (byte)(offset >> 8);
+			}
 		}
-
-		//TODO output as bytes
 		
 		return output;
 	}
@@ -87,6 +100,7 @@ public class LevelExomizer extends AbstractExomizer {
 			opts.put(Options.APPEND_IN_LOAD,null);
 			addBooleanOption(values, ARGNUM_FORWARD_CRUNCHING, opts, Options.FORWARD_CRUNCHING, false); 
 			addBooleanOption(values, ARGNUM_USE_LITERALS, opts, Options.USE_LITERALS, true); 
+			addBooleanOption(values, ARGNUM_OUTPUT_OFFSETS, opts, Options.OUTPUT_BLOCK_OFFSETS, false);
 		} catch (Exception ex){
 			engine.error(ex.getMessage() + "\n" + getSyntax());
 		}

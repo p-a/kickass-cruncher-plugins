@@ -24,6 +24,14 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>${basedir}/</directory>
+      <outputDirectory></outputDirectory>
+      <includes>
+        <include>README.md</include>
+        <include>LICENSE.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>${basedir}/src/asm</directory>
       <outputDirectory>/test</outputDirectory>
       <includes>

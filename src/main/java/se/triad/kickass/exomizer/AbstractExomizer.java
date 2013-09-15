@@ -1,6 +1,6 @@
 package se.triad.kickass.exomizer;
 
-import static se.triad.kickass.Utils.asHex;
+import static se.triad.kickass.Utils.toHexString;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -24,7 +24,7 @@ public abstract class AbstractExomizer extends AbstractCruncher {
 	
 	@Override
 	protected String formatAddress(int address) {
-		return "Safety distance: $"+asHex(address);
+		return "Safety distance: "+toHexString(address);
 	}
 
 	@Override
@@ -44,12 +44,12 @@ public abstract class AbstractExomizer extends AbstractCruncher {
 				if ( (!forwardCrunching && memAddr > min-safetyOffset && memAddr < max) ||
 						(forwardCrunching && !(memAddr+finalSize >= max-safetyOffset || min >= memAddr+finalSize))) 
 				{
-					String error = "WARNING! Exomized data '" + blocks.get(i).getName() + "' in block["+i+"] cannot be decompressed at $"+asHex(memAddr) + 
-							" Safety distance is $" + asHex(safetyOffset) + " Decompressed data span $" + asHex(min) + " - $" + asHex(max);
+					String error = "WARNING! Exomized data '" + blocks.get(i).getName() + "' in block["+i+"] cannot be decompressed at "+ toHexString(memAddr) + 
+							" Safety distance is " + toHexString(safetyOffset) + " Decompressed data span " + toHexString(min) + " - " + toHexString(max);
 					if (forwardCrunching)
-						error = error + "\nPlace your data >= $" + asHex(max+safetyOffset - finalSize ) + " or <= $" + asHex(min-finalSize);
+						error = error + "\nPlace your data >= " + toHexString(max+safetyOffset - finalSize ) + " or <= " + toHexString(min-finalSize);
 					else
-						error = error + "\nPlace your data <= $"+asHex(min-safetyOffset) + " or >= $" + asHex(max);
+						error = error + "\nPlace your data <= "+toHexString(min-safetyOffset) + " or >= " + toHexString(max);
 
 					engine.error(error);
 				}	

@@ -52,9 +52,9 @@
 
 .macro EXO_DECRUNCH(end_addr){
             lda #<end_addr
-            sta exodecr.data_pointer
+            sta exodecr.zp_getb_lo
             lda #>end_addr
-            sta exodecr.data_pointer+1
+            sta exodecr.zp_getb_hi
             jsr exodecr.decrunch
 }
 
@@ -62,7 +62,7 @@
 
 .label zp_len_lo = EXO_ZP_BASE
 
-.label zp_src_lo  = EXO_ZP_BASE+1
+.label zp_src_lo  = zp_len_lo + 1
 .label zp_src_hi  = zp_src_lo + 1
 
 .label zp_bits_hi = zp_src_hi + 1
@@ -70,6 +70,9 @@
 .label zp_bitbuf  = zp_bits_hi + 1
 .label zp_dest_lo = zp_bitbuf + 1   // dest addr lo
 .label zp_dest_hi = zp_bitbuf + 2   // dest addr hi
+
+.label zp_getb_lo = zp_dest_hi + 1
+.label zp_getb_hi = zp_getb_lo + 1
 
 .label tabl_bi = EXO_DECRUNCH_TABLE
 .label tabl_lo = EXO_DECRUNCH_TABLE + 52
@@ -88,16 +91,22 @@
 // no constraints on register content, however the
 // decimal flag has to be #0 (it almost always is, otherwise do a cld)
 
-get_crunched_byte:
-    lda data_pointer
+.pseudocommand get_crunched_byte {
+    
+    sty tmpy
+    
+    lda zp_getb_lo
     bne !+
-    dec data_pointer+1
+    dec zp_getb_hi
   !:
-    dec data_pointer
+    dec zp_getb_lo
 
-    lda $FFFF
-   .label data_pointer = * - 2
-    rts
+    ldy #0
+    lda (zp_getb_lo),y
+    
+    ldy #00
+    .label tmpy = * - 1
+}
     
 decrunch:
 // -------------------------------------------------------------------
@@ -106,7 +115,7 @@ decrunch:
     ldy #0
     ldx #3
 init_zp:
-    jsr get_crunched_byte
+    :get_crunched_byte
     sta zp_bitbuf - 1,x
     dex
     bne init_zp
@@ -171,7 +180,7 @@ bits_next:
     bne ok
     pha
 literal_get_byte:
-    jsr get_crunched_byte
+    :get_crunched_byte
     bcc literal_byte_gotten
     ror 
     sta zp_bitbuf

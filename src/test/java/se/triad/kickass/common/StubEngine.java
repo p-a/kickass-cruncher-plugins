@@ -8,6 +8,7 @@ public class StubEngine implements IEngine {
 
 	@Override
 	public void error(String arg0) {
+		System.err.println(arg0);
 		throw new RuntimeException(arg0);
 	}
 
