@@ -8,5 +8,5 @@ clean :
 	rm -f $(binaries)
 
 %.prg : %.asm
-	$(JAVA) -cp "../*:KickAss.jar" cml.kickass.KickAssembler $<
+	@$(JAVA) -cp "../*:KickAss.jar" cml.kickass.KickAssembler $<
 
