@@ -7,7 +7,8 @@ The current version has support for two of the most popular crunchers for the Co
 
 ####Example:
     
-    .plugin "se.triad.kickass.byteboozer.ByteBoozer"
+    .plugin "se.triad.kickass.CruncherPlugins"
+ 
     .var music = LoadSid("res/Ruk - J.sid")
     
     .label crunchedMusic = *
@@ -38,7 +39,7 @@ You must first see to that the plugins are on the java classpath:
 
 The desired plugin must then be declared in the source-code in order for Kick Assembler to actually load it:
     
-    .plugin "se.triad.kickass.byteboozer.ByteBoozer"
+    .plugin "se.triad.kickass.CruncherPlugins"
 
 You can read more about plugins in Kick Assembler's online [documentation](http://www.theweb.dk/KickAssembler/webhelp/content/cpt_Plugins.html "Kick Assembler documentation").     
 
@@ -51,15 +52,13 @@ ByteBoozer
 The ByteBoozer plugin is a pure java implementation of David Malmborg's excellent cruncher.
 
 ####Syntax:
-    .plugin "se.triad.kickass.byteboozer.ByteBoozer"
-
     .modify ByteBoozer(boolean reverse [false])
 
 *Square brackets denotes default values used when argument is left out*
     
 ####Example:
-    .plugin "se.triad.kickass.byteboozer.ByteBoozer"
-    
+    .plugin "se.triad.kickass.CruncherPlugins"
+
     .modify ByteBoozer() {
         .pc = $1000
         //code
@@ -69,6 +68,8 @@ You can also crunch several segments of memory. The cruncher will merge these to
 the memory area required by all contained memory blocks, zero-filling any gaps.
 
 ####Example:
+    .plugin "se.triad.kickass.CruncherPlugins"
+
     .modify ByteBoozer() {
         .pc = $4000 "Bitmap"
         .fill picture.getBitmapSize(), picture.getBitmap(i)
@@ -79,6 +80,8 @@ the memory area required by all contained memory blocks, zero-filling any gaps.
 There is also experimental support for reversed output:
    
 ####Example:   
+    .plugin "se.triad.kickass.CruncherPlugins"
+
     .modify ByteBoozer(true) {
         .pc = $1000
         //whatever
@@ -101,12 +104,9 @@ MemExomizer will merge all memory areas contained in the modify block into one, 
 Gaps will be zero-filled. Crunching is done either forward or backward and the use of literals is optional.
 Forward crunching is often the case for loaders (e.g Krill's loader). Backward-decrunch is more common for in-memory decrunching where 
 decrunched data may overlap input. Exomizer outputs a safety offset, and this is the minimum offset needed between uncrunched and decrunched data.
-The plugin can help out with asserting this if a start-address for the compressed data is provided (e.g. \'*\' for current PC).
+The plugin can help out with asserting this if a start-address for the compressed data is provided (e.g. `*` for current PC).
 
 ####Syntax:
-
-    .plugin "se.triad.kickass.exomizer.ExomizerArchive" //Loads all Exomizer-related plugins
-
     .modify MemExomizer( boolean forwardCrunching [false], boolean useLiterals [true], int startAddress [no check])
 
 There is also two convenience modifiers. They are equal to calling MemExomizer with `useLiterals` set to `true`.
@@ -117,8 +117,7 @@ There is also two convenience modifiers. They are equal to calling MemExomizer w
 *Square brackets denotes default values used when argument is left out*
 
 ####Example:
-
-    .plugin "se.triad.kickass.exomizer.ExomizerArchive" //Loads all Exomizer-related plugins
+    .plugin "se.triad.kickass.CruncherPlugins"
 
     // Backward-crunching using literals and also asserts that the result can be decrypted at the current PC
     .modify MemExomizer( false, true, *){
@@ -154,17 +153,12 @@ The first offset for forward decrunching is always 0. Backward decrunching offse
  
 
 ####Syntax:
-
-    .plugin "se.triad.kickass.exomizer.ExomizerArchive" //Loads all Exomizer-related plugins
-
     .modify LevelExomizer( boolean forwardCrunching [false], boolean useLiterals [true], boolean outputOffsets [false])
 
 *Square brackets denotes default values used when argument is left out*
  
 ####Example:
-
-
-    .plugin "se.triad.kickass.exomizer.ExomizerArchive" //Loads all Exomizer-related plugins
+    .plugin "se.triad.kickass.CruncherPlugins"
 
     .modify LevelExomizer(){
     
@@ -181,12 +175,10 @@ The first offset for forward decrunching is always 0. Backward decrunching offse
 RawExomizer only handles one memory block. In the case of inline crunching, you are probably better off with the Mem or Level modes.
 
 ####Syntax:
-
-    .plugin "se.triad.kickass.exomizer.ExomizerArchive" //Loads all Exomizer-related plugins
-
     .modify RawExomizer( boolean forwardCrunching [false], boolean useLiterals [true], boolean reverseOutput [false] )
         
 ####Example:
+    .plugin "se.triad.kickass.CruncherPlugins"
 
     .modify RawExomizer( true, true ) {
         
@@ -213,7 +205,7 @@ At the project root-dir, type:
 
     mvn clean package
 
-This compiles, tests and packages the release zip-file, which you will find in the target/release directory.
+This compiles, tests and packages the release zip-file, which you will find in the project's target/release directory.
 
 ###Build instructions for Exomizer library-files
 
@@ -225,7 +217,7 @@ Linux users usually know these things already.
 The library needs the Exomizer source-code. Download Exomizer from the Exomizer 2 website:
 http://hem.bredband.net/magli143/exo/
 
-Unzip the src-directory somewhere.
+Unzip the src directory somewhere.
 
 The library file is then built by issuing 
     make -f support-files/Makefile lib SRC_DIR={path_to_exomizer_src}
