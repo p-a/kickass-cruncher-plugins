@@ -17,10 +17,10 @@
       </excludes>
     </fileSet>
     <fileSet>
-      <directory>${basedir}/deps</directory>
+      <directory>${basedir}/target/</directory>
       <outputDirectory>/test</outputDirectory>
       <includes>
-        <include>*.jar</include>
+        <include>KickAss.jar</include>
       </includes>
     </fileSet>
     <fileSet>

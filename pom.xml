@@ -39,8 +39,7 @@
 							<createDependencyReducedPom>false</createDependencyReducedPom>
 							<artifactSet>
 								<excludes>
-									<exclude>org.kickasssember:kickass</exclude>
-									<exclude>se.triad.kickass:cruncher-plugins-KickAss.jar</exclude>
+									<exclude>cml.kickass:KickAss</exclude>
 								</excludes>
 							</artifactSet>
 							<filters>
@@ -59,6 +58,32 @@
 					</execution>
 				</executions>
 			</plugin>
+			 <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.8</version>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>cml.kickass</groupId>
+                  <artifactId>KickAss</artifactId>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.build.directory}/</outputDirectory>
+                  <destFileName>KickAss.jar</destFileName>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -106,8 +131,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.kickassembler</groupId>
-			<artifactId>kickass</artifactId>
+			<groupId>cml.kickass</groupId>
+			<artifactId>KickAss</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
@@ -122,11 +147,10 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.kickassembler</groupId>
-				<artifactId>kickass</artifactId>
+				<groupId>cml.kickass</groupId>
+				<artifactId>KickAss</artifactId>
 				<version>3.3.0</version>
-				<scope>system</scope>
-				<systemPath>${project.basedir}/deps/KickAss.jar</systemPath>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.testng</groupId>
@@ -141,5 +165,18 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
+     <repositories>
+	<repository>
+	    <id>deps</id>
+    	    <name>deps</name>
+    	    <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+            <snapshots>
+                 <enabled>false</enabled>
+            </snapshots>
+            <url>file://${project.basedir}/deps</url>
+        </repository>
+    </repositories>
 </project>
