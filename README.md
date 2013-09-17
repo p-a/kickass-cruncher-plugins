@@ -265,6 +265,9 @@ Special thanks to
 
  * Magnus Lind for helping out with Exomizer.
  * Mads Nielsen for Kick Assembler support. 
+ * David Malmborg
+ * Andreas Lindqvist
+ * Lennart Marklund
 
 References
 ----------
