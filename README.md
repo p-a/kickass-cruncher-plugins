@@ -213,12 +213,7 @@ At the project root-dir, type:
 
     mvn clean package
 
-This builds, tests and packages the jar, which you will find in the target directory.
-
-The release zipfile is built with
-
-    mvn clean assembly:assembly
-    
+This compiles, tests and packages the release zip-file, which you will find in the target/release directory.
 
 ###Build instructions for Exomizer library-files
 

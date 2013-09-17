@@ -48,8 +48,8 @@ start:
         inx
         bne !-
         
-        :EXO_DECRUNCH(crunchedSpeedcode)
-        :EXO_DECRUNCH(crunchedMusic)
+        :BB_DECRUNCH(crunchedMusic)
+        :BB_DECRUNCH(crunchedSpeedcode)
     
         lda #0        
         tay
@@ -66,18 +66,17 @@ start:
         jsr music.play
         jmp loop
  
-.const EXO_LITERAL_SEQUENCES_USED = true
-.const EXO_ZP_BASE = $02
-.const EXO_DECRUNCH_TABLE = $0200
-.import source "exodecr.inc"  
+.const BB_ZP_BASE = $02
+.import source "bb_decruncher_opt.inc"  
 
-.modify MemExomizer(){         
+.label crunchedMusic = *
+.modify ByteBoozer(){         
     .pc = music.location "Music"
     .fill music.size, music.getData(i)
 } 
-.label crunchedMusic = *
-    
-.modify MemExomizer(){         
+
+.label crunchedSpeedcode = *
+.modify ByteBoozer(){         
    .namespace plasma {
 
     .label screenbase = $6000
@@ -145,4 +144,3 @@ start:
    }
 }
  
-.label crunchedSpeedcode = * 

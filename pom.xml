@@ -63,10 +63,21 @@
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
+					<finalName>${project.artifactId}-${project.version}</finalName>
+				        <appendAssemblyId>false</appendAssemblyId>	
+					<outputDirectory>${project.build.directory}/release</outputDirectory>
 					<descriptors>
 						<descriptor>src/assemble/distribution.xml</descriptor>
 					</descriptors>
 				</configuration>
+				<executions>
+    					<execution>
+      						<phase>package</phase>
+      						<goals>
+        						<goal>single</goal>
+      						</goals>
+    					</execution>
+  				</executions>
 			</plugin>
 
 		</plugins>

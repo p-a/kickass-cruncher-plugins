@@ -156,7 +156,7 @@ final class JByteBoozer {
 		get -= matchLen;
 	}
 
-	void flush()
+	private void flush()
 	{
 		// Exit if there is nothing to flush.
 		if(plainLen == 0) {
