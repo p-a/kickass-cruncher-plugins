@@ -3,9 +3,9 @@ sources = $(wildcard *.asm)
 binaries = $(sources:.asm=.prg)
 
 ifeq ($(OS),Windows_NT)
-    CLASSPATH = "../*;KickAss.jar}"
+    CLASSPATH = "../*;KickAss.jar"
 else
-    CLASSPATH = "../*:KickAss.jar}"
+    CLASSPATH = "../*:KickAss.jar"
 endif
 
 all: $(binaries)

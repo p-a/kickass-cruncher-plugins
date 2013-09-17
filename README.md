@@ -35,7 +35,7 @@ Usage
 
 You must first see to that the plugins are on the java classpath:
     
-    java -cp "cruncher-plugins.jar:KickAss.jar" cml.kickass.KickAssembler demo.asm
+    java -cp "kickass-cruncher-plugins-1.0-beta.jar:KickAss.jar" cml.kickass.KickAssembler demo.asm
 
 The desired plugin must then be declared in the source-code in order for Kick Assembler to actually load it:
     

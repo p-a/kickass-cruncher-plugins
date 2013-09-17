@@ -13,6 +13,7 @@
         <include>*.jar</include>
       </includes>
       <excludes>
+        <exclude>KickAss.jar</exclude>
         <exclude>original*</exclude>
       </excludes>
     </fileSet>
