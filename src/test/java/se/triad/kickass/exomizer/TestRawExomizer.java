@@ -8,6 +8,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import se.triad.kickass.common.BooleanValue;
@@ -18,6 +19,11 @@ import cml.kickass.plugins.interf.IValue;
 
 @Test
 public class TestRawExomizer {
+
+	@BeforeTest
+	public void disableCache(){
+		System.setProperty(ExoHelper.DISABLE_EXOMIZER_CACHE, "true");
+	}
 
 	@Test
 	public void testAllPermutations() throws Exception {

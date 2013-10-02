@@ -1,5 +1,14 @@
 package se.triad.kickass.exomizer;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import se.triad.kickass.CrunchedObject;
 import net.magli143.exo.*;
 
@@ -8,6 +17,8 @@ import com.sun.jna.Pointer;
 
 public final class ExoHelper  {
 
+	public static final String DISABLE_EXOMIZER_CACHE = "DISABLE_EXOMIZER_CACHE";
+	
 	private static final int MAX_OFFSET = 65535;
 	private static final int PASSES = 65535;
 	private static final int MAX_LENGTH = 65535;
@@ -16,7 +27,8 @@ public final class ExoHelper  {
 	public static CrunchedObject crunch(byte[] data, boolean forward, boolean useLiterals){
 		return crunch(data, forward, useLiterals,-1);
 	}
-	public static CrunchedObject crunch(byte[] data, boolean forward, boolean useLiterals, int in_load){
+
+	private static CrunchedObject doCrunch(byte[] data, boolean forward, boolean useLiterals, int in_load){
 
 		final ExoLibrary exolib = ExoLibrary.INSTANCE;
 
@@ -55,11 +67,107 @@ public final class ExoHelper  {
 
 		int length = exolib.membuf_memlen(crunched);
 
-		CrunchedObject retval = new CrunchedObject(exolib.membuf_get(crunched).getByteArray(0, length), info.needed_safety_offset);
+		return new CrunchedObject(exolib.membuf_get(crunched).getByteArray(0, length), info.needed_safety_offset);
+	}
+
+	public static CrunchedObject crunch(byte[] data, boolean forward, boolean useLiterals, int in_load){
+
+		boolean cache = !Boolean.getBoolean(DISABLE_EXOMIZER_CACHE);
+		
+		File f = cache ? getFilename(data, forward, useLiterals, in_load) : null;
+		CrunchedObject retval = cache ? getCachedObject(f) : null;
+
+		if (retval == null){
+			retval = doCrunch(data, forward, useLiterals, in_load);
+			
+			if (cache)
+				cacheData(f, retval);
+		}
 
 		return retval;
 	}
 
+	private static void cacheData(File f, CrunchedObject obj) {
+
+		DataOutputStream os = null;
+		try {
+			os = new DataOutputStream(new FileOutputStream(f, false));
+			os.writeInt(obj.address);
+			os.write(obj.data);
+			os.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (os != null){
+				try {
+					os.close();
+				} catch (IOException e) {
+					//nvm
+				}
+			}
+		}
+	}
+
+	protected static CrunchedObject getCachedObject(File f) {
+		CrunchedObject retval = null;
+		DataInputStream is = null;
+		try {
+			if (f.exists() && f.canRead() && f.length() > 0 ){
+				is = new DataInputStream(new FileInputStream(f));
+				f.length();
+				int safety = is.readInt();
+				byte[] filedata = new byte[(int)f.length() - 4];
+				is.readFully(filedata);
+				retval = new CrunchedObject(filedata, safety);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (is != null){
+				try {
+					is.close();
+				} catch (IOException e) {
+					//nvm
+				}
+			}
+		}
+
+		return retval;
+	}
+
+	private static File getFilename(byte[] data, boolean forward,
+			boolean useLiterals, int in_load)  {
+		File f = null;
+		try {
+			MessageDigest md;
+			md = MessageDigest.getInstance("MD5");
+			byte[] digest = md.digest(data);
+			StringBuilder buildr = new StringBuilder();
+			buildr.append(asHex(digest))
+			.append(forward ? 'F' : 'B')
+			.append(useLiterals ? 'L' : 'N')
+			.append(in_load).append(".exo");
+
+			String tempDir = System.getProperty("java.io.tmpdir");  
+			f = new File(tempDir, buildr.toString());
+		} catch (NoSuchAlgorithmException e) {
+			// won't happen
+		}
+		return f;
+	}
+
+	private final static String HEX = "0123456789ABCDEF";
+
+	private static String asHex(byte[] digest) {
+		StringBuilder buildr = new StringBuilder();
+		for (int i = 0; i < digest.length; i++){
+			buildr.append(HEX.charAt((digest[i] & 0xF0) >> 4));
+			buildr.append(HEX.charAt(digest[i] & 0x0F));
+		}
+		return buildr.toString();
+	}
+	
 	public static byte[] decrunch(byte[] data, boolean forward){
 
 		final ExoLibrary exolib = ExoLibrary.INSTANCE;

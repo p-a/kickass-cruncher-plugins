@@ -1,9 +1,12 @@
 package se.triad.kickass.exomizer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import se.triad.kickass.common.BooleanValue;
@@ -16,6 +19,11 @@ import static se.triad.kickass.common.TestUtils.resourceToByteArray;
 
 @Test
 public class TestMemExomizer {
+
+	@BeforeMethod
+	public void disableCache(){
+		System.setProperty(ExoHelper.DISABLE_EXOMIZER_CACHE, "true");
+	}
 
 	@Test
 	public void testLiteralsBackward() throws Exception {
@@ -89,7 +97,7 @@ public class TestMemExomizer {
 		}
 
 	}
-	
+
 	@Test()
 	public void testLiteralsBackwardMemoryAssertUpperLimit() throws Exception {
 
@@ -124,6 +132,48 @@ public class TestMemExomizer {
 		Assert.assertEquals(result, expected);
 
 	}
+
+	@Test
+	public void testBlobLiteralsBackwardCached() throws Exception {
+
+		System.setProperty(ExoHelper.DISABLE_EXOMIZER_CACHE, "false");
+		
+		byte[] in = resourceToByteArray("./elgena.png");
+		
+		File f = new File(System.getProperty("java.io.tmpdir"), "3DEFEC21D64D00DA86B0860EB3651A06BL12288.exo");
+		if (f.exists())
+			f.delete();
+		
+		byte[] data, cachedData;
+		long clocked = System.currentTimeMillis();
+		{
+			MemExomizer memExomizer = new MemExomizer();
+			List<IMemoryBlock> blocks = new ArrayList<IMemoryBlock>();
+			blocks.add(new MemBlock("elgena", in, 0x3000));
+			blocks.add(new MemBlock("elgena", in, 0x8000));
+			data = memExomizer.execute(blocks, new IValue[]{}, new StubEngine());
+		}
+		clocked = System.currentTimeMillis() - clocked;
+		
+		long cachedClocked = System.currentTimeMillis();
+		{
+			MemExomizer memExomizer = new MemExomizer();
+			List<IMemoryBlock> blocks = new ArrayList<IMemoryBlock>();
+			blocks.add(new MemBlock("elgena", in, 0x3000));
+			blocks.add(new MemBlock("elgena", in, 0x8000));
+			cachedData = memExomizer.execute(blocks, new IValue[]{}, new StubEngine());
+		}
+		cachedClocked = System.currentTimeMillis() - cachedClocked;
+		
+		//System.err.println("Clocked: " + clocked + " CachedClocked: " + cachedClocked);
+		Assert.assertEquals(data,  cachedData);
+		Assert.assertTrue(cachedClocked < clocked / 2);
+		
+		if (f.exists())
+			f.delete();
+
+	}
+
 
 	@Test
 	public void testBlobLiteralsForward() throws Exception {

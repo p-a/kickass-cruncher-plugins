@@ -2,10 +2,13 @@ package se.triad.kickass.exomizer;
 
 import static se.triad.kickass.common.TestUtils.resourceToByteArray;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import se.triad.kickass.common.StubEngine;
@@ -15,6 +18,11 @@ import cml.kickass.plugins.interf.IValue;
 @Test
 public class TestBackwardExomizer {
 
+	@BeforeTest
+	public void disableCache(){
+		System.setProperty(ExoHelper.DISABLE_EXOMIZER_CACHE, "true");
+	}
+	
 	@Test
 	public void testLiteralsBackward() throws Exception {
 
