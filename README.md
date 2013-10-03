@@ -98,6 +98,10 @@ Please see the Build-section for instructions on how to rebuild the native libra
 
 All Exomizer-plugins are included in an IArchive `se.triad.kickass.exomizer.ExomizerArchive`, for convenient loading of all plugins.
 
+Exomized data is now cached. The caching mechanism can be disabled by setting the system property `DISABLE_EXOMIZER_CACHE=true`.
+Cached data is stored as files in `java.io.tmpdir`, e.g. `/tmp` on a Linux system with the extension `.exo`.
+
+
 ###MemExomizer
 
 MemExomizer will merge all memory areas contained in the modify block into one, single block spanning the entire memory region required.
