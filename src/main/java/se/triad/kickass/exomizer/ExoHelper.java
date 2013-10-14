@@ -19,20 +19,19 @@ public final class ExoHelper  {
 
 	public static final String DISABLE_EXOMIZER_CACHE = "DISABLE_EXOMIZER_CACHE";
 	
-	private static final int MAX_OFFSET = 65535;
+	public static final int MAX_OFFSET = 65535;
 	private static final int PASSES = 65535;
 	private static final int MAX_LENGTH = 65535;
 	private static final int USE_IMPRECISE_RLE = 0;
 
-	public static CrunchedObject crunch(byte[] data, boolean forward, boolean useLiterals){
-		return crunch(data, forward, useLiterals,-1);
-	}
-
-	private static CrunchedObject doCrunch(byte[] data, boolean forward, boolean useLiterals, int in_load){
+	private static CrunchedObject doCrunch(byte[] data, boolean forward, boolean useLiterals, int in_load, int max_offset){
 
 		final ExoLibrary exolib = ExoLibrary.INSTANCE;
-
-		crunch_options options = new crunch_options(null, PASSES, MAX_OFFSET, MAX_LENGTH, useLiterals ? 1 : 0, USE_IMPRECISE_RLE);
+		
+		if (max_offset < 0 || max_offset > 65535)
+			max_offset = MAX_OFFSET;
+		
+		crunch_options options = new crunch_options(null, PASSES, max_offset, MAX_LENGTH, useLiterals ? 1 : 0, USE_IMPRECISE_RLE);
 		crunch_info info = new crunch_info();
 
 		membuf in = new membuf();
@@ -70,7 +69,7 @@ public final class ExoHelper  {
 		return new CrunchedObject(exolib.membuf_get(crunched).getByteArray(0, length), info.needed_safety_offset);
 	}
 
-	public static CrunchedObject crunch(byte[] data, boolean forward, boolean useLiterals, int in_load){
+	public static CrunchedObject crunch(byte[] data, boolean forward, boolean useLiterals, int in_load, int max_offset){
 
 		boolean cache = !Boolean.getBoolean(DISABLE_EXOMIZER_CACHE);
 		
@@ -78,7 +77,7 @@ public final class ExoHelper  {
 		CrunchedObject retval = cache ? getCachedObject(f) : null;
 
 		if (retval == null){
-			retval = doCrunch(data, forward, useLiterals, in_load);
+			retval = doCrunch(data, forward, useLiterals, in_load, max_offset);
 			
 			if (cache)
 				cacheData(f, retval);

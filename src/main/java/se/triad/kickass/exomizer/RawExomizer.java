@@ -13,6 +13,7 @@ import cml.kickass.plugins.interf.IValue;
 
 public class RawExomizer extends AbstractExomizer {
 
+	private static final int ARGNUM_MAX_OFFSET_SIZE = 3;
 	private static final int ARGNUM_REVERSE_OUTPUT = 2;
 	private static final int ARGNUM_USE_LITERALS = 1;
 	private static final int ARGNUM_FORWARD_CRUNCHING = 0;
@@ -38,7 +39,7 @@ public class RawExomizer extends AbstractExomizer {
 
 	@Override
 	protected String getSyntax() {
-		return getName()+"( boolean forwardCrunching [false], boolean useLiterals [true], boolean reverseOutput [false] ) ";
+		return getName()+"( boolean forwardCrunching [false], boolean useLiterals [true], boolean reverseOutput [false], int max_offset [65535] ) ";
 	}
 
 	@Override
@@ -54,6 +55,7 @@ public class RawExomizer extends AbstractExomizer {
 			addBooleanOption(values, ARGNUM_FORWARD_CRUNCHING, opts, Options.FORWARD_CRUNCHING, false); 
 			addBooleanOption(values, ARGNUM_USE_LITERALS, opts, Options.USE_LITERALS, true); 
 			addBooleanOption(values, ARGNUM_REVERSE_OUTPUT, opts, Options.REVERSE_OUTPUT, false); 
+			addIntegerOption(values, ARGNUM_MAX_OFFSET_SIZE, opts, Options.MAXIMUM_OFFSET_SIZE, ExoHelper.MAX_OFFSET); 
 		} catch (Exception ex){
 			engine.error(ex.getMessage() + "\n" + getSyntax());
 		}

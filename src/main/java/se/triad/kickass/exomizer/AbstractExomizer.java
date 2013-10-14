@@ -19,7 +19,8 @@ public abstract class AbstractExomizer extends AbstractCruncher {
 		return ExoHelper.crunch(block.getBytes(), 
 				opts.containsKey(Options.FORWARD_CRUNCHING),
 				opts.containsKey(Options.USE_LITERALS),
-				opts.containsKey(Options.APPEND_IN_LOAD) ? block.getStartAddress() : -1);
+				opts.containsKey(Options.APPEND_IN_LOAD) ? block.getStartAddress() : -1,
+				opts.containsKey(Options.MAXIMUM_OFFSET_SIZE) ? ((Integer) opts.get(Options.MAXIMUM_OFFSET_SIZE)).intValue() : -1);
 	}
 	
 	@Override

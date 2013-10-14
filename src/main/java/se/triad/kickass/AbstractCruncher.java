@@ -19,7 +19,8 @@ public abstract class AbstractCruncher implements IModifier{
 		APPEND_IN_LOAD, 
 		VALIDATE_SAFETY_OFFSET, 
 		REVERSE_OUTPUT, 
-		OUTPUT_BLOCK_OFFSETS
+		OUTPUT_BLOCK_OFFSETS,
+		MAXIMUM_OFFSET_SIZE
 	}
 
 
@@ -74,6 +75,16 @@ public abstract class AbstractCruncher implements IModifier{
 		if ( values.length > index && values[index].getBoolean() || values.length <= index && defaultValue) {
 			opts.put(opt,null);
 		} 
+	}
+	protected static void addIntegerOption(IValue[] values, int index,
+			EnumMap<Options, Object> opts, Options opt, int defaultValue) {
+		int val = defaultValue;
+		if ( values.length > index && values[index].hasIntRepresentation()) {
+			val = values[index].getInt();
+			if (values[index].getInt() < 1 || values[index].getInt() > 65536)
+				throw new IllegalArgumentException("Maximum offset size must be a positive 16-bit integer");
+		} 
+		opts.put(opt, new Integer(val));
 	}
 	
 	protected static void addSafetyOffsetCheckOption(IValue[] values,
