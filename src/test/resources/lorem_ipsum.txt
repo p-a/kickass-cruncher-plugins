@@ -1,0 +1,182 @@
+
+ Close
+ Wiki Loves Monuments: Photograph a monument, help Wikipedia and win!
+Lorem ipsum
+From Wikipedia, the free encyclopedia
+"Ipsum" redirects here. For the car, see Toyota Ipsum.
+
+This article needs additional citations for verification. Please help improve this article by adding citations to reliable sources. Unsourced material may be challenged and removed. (April 2012)
+
+Using lorem ipsum to focus attention on graphic elements in a webpage design proposal
+In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. Replacing meaningful content that could be distracting with placeholder text may allow viewers to focus on graphic aspects such as font, typography, and page layout.
+
+The lorem ipsum text is typically a scrambled section of De finibus bonorum et malorum, a 1st-century BC Latin text by Cicero, with words altered, added, and removed such that it is nonsensical, improper Latin.
+
+A variation of the ordinary lorem ipsum text has been used in typesetting since the 1960s or earlier, when it was popularized by advertisements for Letraset transfer sheets. It was introduced to the Information Age in the mid-1980s by Aldus Corporation, which employed it in graphics and word processing templates for its desktop publishing program, PageMaker, for the Apple Macintosh.[1]
+
+Contents  [hide]
+1 Example text
+2 Discovery
+3 Latin source
+4 English translation
+5 Variations
+6 See also
+7 Notes
+8 References
+9 External links
+Example text[edit]
+A common form of lorem ipsum reads:
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Another version uses the word "adipisici" rather than "adipisicing" (the digraph ng at the end of the word being alien to classical Latin). Others include additional words to add variety and prevent repeated verses from word-wrapping on the same phrases.
+
+Discovery[edit]
+"Lorem ipsum" text is derived from sections 1.10.32–3 of Cicero's De finibus bonorum et malorum (On the Ends of Goods and Evils, or alternatively [About] The Purposes of Good and Evil).[2] The original passage began: Neque porro quisquam est qui dolorem ipsum quia dolor sit amet consectetur adipisci velit (translation: "Neither is there anyone who loves, pursues or desires pain itself because it is pain").
+
+It is not known exactly when the text acquired its current standard form; it may have been as late as the 1960s. Dr. Richard McClintock, a Latin scholar who was the publications director at Hampden-Sydney College in Virginia, discovered the source of the passage sometime before 1982 while searching for instances of the Latin word "consectetur", rarely used in classical literature.[1][a] The physical source of the Lorem Ipsum text may be the 1914 Loeb Classical Library Edition of the De Finibus, where the Latin text finishes page 34 with "Neque porro quisquam est qui do-" and begins page 36 with "lorem ipsum (et seq.)…", suggesting that the galley type of that page was scrambled to make the dummy text seen today.
+
+Latin source[edit]
+The original version (with the excerpted items highlighted) appears in the 1914 Loeb Classical Library Edition of the De Finibus, Book 1, sections 32–3:
+
+[32] Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit amet consectetur adipisci[ng] velit, sed quia non numquam [do] eius modi tempora inci[di]dunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?
+
+[33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat…
+
+English translation[edit]
+H. Rackham's 1914 translation – in the aforementioned Loeb Classical Library edition – with the major source of lorem ipsum highlighted:
+
+[32] But I must explain to you how all this mistaken idea of denouncing of a pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?
+
+[33] On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammeled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.
+
+Variations[edit]
+
+A lorem ipsum placeholder text that was inadvertently published in The Straits Times, a Singapore newspaper, on 26 April 2014
+Today's popular version of Lorem ipsum was first created in the mid-1980s for Aldus Corporation's breakthrough desktop publishing program PageMaker for the Apple Macintosh.[1] Aldus adapted older forms of the lorem text from typography samples to use in PageMaker's graphics and word processing templates.
+
+Nowadays a variety of software, including text editors and plug-ins, can generate semi-random "lorem-like text", which often has little or nothing in common with the canonical adaptations other than looking like (and often being) jumbled Latin. Apple's Pages and Keynote software employ such jumbled text as sample screenplay layout. Lorem ipsum is also featured on Joomla! and WordPress web content managers. Microsoft Office Word 2007, 2010 and 2013 have a Lorem ipsum feature.[4] Adobe Dreamweaver offers a "Lorem and More" extension for inserting "lorem text" into web pages.[5]
+
+Cicero's first Oration against Catiline — Quo usque tandem abutere, Catilina, patientia nostra? Quam diu etiam furor iste tuus nos eludet?… — is sometimes used in type specimens.[citation needed]
+
+See also[edit]
+Asemic writing
+etaoin shrdlu
+Filler text
+Greeking
+Li Europan lingues
+List of Latin phrases
+Metasyntactic variable
+The quick brown fox jumps over the lazy dog
+Notes[edit]
+Jump up ^ The information was first published early in 1994 in a letter to the editor of Before & After magazine in volume 4 issue 1 of the publication, contesting the editor's earlier claim that lorem ipsum had no meaning.[3]
+References[edit]
+^ Jump up to: a b c Adams, Cecil (February 2001), What does the filler text "lorem ipsum" mean?, The Straight Dope
+Jump up ^ "Description of the "Lorem ipsum dolor sit amet" text that appears in Word Help". Microsoft. Retrieved 2007-03-22.
+Jump up ^ Bray, Kurt (1995-10-05). "Subject: Re: Pig Latin Dialects". Georgetown University.
+Jump up ^ "How to insert sample text into a document in Word". Microsoft Support. September 18, 2011. Retrieved November 14, 2011.
+Jump up ^ "Lorem and More". Adobe Systems. Retrieved March 22, 2012.
+External links[edit]
+    Wikimedia Commons has media related to Lorem ipsum.
+    Look up lorem ipsum in Wiktionary, the free dictionary.
+    Wikisource has original text related to this article:
+Lorem ipsum
+The original De finibus bonorum et malorum (Book 1) from Cicero, on Latin WikiSource.
+[hide] v t e
+Standard test items
+Pangram Reference implementation Standard test image
+Television (test card)
+SMPTE color bars Indian-head test pattern Test Card F Philips_PM5544
+Computer programming
+"Hello, world!" program Quine Trabb Pardo–Knuth algorithm
+Data compression
+Calgary corpus Canterbury corpus
+3D computer graphics
+Cornell box Stanford bunny Stanford dragon Utah teapot
+Typography
+Lorem ipsum The quick brown fox jumps over the lazy dog Sample font displays in other languages
+Other
+EICAR test file GTUBE Harvard sentences Lenna "Tom's Diner"
+[show] v t e
+Typography terminology
+Categories: Filler textLatin words and phrases
+Navigation menu
+Create accountLog inArticleTalkReadEditView history
+
+Main page
+Contents
+Featured content
+Current events
+Random article
+Donate to Wikipedia
+Wikimedia Shop
+Interaction
+Help
+About Wikipedia
+Community portal
+Recent changes
+Contact page
+Tools
+What links here
+Related changes
+Upload file
+Special pages
+Permanent link
+Page information
+Wikidata item
+Cite this page
+Print/export
+Create a book
+Download as PDF
+Printable version
+Languages
+Afrikaans
+العربية
+Беларуская
+Български
+Català
+Čeština
+Dansk
+Deutsch
+Ελληνικά
+Español
+Esperanto
+Euskara
+فارسی
+Français
+Gàidhlig
+한국어
+Հայերեն
+Hrvatski
+Bahasa Indonesia
+Italiano
+עברית
+Basa Jawa
+Latina
+Lëtzebuergesch
+Lietuvių
+Magyar
+മലയാളം
+Bahasa Melayu
+Nederlands
+日本語
+Norsk bokmål
+Polski
+Português
+Ripoarisch
+Română
+Русский
+Simple English
+Slovenčina
+Slovenščina
+Српски / srpski
+Suomi
+Svenska
+தமிழ்
+ไทย
+Türkçe
+Українська
+中文
+Edit links
+This page was last modified on 5 September 2014 at 12:03.
+Text is available under the Creative Commons Attribution-ShareAlike License; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Wikipedia® is a registered trademark of the Wikimedia Foundation, Inc., a non-profit organization.
+Privacy policyAbout WikipediaDisclaimersContact WikipediaDevelopersMobile viewWikimedia Foundation Powered by MediaWiki

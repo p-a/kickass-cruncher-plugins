@@ -3,251 +3,257 @@ package se.triad.kickass.byteboozer;
 import se.triad.kickass.CrunchedObject;
 /**
  * Java-implementation of the excellent ByteBoozer
- * 
+ *
  * @copyright HCL/BD (David Malmborg) 2003
  * @copyright Ruk/TRIAD (P-a Baeckstroem) 2013
  *
  */
 final class JByteBoozer {
 
-	public final static int memSize = 65536;
+    public final static int memSize = 65536;
 
-	private final static int max_offs = 0x129f; // 12bit offset limit. $129f
-	private final static int max_offs_short = 0x054f; // 10bit offset limit. $054f
+    private final static int max_offs = 0x129f; // 12bit offset limit. $129f
+    private final static int max_offs_short = 0x054f; // 10bit offset limit. $054f
 
-	private final static int[] offsTab = {5,2,2,3};
-	private final static int[] offsTabShort = {4,2,2,2};
+    private final static int[] offsTab = {5,2,2,3};
+    private final static int[] offsTabShort = {4,2,2,2};
 
-	private byte[] ibuf;
-	private byte obuf[] = new byte[memSize];
+    private byte[] ibuf;
+    private byte obuf[] = new byte[memSize];
 
-	private int ibufSize;
-	private int get; //points to in[]
-	private int put; //points to out[]
+    private int ibufSize;
+    private int get; //points to in[]
+    private int put; //points to out[]
 
-	private boolean copyFlag;
-	private int curByte;
-	private int curCnt;
-	private int plainLen;
+    private boolean copyFlag;
+    private int curByte;
+    private int curCnt;
+    private int safety;
+    private int plainLen;
 
-	private int theMatchLen, theMatchOffset; 
+    private int theMatchLen, theMatchOffset;
 
-	private JByteBoozer(){
 
-	}
+    private JByteBoozer(){
 
-	private void out(int b)
-	{
-		curByte >>= 1;
-		curByte |= (b << 7);
-		if((--curCnt) == 0) {
-			obuf[put] = (byte)curByte;
-			if(put == 0) {
-				throw new RuntimeException("Error (C-1): Packed file too large.");
-			}
-			--put;
+    }
 
-			curCnt = 8;
-			curByte = 0;
-		}
-	}
+    private void out(int b)
+    {
+        curByte >>= 1;
+        curByte |= (b << 7);
+        if((--curCnt) == 0) {
+            obuf[put] = (byte)curByte;
+            if(put == 0) {
+                throw new RuntimeException("Error (C-1): Packed file too large.");
+            }
+            --put;
 
-	private void outLen(int b)
-	{
+            curCnt = 8;
+            curByte = 0;
+        }
+    }
 
-		if(b < 0x80)
-			out(0);
+    private void outLen(int b)
+    {
 
-		while(b > 1) {
-			out(b & 1);
-			out(1);
-			b >>= 1;
-		}
-	}
+        if(b < 0x80)
+            out(0);
 
-	private void outCopyFlag()
-	{
-		if(copyFlag) {
-			out(1);
-			copyFlag = false;
-		}
-	}
+        while(b > 1) {
+            out(b & 1);
+            out(1);
+            b >>= 1;
+        }
+    }
 
-	private boolean scan()
-	{
-		int scn;
-		int matchLen = 0;
-		int matchOffset = 0;
+    private void outCopyFlag()
+    {
+        if(copyFlag) {
+            out(1);
+            copyFlag = false;
+        }
+    }
 
-		if(get < 2) {
-			return false;
-		}
+    private boolean scan()
+    {
+        int scn;
+        int matchLen = 0;
+        int matchOffset = 0;
 
-		scn = get - 1;
+        if(get < 2) {
+            return false;
+        }
 
-		byte first = ibuf[get];
-		byte second = ibuf[get - 1];
+        scn = get - 1;
 
-		while(((get - scn) <= max_offs) &&
-				(scn > 0)){
-			if((ibuf[scn] == first) &&
-					(ibuf[scn - 1] == second)) {
-				int len = 2;
-				while((len < 255) &&
-						(scn >= len) &&
-						(ibuf[scn - len] == ibuf[get - len])) {
-					++len;
-				};
+        byte first = ibuf[get];
+        byte second = ibuf[get - 1];
 
-				if(len > matchLen) {
-					matchLen = len;
-					matchOffset = get - scn;
-				}
-			}
-			--scn;
-		};
+        while(((get - scn) <= max_offs) &&
+                (scn > 0)){
+            if((ibuf[scn] == first) &&
+                    (ibuf[scn - 1] == second)) {
+                int len = 2;
+                while((len < 255) &&
+                        (scn >= len) &&
+                        (ibuf[scn - len] == ibuf[get - len])) {
+                    ++len;
+                };
 
-		if((matchLen > 2) ||
-				((matchLen == 2) && (matchOffset <= max_offs_short))) {
-			theMatchLen = matchLen;
-			theMatchOffset = matchOffset;
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
+                if(len > matchLen) {
+                    matchLen = len;
+                    matchOffset = get - scn;
+                }
+            }
+            --scn;
+        };
 
-	private void copy(int matchLen, int matchOffset)
-	{
-		int i = 0;
+        if((matchLen > 2) ||
+                ((matchLen == 2) && (matchOffset <= max_offs_short))) {
+            theMatchLen = matchLen;
+            theMatchOffset = matchOffset;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
-		copyFlag = true;
+    private void copy(int matchLen, int matchOffset)
+    {
+        int i = 0;
 
-		// Put copy offset.
-		while(i < 4) {
-			int b;
-			if(matchLen == 2) {
-				b = offsTabShort[i];
-			}
-			else {
-				b = offsTab[i];
-			}
-			while(b > 0) {
-				out(matchOffset & 1);
-				matchOffset >>= 1;
-				--b;
-			};
+        copyFlag = true;
 
-			if(matchOffset == 0)
-				break;
+        // Put copy offset.
+        while(i < 4) {
+            int b;
+            if(matchLen == 2) {
+                b = offsTabShort[i];
+            }
+            else {
+                b = offsTab[i];
+            }
+            while(b > 0) {
+                out(matchOffset & 1);
+                matchOffset >>= 1;
+                --b;
+            };
 
-			--matchOffset;
-			++i;
-		};
+            if(matchOffset == 0)
+                break;
 
-		// Put copy offset size.
-		out(i & 1);
-		out((i >> 1) & 1);
+            --matchOffset;
+            ++i;
+        };
 
-		// Put copy length.
-		outLen(matchLen - 1);
+        // Put copy offset size.
+        out(i & 1);
+        out((i >> 1) & 1);
 
-		get -= matchLen;
-	}
+        // Put copy length.
+        outLen(matchLen - 1);
 
-	private void flush()
-	{
-		// Exit if there is nothing to flush.
-		if(plainLen == 0) {
-			outCopyFlag();
-			return;
-		}
+        get -= matchLen;
+    }
 
-		// Put extra copy-bit if necessary.
-		if((plainLen % 255) == 0) {
-			outCopyFlag();
-		}
+    private void flush()
+    {
+        //FIXME?
+        safety = Math.max(safety, theMatchLen+1);
 
-		// Put plain data.
-		while(plainLen > 0) {
-			int i;
-			int len = ((plainLen - 1) % 255) + 1;
+        // Exit if there is nothing to flush.
+        if(plainLen == 0) {
+            outCopyFlag();
+            return;
+        }
 
-			if(put < len) {
-				throw new RuntimeException("Error (C-2): Packed file too large.");
-			}
+        // Put extra copy-bit if necessary.
+        if((plainLen % 255) == 0) {
+            outCopyFlag();
+        }
 
-			// Copy the data.
-			for(i = 0; i < len; ++i) {
-				obuf[put - i] = ibuf[get + plainLen - i];
-			}
+        // Put plain data.
+        while(plainLen > 0) {
+            int i;
+            int len = ((plainLen - 1) % 255) + 1;
 
-			plainLen -= len;
-			put -= len;
+            if(put < len) {
+                throw new RuntimeException("Error (C-2): Packed file too large.");
+            }
 
-			// Put plain length.
-			outLen(len);
+            // Copy the data.
+            for(i = 0; i < len; ++i) {
+                obuf[put - i] = ibuf[get + plainLen - i];
+            }
 
-			// Put plain-bit.
-			out(0);
-		}
+            plainLen -= len;
+            put -= len;
 
-		plainLen = 0;
-	}
+            // Put plain length.
+            outLen(len);
 
-	private CrunchedObject doCrunch(byte[] source, int startAdress) {
-		int i;
-		int packLen;
+            // Put plain-bit.
+            out(0);
+        }
 
-		ibufSize = source.length;
-		ibuf = new byte[ibufSize];
+        plainLen = 0;
+    }
 
-		System.arraycopy(source,0, ibuf, 0, ibufSize);
+    private CrunchedObject doCrunch(byte[] source, int startAdress, int packStart) {
+        int i;
+        int packLen;
 
-		get = ibufSize - 1;
-		put = memSize - 1;
-		curByte = 0;
-		curCnt = 8;
+        ibufSize = source.length;
+        ibuf = new byte[ibufSize];
 
-		plainLen = 0;
+        System.arraycopy(source,0, ibuf, 0, ibufSize);
 
-		outLen(0xff); // Put end of file.
-		copyFlag = true;
+        get = ibufSize - 1;
+        put = memSize - 1;
+        curByte = 0;
+        curCnt = 8;
 
-		while(get >= 0) {
-			if(scan()) {
-				flush();
-				copy(theMatchLen, theMatchOffset);
-			}
-			else {
-				++plainLen;
-				--get;
-			}
-		};
-		flush();
+        safety = 4; //??
 
-		//Copy obuf into aTarget!!
-		packLen = memSize - put - 1;
-		int size = packLen + 3;
-		byte[] target = new byte[size];
+        plainLen = 0;
 
-		target[0] = (byte)(curByte | (1 << (curCnt - 1)));
-		target[1] = (byte)(startAdress & 0xff);
-		target[2] = (byte)(startAdress >> 8 );
+        outLen(0xff); // Put end of file.
+        copyFlag = true;
 
-		for(i = 0; i < packLen; ++i) {
-			target[i + 3] = obuf[put + i + 1];
-		}
+        while(get >= 0) {
+            if(scan()) {
+                flush();
+                copy(theMatchLen, theMatchOffset);
+            }
+            else {
+                ++plainLen;
+                --get;
+            }
+        };
+        flush();
 
-		int packStart = 0xfffa;
-		packStart -= (packLen + 3);
+        //Copy obuf into aTarget!!
+        packLen = memSize - put - 1;
+        int size = packLen + 3;
+        byte[] target = new byte[size];
 
-		return new CrunchedObject(target, packStart);
-	}
-	
-	public static CrunchedObject crunch(byte[] source, int startAdress)
-	{
-		return new JByteBoozer().doCrunch(source, startAdress);
-	}	
+        target[0] = (byte)(curByte | (1 << (curCnt - 1)));
+        target[1] = (byte)(startAdress & 0xff);
+        target[2] = (byte)(startAdress >> 8 );
+
+        for(i = 0; i < packLen; ++i) {
+            target[i + 3] = obuf[put + i + 1];
+        }
+
+        packStart -= (packLen + 3);
+
+        return new CrunchedObject(target, safety);
+    }
+
+    public static CrunchedObject crunch(byte[] source, int startAdress, int packStart)
+    {
+        return new JByteBoozer().doCrunch(source, startAdress, packStart);
+    }
 }

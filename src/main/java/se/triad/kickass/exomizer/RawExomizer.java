@@ -13,53 +13,53 @@ import cml.kickass.plugins.interf.IValue;
 
 public class RawExomizer extends AbstractExomizer {
 
-	private static final int ARGNUM_MAX_OFFSET_SIZE = 3;
-	private static final int ARGNUM_REVERSE_OUTPUT = 2;
-	private static final int ARGNUM_USE_LITERALS = 1;
-	private static final int ARGNUM_FORWARD_CRUNCHING = 0;
-	private static final String NAME = "RawExomizer";
+    private static final int ARGNUM_MAX_OFFSET_SIZE = 3;
+    private static final int ARGNUM_REVERSE_OUTPUT = 2;
+    private static final int ARGNUM_USE_LITERALS = 1;
+    private static final int ARGNUM_FORWARD_CRUNCHING = 0;
+    private static final String NAME = "RawExomizer";
 
-	@Override
-	public String getName() {
-		return NAME;
-	}
+    @Override
+    public String getName() {
+        return NAME;
+    }
 
-	@Override
-	protected byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts, IEngine engine,
-			List<CrunchedObject> exoObjects) {
+    @Override
+    protected byte[] finalizeData(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts, IEngine engine,
+            List<CrunchedObject> exoObjects) {
 
-		CrunchedObject obj = exoObjects.get(0);
+        CrunchedObject obj = exoObjects.get(0);
 
-		if (opts.containsKey(Options.REVERSE_OUTPUT)){
-			obj = Utils.reverseBuffer(obj);
-		} 
-		
-		return obj.data;
-	}
+        if (opts.containsKey(Options.REVERSE_OUTPUT)){
+            obj = Utils.reverseBuffer(obj);
+        }
 
-	@Override
-	protected String getSyntax() {
-		return getName()+"( boolean forwardCrunching [false], boolean useLiterals [true], boolean reverseOutput [false], int max_offset [65535] ) ";
-	}
+        return obj.data;
+    }
 
-	@Override
-	protected void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks,
-			IValue[] values, IEngine engine) {
+    @Override
+    protected String getSyntax() {
+        return getName()+"( boolean forwardCrunching [false], boolean useLiterals [true], boolean reverseOutput [false], int max_offset [65535] ) ";
+    }
 
-		if (blocks.size() > 1){
-			engine.error(NAME + " only handles one, single memory block");
-		}
+    @Override
+    protected void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks,
+            IValue[] values, IEngine engine) {
 
-		//else
-		try {
-			addBooleanOption(values, ARGNUM_FORWARD_CRUNCHING, opts, Options.FORWARD_CRUNCHING, false); 
-			addBooleanOption(values, ARGNUM_USE_LITERALS, opts, Options.USE_LITERALS, true); 
-			addBooleanOption(values, ARGNUM_REVERSE_OUTPUT, opts, Options.REVERSE_OUTPUT, false); 
-			addIntegerOption(values, ARGNUM_MAX_OFFSET_SIZE, opts, Options.MAXIMUM_OFFSET_SIZE, ExoHelper.MAX_OFFSET); 
-		} catch (Exception ex){
-			engine.error(ex.getMessage() + "\n" + getSyntax());
-		}
-	}
+        if (blocks.size() > 1){
+            engine.error(NAME + " only handles one, single memory block");
+        }
+
+        //else
+        try {
+            addBooleanOption(values, ARGNUM_FORWARD_CRUNCHING, opts, Options.FORWARD_CRUNCHING, false);
+            addBooleanOption(values, ARGNUM_USE_LITERALS, opts, Options.USE_LITERALS, true);
+            addBooleanOption(values, ARGNUM_REVERSE_OUTPUT, opts, Options.REVERSE_OUTPUT, false);
+            addIntegerOption(values, ARGNUM_MAX_OFFSET_SIZE, opts, Options.MAXIMUM_OFFSET_SIZE, ExoHelper.MAX_OFFSET);
+        } catch (Exception ex){
+            engine.error(ex.getMessage() + "\n" + getSyntax());
+        }
+    }
 
 
 
