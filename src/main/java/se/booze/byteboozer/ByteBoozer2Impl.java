@@ -71,11 +71,9 @@ public class ByteBoozer2Impl {
 	private int[] first = new int[65536];
 	private int[] last = new int[65536];
 
-	private boolean copyFlag;
 	private byte curByte;
 	private byte curCnt;
 	private int curIndex;
-	private int plainLen;
 
 	private void wBit(int bit) {
 		if(curCnt == 0) {
@@ -676,7 +674,7 @@ public class ByteBoozer2Impl {
 		int margin = writeOutput();
 
 		int packLen = put;
-		int fileLen = put + 4;
+		int fileLen = put + 2;
 
 		target = new byte[fileLen];
 		/*
@@ -686,28 +684,32 @@ public class ByteBoozer2Impl {
 		 */
 		// Experimantal decision of start address
 		//    uint startAddress = 0xfffa - packLen - 2;
-		int startAddress = loadAddress;
-		startAddress += (ibufSize - packLen - 2 + margin);
+		
+		int startAddress;
+		if (packStart < 0) {
+			startAddress = loadAddress + ibufSize - packLen - 2 + margin;
+		} else {
+			startAddress = packStart - packLen - 2;
+		}
 
-		/*
-			if (isRelocated) {
-				startAddress = address - packLen - 2;
-			}
-		 */
-
-		target[0] = (byte) (startAddress & 0xff); // Load address
-		target[1] = (byte) (startAddress >> 8);
-		target[2] = (byte) (loadAddress & 0xff); // Depack to address
-		target[3] = (byte) (loadAddress >> 8);
+		// target[0] = (byte) (startAddress & 0xff); // Load address
+		// target[1] = (byte) (startAddress >> 8);
+		target[0] = (byte) (loadAddress & 0xff); // Depack to address
+		target[1] = (byte) (loadAddress >> 8);
 
 		for(i = 0; i < put; ++i) {
-			target[i + 4] = obuf[i];
+			target[i + 2] = obuf[i];
 		}
 
 		//  printf("File len: %i\n", fileLen);
 		//  printf("Final cost: %i bytes\n", (context[0].cost + 7) / 8);
 
-		return new CrunchedObject(target, margin);
+		return new CrunchedObject(target, startAddress);
 	}
+	
+	public static CrunchedObject crunch(byte[] source, int startAdress, int packStart)
+    {
+        return new ByteBoozer2Impl().doCrunch(source, startAdress, packStart);
+    }
 
 }

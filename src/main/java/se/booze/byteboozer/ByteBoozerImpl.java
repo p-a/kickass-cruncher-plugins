@@ -28,7 +28,6 @@ final class ByteBoozerImpl {
     private boolean copyFlag;
     private int curByte;
     private int curCnt;
-    private int safety;
     private int plainLen;
 
     private int theMatchLen, theMatchOffset;
@@ -160,9 +159,6 @@ final class ByteBoozerImpl {
 
     private void flush()
     {
-        //FIXME?
-        safety = Math.max(safety, theMatchLen+1);
-
         // Exit if there is nothing to flush.
         if(plainLen == 0) {
             outCopyFlag();
@@ -215,8 +211,6 @@ final class ByteBoozerImpl {
         curByte = 0;
         curCnt = 8;
 
-        safety = 4; //??
-
         plainLen = 0;
 
         outLen(0xff); // Put end of file.
@@ -249,7 +243,7 @@ final class ByteBoozerImpl {
 
         packStart -= (packLen + 3);
 
-        return new CrunchedObject(target, safety);
+        return new CrunchedObject(target, packStart);
     }
 
     public static CrunchedObject crunch(byte[] source, int startAdress, int packStart)
