@@ -1,4 +1,4 @@
-package se.triad.kickass.byteboozer;
+package se.booze.byteboozer;
 
 import se.triad.kickass.CrunchedObject;
 /**
@@ -8,7 +8,7 @@ import se.triad.kickass.CrunchedObject;
  * @copyright Ruk/TRIAD (P-a Baeckstroem) 2013
  *
  */
-final class JByteBoozer {
+final class ByteBoozerImpl {
 
     public final static int memSize = 65536;
 
@@ -34,7 +34,7 @@ final class JByteBoozer {
     private int theMatchLen, theMatchOffset;
 
 
-    private JByteBoozer(){
+    private ByteBoozerImpl(){
 
     }
 
@@ -254,6 +254,6 @@ final class JByteBoozer {
 
     public static CrunchedObject crunch(byte[] source, int startAdress, int packStart)
     {
-        return new JByteBoozer().doCrunch(source, startAdress, packStart);
+        return new ByteBoozerImpl().doCrunch(source, startAdress, packStart);
     }
 }
