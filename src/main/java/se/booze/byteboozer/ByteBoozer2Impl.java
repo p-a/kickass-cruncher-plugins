@@ -105,7 +105,7 @@ public class ByteBoozer2Impl {
 	private void wBytes(int get, int len) {
 		int i;
 		for(i = 0; i < len; i++) {
-			wByte(((int)ibuf[get]) & 0xff);
+			wByte(ibuf[get] & 0xff);
 			get++;
 		}
 	}
@@ -308,11 +308,11 @@ public class ByteBoozer2Impl {
 		}
 
 		get = ibufSize - 1;
-		int cur = ((int)ibuf[get]) & 0xff;
+		int cur = ibuf[get] & 0xff;
 
 		while (get > 0) {
 
-			cur = ((cur << 8) | (((int)ibuf[get-1]) & 0xff) ) & 65535;
+			cur = (cur << 8 | ibuf[get-1] & 0xff) & 65535;
 
 			if (first[cur] == 0) {
 				first[cur] = last[cur] = get;
@@ -344,7 +344,7 @@ public class ByteBoozer2Impl {
 		int i;
 
 		get = ibufSize - 1;
-		int cur = ((int)ibuf[get]) & 0xff;
+		int cur = ibuf[get] & 0xff;
 
 		lastNode.cost = 0;
 		lastNode.next = 0;
@@ -358,7 +358,7 @@ public class ByteBoozer2Impl {
 			}
 
 			cur = (cur << 8) & 65535; // Table65536 lookup
-			if (get > 0) cur |= ((int)ibuf[get-1]) & 0xff;
+			if (get > 0) cur |= ibuf[get-1] & 0xff;
 			int scn = first[cur];
 			scn = link[scn];
 
