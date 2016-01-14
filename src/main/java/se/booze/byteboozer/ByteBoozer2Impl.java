@@ -105,7 +105,7 @@ public class ByteBoozer2Impl {
 	private void wBytes(int get, int len) {
 		int i;
 		for(i = 0; i < len; i++) {
-			wByte(ibuf[get]);
+			wByte(((int)ibuf[get]) & 0xff);
 			get++;
 		}
 	}
@@ -308,11 +308,11 @@ public class ByteBoozer2Impl {
 		}
 
 		get = ibufSize - 1;
-		int cur = ibuf[get];
+		int cur = ((int)ibuf[get]) & 0xff;
 
 		while (get > 0) {
 
-			cur = ((cur << 8) | ibuf[get-1]) & 65535;
+			cur = ((cur << 8) | (((int)ibuf[get-1]) & 0xff) ) & 65535;
 
 			if (first[cur] == 0) {
 				first[cur] = last[cur] = get;
@@ -331,9 +331,9 @@ public class ByteBoozer2Impl {
 	}
 
 	private class Match {
-		int length;
-		int offset;
-		int cost;
+		int length = 0;
+		int offset = 0;
+		int cost = 0;
 	}
 
 	private void findMatches() {
@@ -344,7 +344,7 @@ public class ByteBoozer2Impl {
 		int i;
 
 		get = ibufSize - 1;
-		int cur = ibuf[get];
+		int cur = ((int)ibuf[get]) & 0xff;
 
 		lastNode.cost = 0;
 		lastNode.next = 0;
@@ -354,13 +354,11 @@ public class ByteBoozer2Impl {
 
 			// Clear matches for current position
 			for (i = 0; i < 256; i++) {
-				matches[i].length = 0;
-				matches[i].offset = 0;
-				matches[i].cost = 0;
+				matches[i] = new Match();
 			}
 
 			cur = (cur << 8) & 65535; // Table65536 lookup
-			if (get > 0) cur |= ibuf[get-1];
+			if (get > 0) cur |= ((int)ibuf[get-1]) & 0xff;
 			int scn = first[cur];
 			scn = link[scn];
 
@@ -650,11 +648,11 @@ public class ByteBoozer2Impl {
 	}
 
 
-	private CrunchedObject doCrunch(byte[] aSource, int loadAddress, int packStart) {
+	private CrunchedObject doCrunch(byte[] source, int loadAddress, int packStart) {
 		int i;
 		byte[] target;
 
-		ibufSize = aSource.length; // - 2;
+		ibufSize = source.length; // - 2;
 		ibuf = new byte[ibufSize];
 		context = new Node[ibufSize];
 		link = new int[ibufSize];
@@ -662,9 +660,11 @@ public class ByteBoozer2Impl {
 
 		// Load ibuf and clear context
 		for(i = 0; i < ibufSize; ++i) {
-			ibuf[i] = aSource[i];
+			ibuf[i] = source[i];
+			context[i] = new Node();
 			context[i].cost = 0;
 			link[i] = 0;
+			rleInfo[i] = new RLEInfo();
 			rleInfo[i].length = 0;
 		}
 
