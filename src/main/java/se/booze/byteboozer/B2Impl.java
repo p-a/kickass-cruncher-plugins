@@ -1,18 +1,11 @@
 package se.booze.byteboozer;
 
+import java.util.Arrays;
+
 import se.triad.kickass.CrunchedObject;
 
-public class ByteBoozer2Impl {
+public class B2Impl {
 
-	/*
-	 * 
-#include "cruncher.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-#define log(format, ...)
-//#define log(format, ...) fprintf (stderr, format, ## __VA_ARGS__)
-	 */
 	private final static int NUM_BITS_SHORT_0 = 3;
 	private final static int NUM_BITS_SHORT_1 = 6;
 	private final static int NUM_BITS_SHORT_2 = 8;
@@ -649,42 +642,28 @@ public class ByteBoozer2Impl {
 
 
 	private CrunchedObject doCrunch(byte[] source, int loadAddress, int packStart) {
-		int i;
-		byte[] target;
-
-		ibufSize = source.length; // - 2;
-		ibuf = new byte[ibufSize];
+		
+		ibufSize = source.length;
 		context = new Node[ibufSize];
 		link = new int[ibufSize];
 		rleInfo = new RLEInfo[ibufSize];
 
 		// Load ibuf and clear context
-		for(i = 0; i < ibufSize; ++i) {
-			ibuf[i] = source[i];
+		ibuf = Arrays.copyOf(source, ibufSize);
+		for(int i = 0; i < ibufSize; ++i) {
 			context[i] = new Node();
-			context[i].cost = 0;
-			link[i] = 0;
 			rleInfo[i] = new RLEInfo();
-			rleInfo[i].length = 0;
 		}
-
+		
 		setupHelpStructures();
 		findMatches();
 		obuf = new byte[MEM_SIZE];
-		int margin = writeOutput();
+		final int margin = writeOutput();
 
-		int packLen = put;
-		int fileLen = put + 2;
+		final int packLen = put;
+		final int fileLen = put + 2;
 
-		target = new byte[fileLen];
-		/*
-		aTarget.size = fileLen;
-		aTarget->data = (byte*)malloc(aTarget->size);
-		target = aTarget->data;
-		 */
-		// Experimantal decision of start address
-		//    uint startAddress = 0xfffa - packLen - 2;
-		
+		byte[] target = new byte[fileLen];
 		int startAddress;
 		if (packStart < 0) {
 			startAddress = loadAddress + ibufSize - packLen - 2 + margin;
@@ -692,24 +671,19 @@ public class ByteBoozer2Impl {
 			startAddress = packStart - packLen - 2;
 		}
 
-		// target[0] = (byte) (startAddress & 0xff); // Load address
-		// target[1] = (byte) (startAddress >> 8);
 		target[0] = (byte) (loadAddress & 0xff); // Depack to address
 		target[1] = (byte) (loadAddress >> 8);
 
-		for(i = 0; i < put; ++i) {
+		for(int i = 0; i < put; ++i) {
 			target[i + 2] = obuf[i];
 		}
-
-		//  printf("File len: %i\n", fileLen);
-		//  printf("Final cost: %i bytes\n", (context[0].cost + 7) / 8);
 
 		return new CrunchedObject(target, startAddress);
 	}
 	
 	public static CrunchedObject crunch(byte[] source, int startAdress, int packStart)
     {
-        return new ByteBoozer2Impl().doCrunch(source, startAdress, packStart);
+        return new B2Impl().doCrunch(source, startAdress, packStart);
     }
 
 }

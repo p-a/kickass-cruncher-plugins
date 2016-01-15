@@ -2,7 +2,10 @@
 // ByteBoozer Decruncher    /HCL May.2003
 // KickAssified by Ruk/TRIAD
 
-//define .const BB_ZP_BASE before import
+// You must set .const BB_ZP_BASE prior the import of this file
+.if (BB_ZP_BASE > $ff) {
+    .error "BB_ZP_BASE must be in zeropage. Was $" + toHexAddr(BB_ZP_BASE,4)
+}
 
 .macro BB_DECRUNCH(addr){
             ldy #<addr

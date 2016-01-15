@@ -1,4 +1,4 @@
-package se.triad.kickass.byteboozer;
+package se.booze.byteboozer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import cml.kickass.plugins.interf.IMemoryBlock;
 import cml.kickass.plugins.interf.IValue;
+import se.triad.kickass.byteboozer.ByteBoozer;
 import se.triad.kickass.common.IntValue;
 import se.triad.kickass.common.StubEngine;
 import se.triad.kickass.common.TestUtils;

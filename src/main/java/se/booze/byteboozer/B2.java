@@ -8,14 +8,13 @@ import java.util.List;
 import se.triad.kickass.AbstractCruncher;
 import se.triad.kickass.CrunchedObject;
 import se.triad.kickass.Utils;
-import se.triad.kickass.AbstractCruncher.Options;
 import cml.kickass.plugins.interf.IEngine;
 import cml.kickass.plugins.interf.IMemoryBlock;
 import cml.kickass.plugins.interf.IValue;
 
-public class ByteBoozer extends AbstractCruncher {
+public class B2 extends AbstractCruncher {
 
-    private static final String NAME = "ByteBoozer";
+    private static final String NAME = "B2";
 
     @Override
     public String getName() {
@@ -28,16 +27,10 @@ public class ByteBoozer extends AbstractCruncher {
     }
 
     @Override
-    protected void validateResult(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts, IEngine engine,
-    		List<CrunchedObject> exoObjects) {
-    	// FIXME
-    }
-    
-    @Override
     protected CrunchedObject crunch(IMemoryBlock block,
             EnumMap<Options, Object> opts, IEngine iEngine) {
 
-        return ByteBoozerImpl.crunch(block.getBytes(), block.getStartAddress(), (Integer) opts.get(Options.VALIDATE_SAFETY_OFFSET));
+        return B2Impl.crunch(block.getBytes(), block.getStartAddress(), (Integer) opts.get(Options.VALIDATE_SAFETY_OFFSET));
     }
 
     @Override
@@ -48,6 +41,12 @@ public class ByteBoozer extends AbstractCruncher {
         return obj.data;
     }
 
+    @Override
+    protected void validateResult(List<IMemoryBlock> blocks, EnumMap<Options, Object> opts, IEngine engine,
+    		List<CrunchedObject> exoObjects) {
+    	// FIXME
+    }
+    
     @Override
     protected List<IMemoryBlock> preTransformBlocks(List<IMemoryBlock> blocks) {
         return Utils.mergeBlocks(blocks);
