@@ -17,8 +17,8 @@ start:
     sta $d020
     sta $d011
     :B2_DECRUNCH(crunchedBitmapAndScreen)
-    :B2_DECRUNCH_NEXT()
-    :B2_DECRUNCH_NEXT()
+    :B2_DECRUNCH(crunchedColorRam)
+    :B2_DECRUNCH(crunchedMusic)
     lda #picture.getBackgroundColor()
     sta $d021
     lda #$d8

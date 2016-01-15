@@ -20,10 +20,6 @@
     jsr b2.Decrunch
 }
 
-.macro B2_DECRUNCH_NEXT(){
-    jsr b2.Decrunch_next
-}
-
 .macro  GetNextBit() {
     asl bits
     bne DgEnd
@@ -49,7 +45,7 @@ Decrunch:
     stx Get1+2
     stx Get2+2
     stx Get3+2
-Decrunch_next:
+
     ldx #0
     jsr GetNewBits
     sty put-1,x
