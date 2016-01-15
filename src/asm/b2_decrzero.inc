@@ -5,8 +5,11 @@
 .importonce
 
 // Move decruncher to zeropage and execute
-.macro B2ZERO(data, startAddr) {
+.macro B2ZERO(data, length, startAddr) {
     
+    sei
+    lda #$34
+    sta $01
     ldx #decr_end - decr
   !:
     lda decr-1,x
@@ -17,7 +20,19 @@
             
     decr:    
     .pseudopc $0002 {
-        :B2ZERO_DECRUNCH_AND_EXEC(data, startAddr)
+      
+        ldy #>[length+$ff]
+      copy:  
+        lda data+length-$100,x
+        sta $ff00,x
+        inx
+        bne copy
+        dec copy+2
+        dec copy+5
+        dey
+        bne copy
+        
+        :B2ZERO_DECRUNCH_AND_EXEC($10000 - length, startAddr)
     }
     decr_end:
 }
@@ -25,6 +40,10 @@
 .macro B2ZERO_DECRUNCH_AND_EXEC(data, startAddr) {
 
 Decrunch:
+    lda data
+    sta.zp put
+    lda data+1
+    sta.zp put+1
 DLoop:
     jsr GetNextBit
     bcs Match
@@ -66,7 +85,7 @@ Match:
     jsr RolNextBit
     jsr RolNextBit
     tax
-    lda.zp Tab,x
+    lda.zpx Tab,x
     beq M8
 
     // Get bits < 8
@@ -78,7 +97,7 @@ M8:
     eor #$ff
     tay
     jsr GetNextByte
-    .byte $ae //jmp Mdone
+    .byte LDX_ABS //$ae jmp Mdone
 MShort:
     ldy #$ff
 Mdone:
@@ -141,7 +160,7 @@ DgEnd:
     rts
 
 GetNextByte:
-    lda data
+    lda data+2
     inc.zp GetNextByte+1
     bne !+
     inc.zp GetNextByte+2
