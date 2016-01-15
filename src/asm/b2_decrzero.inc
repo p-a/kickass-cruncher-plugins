@@ -5,7 +5,7 @@
 .importonce
 
 // Move decruncher to zeropage and execute
-.macro B2ZERO(data, startVector) {
+.macro B2ZERO(data, startAddr) {
     
     ldx #decr_end - decr
   !:
@@ -17,12 +17,12 @@
             
     decr:    
     .pseudopc $0002 {
-        :B2ZERO_DECRUNCH_AND_EXEC(data, startVector)
+        :B2ZERO_DECRUNCH_AND_EXEC(data, startAddr)
     }
     decr_end:
 }
 
-.macro B2ZERO_DECRUNCH_AND_EXEC(data, startVector) {
+.macro B2ZERO_DECRUNCH_AND_EXEC(data, startAddr) {
 
 Decrunch:
 DLoop:
@@ -31,15 +31,16 @@ DLoop:
 
     // Literal run.. get length.
     jsr GetLen
-    sta LLen+1 // sta LLen+1
+    sta.zp LLen+1 // sta LLen+1
 
     ldy #0
+  !:  
     jsr GetNextByte
     sta (put),y
     iny
 LLen:
     cpy #0
-    bne *-8
+    bne !-
 
     jsr AddPut
 
@@ -56,7 +57,7 @@ Match:
     tax
     inx
     beq End
-    stx MLen+1 
+    stx.zp MLen+1 
 
     // Get num bits
     lda #0
@@ -65,7 +66,7 @@ Match:
     jsr RolNextBit
     jsr RolNextBit
     tax
-    lda Tab,x
+    lda.zp Tab,x
     beq M8
 
     // Get bits < 8
@@ -77,17 +78,17 @@ M8:
     eor #$ff
     tay
     jsr GetNextByte
-    .byte BIT_ABS //jmp Mdone
+    .byte $ae //jmp Mdone
 MShort:
     ldy #$ff
 Mdone:
 
     // clc
-    adc put
-    sta mLda+1
+    adc.zp put
+    sta.zp MLda+1
     tya
-    adc put+1
-    sta mLda+2
+    adc.zp put+1
+    sta.zp MLda+2
 
     ldy #0
 MLda:
@@ -106,10 +107,11 @@ MLen:
 AddPut:
     clc
     tya
-    adc put
-    sta put
-    bcc *+4
-    inc put+1
+    adc.zp put
+    sta.zp put
+    bcc !+
+    inc.zp put+1
+   !:
     rts
 
 GetLen:
@@ -128,21 +130,22 @@ RolNextBit:
     rts
 
 GetNextBit:
-    asl Bits
+    asl.zp Bits
     bne DgEnd
     pha
     jsr GetNextByte
     rol
-    sta Bits
+    sta.zp Bits
     pla
 DgEnd:
     rts
 
 GetNextByte:
-    lda crunchedBytes
-    inc GetNextByte+1
-    bne *+4
-    inc GetNextByte+2
+    lda data
+    inc.zp GetNextByte+1
+    bne !+
+    inc.zp GetNextByte+2
+   !:
     rts
 End:
     jmp startAddr
@@ -164,4 +167,6 @@ Tab:
     
 .if ( * > $ff ) {
     .print "WARNING: This code was intended to reside in zeropage"
+}
+
 }
