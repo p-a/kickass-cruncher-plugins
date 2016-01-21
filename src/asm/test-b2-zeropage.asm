@@ -8,7 +8,10 @@
 
 .pc = $0810
 start:
-        :B2ZERO(crunchedData, packend - crunchedData, entrypoint)        
+        sei
+        lda #$34
+        sta $01
+        :B2ZERO(crunchedData, packend - crunchedData, entrypoint, true)        
 
 crunchedData:
 .modify B2() {

@@ -5,7 +5,7 @@
 .importonce
 
 // Move decruncher to zeropage and execute
-.macro B2ZERO(data, length, startAddr) {
+.macro B2ZERO(data, length, startAddr, relocate) {
     
     sei
     lda #$34
@@ -21,6 +21,7 @@
     decr:    
     .pseudopc $0002 {
       
+      .if (relocate) {
         ldy #>[length+$ff]
       copy:  
         lda data+length-$100,x
@@ -31,8 +32,11 @@
         dec copy+5
         dey
         bne copy
+      }
         
-        :B2ZERO_DECRUNCH_AND_EXEC($10000 - length, startAddr)
+    :B2ZERO_DECRUNCH_AND_EXEC(
+            relocate ? $10000 - length : data,
+            startAddr)
     }
     decr_end:
 }
