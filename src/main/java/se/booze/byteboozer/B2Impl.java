@@ -628,7 +628,9 @@ public class B2Impl {
 
 		}
 
-		wBit(1);
+		if(needCopyBit) {
+			wBit(1);
+		}
 		wLength(0xff);
 		wFlush();
 
