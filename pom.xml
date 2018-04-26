@@ -13,8 +13,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -146,7 +146,7 @@
 			<dependency>
 				<groupId>cml.kickass</groupId>
 				<artifactId>KickAss</artifactId>
-				<version>3.33.0</version>
+				<version>4.14</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
