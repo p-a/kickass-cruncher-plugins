@@ -26,7 +26,7 @@ public final class ExoHelper  {
 
     private static CrunchedObject doCrunch(byte[] data, boolean forward, boolean useLiterals, int in_load, int max_offset){
 
-        final ExoLibrary exolib = ExoLibrary.INSTANCE;
+        final ExoLibrary exolib = ExoLibraryWithFallback.INSTANCE;
 
         if (max_offset < 0 || max_offset > 65535)
             max_offset = MAX_OFFSET;
@@ -51,7 +51,7 @@ public final class ExoHelper  {
                 exolib.membuf_append_char(crunched, (byte)( in_load >> 8));
                 exolib.membuf_append_char(crunched, (byte)( in_load & 255));
             }
-            exolib.crunch(in, crunched, options, info);
+        		exolib.crunch(in, crunched, options, info);
 
         } else {
 
@@ -69,7 +69,7 @@ public final class ExoHelper  {
         return new CrunchedObject(exolib.membuf_get(crunched).getByteArray(0, length), info.needed_safety_offset);
     }
 
-    public static CrunchedObject crunch(byte[] data, boolean forward, boolean useLiterals, int in_load, int max_offset){
+	public static CrunchedObject crunch(byte[] data, boolean forward, boolean useLiterals, int in_load, int max_offset){
 
         boolean cache = !Boolean.getBoolean(DISABLE_EXOMIZER_CACHE);
 

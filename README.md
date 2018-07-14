@@ -43,6 +43,15 @@ The desired plugin must then be declared in the source-code in order for Kick As
 
 You can read more about plugins in Kick Assembler's online [documentation](http://www.theweb.dk/KickAssembler/webhelp/content/cpt_Plugins.html "Kick Assembler documentation").     
 
+The pre-compiled Exomizer dylib for MacOS High Sierra seems to have problems, resulting with SIGSEGV.
+As a workaround, the plugin can fallback to execute exomizer via commandline.
+This must be added as a system property:
+
+    -D EXOMIZER_COMMANDLINE_FALLBACK=path_to_exomizer
+
+Please note that out of lazyness, the safety offset is always returned as $0000
+when using this fallback.
+
 Supported Crunchers
 ===================
 
@@ -208,6 +217,10 @@ Build
 At the project root-dir, type:
 
     mvn clean package
+
+Please add the exomizer fallback option if you get errors on MacOS High Sierra:
+
+    mvn clean package -D EXOMIZER_COMMANDLINE_FALLBACK=/Users/blah/bin/exomizer 
 
 This compiles, tests and packages the release zip-file, which you will find in the project's target/release directory.
 

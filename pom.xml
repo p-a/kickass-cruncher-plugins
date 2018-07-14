@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>se.triad.kickass</groupId>
 	<artifactId>kickass-cruncher-plugins</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 	<name>KickAss Cruncher Plugins</name>
 	<description>Cruncher plugins for Kick Assembler</description>
 	<build>
@@ -21,9 +21,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<verbose>true</verbose>
-					<systemPropertyVariables>
-						<jna.debug_load>true</jna.debug_load>
-					</systemPropertyVariables>
+					 <systemProperties combine.children="append">
+					</systemProperties>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -114,7 +113,7 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.6</version>
+					<version>2.22.0</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-shade-plugin</artifactId>

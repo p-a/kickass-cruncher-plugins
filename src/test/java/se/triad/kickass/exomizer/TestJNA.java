@@ -1,6 +1,7 @@
 package se.triad.kickass.exomizer;
 import junit.framework.Assert;
 import net.magli143.exo.ExoLibrary;
+import net.magli143.exo.ExoLibraryWithFallback;
 import net.magli143.exo.crunch_info;
 import net.magli143.exo.crunch_options;
 import net.magli143.exo.membuf;
@@ -17,7 +18,7 @@ public class TestJNA {
 	@Test
 	public void testCrunch() throws Exception {
 
-		ExoLibrary exolib = ExoLibrary.INSTANCE;
+		ExoLibrary exolib = ExoLibraryWithFallback.INSTANCE;
 
 		crunch_options options = new crunch_options(null, 65535,65535, 65535, 1, 0);
 		crunch_info info = new crunch_info();
