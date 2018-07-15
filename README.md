@@ -35,7 +35,7 @@ Usage
 
 You must first see to that the plugins are on the java classpath:
     
-    java -cp "kickass-cruncher-plugins-1.0-beta.jar:KickAss.jar" cml.kickass.KickAssembler demo.asm
+    java -cp "kickass-cruncher-plugins-1.1.jar:KickAss.jar" kickass.KickAssembler demo.asm
 
 The desired plugin must then be declared in the source-code in order for Kick Assembler to actually load it:
     
@@ -45,12 +45,14 @@ You can read more about plugins in Kick Assembler's online [documentation](http:
 
 The pre-compiled Exomizer dylib for MacOS High Sierra seems to have problems, resulting with SIGSEGV.
 As a workaround, the plugin can fallback to execute exomizer via commandline.
-This must be added as a system property:
+This must be added as a system property to the commandline:
 
-    -D EXOMIZER_COMMANDLINE_FALLBACK=path_to_exomizer
+    java -cp "kickass-cruncher-plugins-1.1.jar:KickAss.jar" \
+        -D  EXOMIZER_COMMANDLINE_FALLBACK=path_to_exomizer_executable \
+        kickass.KickAssembler demo.asm
 
-Please note that out of lazyness, the safety offset is always returned as $0000
-when using this fallback.
+Please note that out of laziness, the safety offset is always returned as $0000
+when using this fall back.
 
 Supported Crunchers
 ===================
@@ -95,6 +97,27 @@ There is also experimental support for reversed output:
         .pc = $1000
         //whatever
     }
+    
+B2
+--
+
+Next generation of ByteBoozer. Faster and better. Use this instead of BB if you can
+
+
+####Syntax:
+    .modify B2(int startAdress (optional for margin check))
+
+*Square brackets denotes default values used when argument is left out*
+    
+####Example:
+    .plugin "se.triad.kickass.CruncherPlugins"
+
+    .modify B2() {
+        .pc = $1000
+        //code
+    }
+
+
 
 Exomizer
 --------
@@ -212,7 +235,7 @@ Build
 ####Prerequisites
 
  * [Apache Maven](http://maven.apache.org)
- * [Java SE, JDK 6+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+ * [Java SE, JDK 8+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
  
 At the project root-dir, type:
 
