@@ -1,6 +1,7 @@
 package se.booze.byteboozer;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import se.triad.kickass.CrunchedObject;
 
@@ -326,13 +327,13 @@ public class B2Impl {
 	private class Match {
 		int length = 0;
 		int offset = 0;
-		int cost = 0;
+		//int cost = 0;
 	}
 
 	private void findMatches() {
 
 		Match[] matches = new Match[256];
-
+		IntStream.range(0,  256).parallel().forEach( i -> matches[i] = new Match());
 		Node lastNode = new Node();
 		int i;
 
@@ -346,9 +347,11 @@ public class B2Impl {
 		while (get >= 0) {
 
 			// Clear matches for current position
-			for (i = 0; i < 256; i++) {
-				matches[i] = new Match();
-			}
+			Arrays.stream(matches).parallel().forEach(m -> {
+				//m.cost = 0;
+				m.length = 0;
+				m.offset = 0;
+			});
 
 			cur = (cur << 8) & 65535; // Table65536 lookup
 			if (get > 0) cur |= ibuf[get-1] & 0xff;
@@ -388,7 +391,7 @@ public class B2Impl {
 									((len == 2) && (offset <= MAX_OFFSET_SHORT))) {
 								matches[len].length = len;
 								matches[len].offset = get - scn;
-								matches[len].cost = calculateCostOfMatch(len, offset);
+								//matches[len].cost = calculateCostOfMatch(len, offset);
 							}
 
 							len--;
@@ -403,7 +406,7 @@ public class B2Impl {
 			} else { // if RLE-match..
 
 				int rleLen = rleInfo[get].length;
-				byte rleVal = rleInfo[get].value;
+				// rleInfo[get].value;
 				byte rleValAfter = rleInfo[get].valueAfter;
 
 
@@ -418,7 +421,7 @@ public class B2Impl {
 					while(len >= 2) {
 						matches[len].length = len;
 						matches[len].offset = 1;
-						matches[len].cost = calculateCostOfMatch(len, 1);
+						//matches[len].cost = calculateCostOfMatch(len, 1);
 
 						len--;
 					};
@@ -446,7 +449,7 @@ public class B2Impl {
 								((len == 2) && (offset <= MAX_OFFSET_SHORT))) {
 							matches[len].length = len;
 							matches[len].offset = offset;
-							matches[len].cost = calculateCostOfMatch(len, offset);
+							// matches[len].cost = calculateCostOfMatch(len, offset);
 
 							longestMatch = len;
 						}
@@ -481,7 +484,7 @@ public class B2Impl {
 											((len == 2) && (offset <= MAX_OFFSET_SHORT))) {
 										matches[len].length = len;
 										matches[len].offset = offset;
-										matches[len].cost = calculateCostOfMatch(len, offset);
+										// matches[len].cost = calculateCostOfMatch(len, offset);
 									}
 
 									len--;
@@ -582,7 +585,7 @@ public class B2Impl {
 		for (i = 0; i < ibufSize;) {
 
 			int link = context[i].next;
-			int cost = context[i].cost;
+			//int cost = context[i].cost;
 			int litLen = context[i].litLen;
 			int offset = context[i].offset;
 
