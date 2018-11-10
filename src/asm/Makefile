@@ -8,11 +8,15 @@ else
     CLASSPATH = "../*:KickAss.jar"
 endif
 
+ifneq ($(EXOMIZER_COMMANDLINE_FALLBACK),)
+	EXO_FALLBACK := "-DEXOMIZER_COMMANDLINE_FALLBACK=$(EXOMIZER_COMMANDLINE_FALLBACK)"	
+endif
+
 all: $(binaries)
 
 clean :
 	rm -f $(binaries)
 
 %.prg : %.asm
-	@$(JAVA) -cp $(CLASSPATH) cml.kickass.KickAssembler $<
+	@$(JAVA) $(EXO_FALLBACK) -cp $(CLASSPATH) cml.kickass.KickAssembler $<
 

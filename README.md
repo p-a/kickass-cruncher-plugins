@@ -7,7 +7,7 @@ The current version has support for two of the most popular crunchers for the Co
 
 ####Example:
     
-    .plugin "se.triad.kickass.CruncherPlugins"
+    .plugin "se.booze.kickass.CruncherPlugins"
  
     .var music = LoadSid("res/Ruk - J.sid")
     
@@ -39,7 +39,7 @@ You must first see to that the plugins are on the java classpath:
 
 The desired plugin must then be declared in the source-code in order for Kick Assembler to actually load it:
     
-    .plugin "se.triad.kickass.CruncherPlugins"
+    .plugin "se.booze.kickass.CruncherPlugins"
 
 You can read more about plugins in Kick Assembler's online [documentation](http://www.theweb.dk/KickAssembler/webhelp/content/cpt_Plugins.html "Kick Assembler documentation").     
 
@@ -68,7 +68,7 @@ The ByteBoozer plugin is a pure java implementation of David Malmborg's excellen
 *Square brackets denotes default values used when argument is left out*
     
 ####Example:
-    .plugin "se.triad.kickass.CruncherPlugins"
+    .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify ByteBoozer() {
         .pc = $1000
@@ -79,7 +79,7 @@ You can also crunch several segments of memory. The cruncher will merge these to
 the memory area required by all contained memory blocks, zero-filling any gaps.
 
 ####Example:
-    .plugin "se.triad.kickass.CruncherPlugins"
+    .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify ByteBoozer() {
         .pc = $4000 "Bitmap"
@@ -91,7 +91,7 @@ the memory area required by all contained memory blocks, zero-filling any gaps.
 There is also experimental support for reversed output:
    
 ####Example:   
-    .plugin "se.triad.kickass.CruncherPlugins"
+    .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify ByteBoozer(true) {
         .pc = $1000
@@ -110,7 +110,7 @@ Next generation of ByteBoozer. Faster and better. Use this instead of BB if you 
 *Square brackets denotes default values used when argument is left out*
     
 ####Example:
-    .plugin "se.triad.kickass.CruncherPlugins"
+    .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify B2() {
         .pc = $1000
@@ -128,7 +128,7 @@ The implementation is a small java wrapper around native code in form of shared 
 Currently included are shared libraries for Mac OS X, Windows (both 32 and 64-bit) and Linux (i386 and x86_64).
 Please see the Build-section for instructions on how to rebuild the native libraries.
 
-All Exomizer-plugins are included in an IArchive `se.triad.kickass.exomizer.ExomizerArchive`, for convenient loading of all plugins.
+All Exomizer-plugins are included in an IArchive `se.booze.kickass.exomizer.ExomizerArchive`, for convenient loading of all plugins.
 
 Exomized data is now cached. The caching mechanism can be disabled by setting the system property `DISABLE_EXOMIZER_CACHE=true`.
 Cached data is stored as files in `java.io.tmpdir`, e.g. `/tmp` on a Linux system with the extension `.exo`.
@@ -153,7 +153,7 @@ There is also two convenience modifiers. They are equal to calling MemExomizer w
 *Square brackets denotes default values used when argument is left out*
 
 ####Example:
-    .plugin "se.triad.kickass.CruncherPlugins"
+    .plugin "se.booze.kickass.CruncherPlugins"
 
     // Backward-crunching using literals and also asserts that the result can be decrypted at the current PC
     .modify MemExomizer( false, true, *){
@@ -194,7 +194,7 @@ The first offset for forward decrunching is always 0. Backward decrunching offse
 *Square brackets denotes default values used when argument is left out*
  
 ####Example:
-    .plugin "se.triad.kickass.CruncherPlugins"
+    .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify LevelExomizer(){
     
@@ -214,7 +214,7 @@ RawExomizer only handles one memory block. In the case of inline crunching, you 
     .modify RawExomizer( boolean forwardCrunching [false], boolean useLiterals [true], boolean reverseOutput [false] )
         
 ####Example:
-    .plugin "se.triad.kickass.CruncherPlugins"
+    .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify RawExomizer( true, true ) {
         
