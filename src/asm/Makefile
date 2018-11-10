@@ -18,5 +18,5 @@ clean :
 	rm -f $(binaries)
 
 %.prg : %.asm
-	@$(JAVA) $(EXO_FALLBACK) -cp $(CLASSPATH) cml.kickass.KickAssembler $<
+	@$(JAVA) -DDISABLE_EXOMIZER_CACHE=true $(EXO_FALLBACK) -cp $(CLASSPATH) cml.kickass.KickAssembler $<
 
