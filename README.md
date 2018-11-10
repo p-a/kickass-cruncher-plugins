@@ -223,6 +223,18 @@ RawExomizer only handles one memory block. In the case of inline crunching, you 
     
 *Square brackets denotes default values used when argument is left out*
 
+Exomizer 3
+----------
+
+Using `EXOMIZER_COMMANDLINE_FALLBACK` you should be able to crunch using Exomizer 3.
+Just add `-D EXOMIZER_COMMANDLINE_FALLBACK=/path/to/exomizer3` as argument to java.
+
+Note. Exomizer 3 comes with a new decruncher which is not included with this package.
+
+Please see Exomizer's home page for details
+
+https://bitbucket.org/magli143/exomizer/wiki/Home 
+
 
 Examples
 --------
