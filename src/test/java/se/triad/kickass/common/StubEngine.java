@@ -2,7 +2,7 @@ package se.triad.kickass.common;
 
 import java.io.File;
 
-import cml.kickass.plugins.interf.IEngine;
+import kickass.plugins.interf.IEngine;
 
 public class StubEngine implements IEngine {
 

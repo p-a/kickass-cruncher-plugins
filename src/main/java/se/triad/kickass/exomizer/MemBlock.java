@@ -2,7 +2,7 @@ package se.triad.kickass.exomizer;
 
 import java.util.Arrays;
 
-import cml.kickass.plugins.interf.IMemoryBlock;
+import kickass.plugins.interf.IMemoryBlock;
 
 public class MemBlock implements IMemoryBlock {
 

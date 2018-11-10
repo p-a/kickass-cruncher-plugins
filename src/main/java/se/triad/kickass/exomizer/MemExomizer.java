@@ -6,10 +6,9 @@ import java.util.List;
 import se.triad.kickass.CrunchedObject;
 import se.triad.kickass.Utils;
 
-
-import cml.kickass.plugins.interf.IEngine;
-import cml.kickass.plugins.interf.IMemoryBlock;
-import cml.kickass.plugins.interf.IValue;
+import kickass.plugins.interf.IEngine;
+import kickass.plugins.interf.IMemoryBlock;
+import kickass.plugins.interf.IValue;
 
 public class MemExomizer extends AbstractExomizer {
 

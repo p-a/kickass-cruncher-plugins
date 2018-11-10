@@ -6,8 +6,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.testng.annotations.Test;
 
-import cml.kickass.plugins.interf.IMemoryBlock;
-import cml.kickass.plugins.interf.IValue;
+import kickass.plugins.interf.IMemoryBlock;
+import kickass.plugins.interf.IValue;
 import se.triad.kickass.common.BooleanValue;
 import se.triad.kickass.common.StubEngine;
 import se.triad.kickass.common.TestUtils;

@@ -3,7 +3,7 @@ package se.booze.kickass;
 import java.util.ArrayList;
 import java.util.List;
 
-import cml.kickass.plugins.interf.IArchive;
+import kickass.plugins.interf.IArchive;
 
 import se.triad.kickass.exomizer.RawExomizer;
 import se.triad.kickass.exomizer.MemExomizer;

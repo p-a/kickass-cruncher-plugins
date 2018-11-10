@@ -2,7 +2,7 @@ package se.triad.kickass.common;
 
 import java.util.List;
 
-import cml.kickass.plugins.interf.IValue;
+import kickass.plugins.interf.IValue;
 
 public class BooleanValue implements IValue {
 	

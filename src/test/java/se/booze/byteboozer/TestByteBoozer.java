@@ -3,13 +3,12 @@ package se.booze.byteboozer;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
-
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import cml.kickass.plugins.interf.IMemoryBlock;
-import cml.kickass.plugins.interf.IValue;
-import se.triad.kickass.byteboozer.ByteBoozer;
+import kickass.plugins.interf.IMemoryBlock;
+import kickass.plugins.interf.IValue;
+import se.booze.byteboozer.ByteBoozer;
 import se.triad.kickass.common.IntValue;
 import se.triad.kickass.common.StubEngine;
 import se.triad.kickass.common.TestUtils;
@@ -53,7 +52,7 @@ public class TestByteBoozer {
         blocks.add(new MemBlock("elgena", input, 0x2000));
 
         byte[] result = boozer.execute(blocks, new IValue[]{new IntValue(0x203d)}, new StubEngine());
-
+        Assert.assertEquals(result.length, 6695);
     }
 
     @Test

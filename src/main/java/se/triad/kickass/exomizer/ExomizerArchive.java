@@ -3,7 +3,7 @@ package se.triad.kickass.exomizer;
 import java.util.ArrayList;
 import java.util.List;
 
-import cml.kickass.plugins.interf.IArchive;
+import kickass.plugins.interf.IArchive;
 
 public class ExomizerArchive implements IArchive {
 

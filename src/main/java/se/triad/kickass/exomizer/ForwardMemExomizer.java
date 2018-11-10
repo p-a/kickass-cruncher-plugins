@@ -3,9 +3,9 @@ package se.triad.kickass.exomizer;
 import java.util.EnumMap;
 import java.util.List;
 
-import cml.kickass.plugins.interf.IEngine;
-import cml.kickass.plugins.interf.IMemoryBlock;
-import cml.kickass.plugins.interf.IValue;
+import kickass.plugins.interf.IEngine;
+import kickass.plugins.interf.IMemoryBlock;
+import kickass.plugins.interf.IValue;
 
 public class ForwardMemExomizer extends MemExomizer {
 

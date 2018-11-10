@@ -1,11 +1,11 @@
 package se.triad.kickass.exomizer;
-import junit.framework.Assert;
 import net.magli143.exo.ExoLibrary;
 import net.magli143.exo.ExoLibraryWithFallback;
 import net.magli143.exo.crunch_info;
 import net.magli143.exo.crunch_options;
 import net.magli143.exo.membuf;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.sun.jna.Memory;

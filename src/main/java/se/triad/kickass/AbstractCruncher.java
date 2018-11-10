@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import cml.kickass.plugins.interf.IEngine;
-import cml.kickass.plugins.interf.IMemoryBlock;
-import cml.kickass.plugins.interf.IModifier;
-import cml.kickass.plugins.interf.IValue;
+import kickass.plugins.interf.IEngine;
+import kickass.plugins.interf.IMemoryBlock;
+import kickass.plugins.interf.IModifier;
+import kickass.plugins.interf.IValue;
 
 public abstract class AbstractCruncher implements IModifier{
 
