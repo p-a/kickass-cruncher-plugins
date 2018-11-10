@@ -7,7 +7,7 @@ import java.util.List;
 
 import se.triad.kickass.exomizer.MemBlock;
 
-import kickass.plugins.interf.IMemoryBlock;
+import kickass.plugins.interf.general.IMemoryBlock;
 
 public class Utils {
 

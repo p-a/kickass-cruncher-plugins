@@ -13,8 +13,8 @@ import org.testng.annotations.Test;
 import se.triad.kickass.common.BooleanValue;
 import se.triad.kickass.common.StubEngine;
 
-import kickass.plugins.interf.IMemoryBlock;
-import kickass.plugins.interf.IValue;
+import kickass.plugins.interf.general.IMemoryBlock;
+import kickass.plugins.interf.general.IValue;
 
 @Test
 public class TestRawExomizer {

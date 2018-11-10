@@ -2,13 +2,18 @@ package se.booze.deltapacker;
 
 import java.util.List;
 
-import kickass.plugins.interf.IEngine;
-import kickass.plugins.interf.IMemoryBlock;
-import kickass.plugins.interf.IModifier;
-import kickass.plugins.interf.IValue;
+import kickass.plugins.interf.general.IEngine;
+import kickass.plugins.interf.general.IMemoryBlock;
+import kickass.plugins.interf.modifier.IModifier;
+import kickass.plugins.interf.modifier.ModifierDefinition;
+import kickass.plugins.interf.general.IValue;
 
 public class DeltaPacker implements IModifier {
 
+	private ModifierDefinition modifierDefinition = new ModifierDefinition();
+	{
+		modifierDefinition.setName("DeltaPacker");
+	}
 	@Override
 	public byte[] execute(List<IMemoryBlock> mem, IValue[] opts, IEngine engine) {
 		
@@ -42,8 +47,8 @@ public class DeltaPacker implements IModifier {
 	}
 
 	@Override
-	public String getName() {
-		return "DeltaPacker";
+	public ModifierDefinition getDefinition() {
+		return modifierDefinition;
 	}
 
 }

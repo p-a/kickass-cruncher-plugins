@@ -2,7 +2,7 @@ package se.triad.kickass.common;
 
 import java.util.List;
 
-import kickass.plugins.interf.IValue;
+import kickass.plugins.interf.general.IValue;
 
 public class IntValue implements IValue {
 	

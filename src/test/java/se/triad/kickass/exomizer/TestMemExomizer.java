@@ -12,8 +12,8 @@ import se.triad.kickass.common.BooleanValue;
 import se.triad.kickass.common.IntValue;
 import se.triad.kickass.common.StubEngine;
 
-import kickass.plugins.interf.IMemoryBlock;
-import kickass.plugins.interf.IValue;
+import kickass.plugins.interf.general.IMemoryBlock;
+import kickass.plugins.interf.general.IValue;
 import static se.triad.kickass.common.TestUtils.resourceToByteArray;
 
 @Test

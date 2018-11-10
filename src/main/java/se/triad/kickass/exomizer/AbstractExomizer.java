@@ -6,8 +6,8 @@ import java.util.EnumMap;
 
 import se.triad.kickass.AbstractCruncher;
 import se.triad.kickass.CrunchedObject;
-import kickass.plugins.interf.IEngine;
-import kickass.plugins.interf.IMemoryBlock;
+import kickass.plugins.interf.general.IEngine;
+import kickass.plugins.interf.general.IMemoryBlock;
 
 public abstract class AbstractExomizer extends AbstractCruncher {
 

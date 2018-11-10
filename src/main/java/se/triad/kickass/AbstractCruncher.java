@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import kickass.plugins.interf.IEngine;
-import kickass.plugins.interf.IMemoryBlock;
-import kickass.plugins.interf.IModifier;
-import kickass.plugins.interf.IValue;
+import kickass.plugins.interf.general.IEngine;
+import kickass.plugins.interf.general.IMemoryBlock;
+import kickass.plugins.interf.modifier.IModifier;
+import kickass.plugins.interf.modifier.ModifierDefinition;
+import kickass.plugins.interf.general.IValue;
 
 public abstract class AbstractCruncher implements IModifier{
 
@@ -23,7 +24,18 @@ public abstract class AbstractCruncher implements IModifier{
         MAXIMUM_OFFSET_SIZE
     }
 
+	private ModifierDefinition modifierDefinition;
 
+    {
+    	modifierDefinition = new ModifierDefinition();
+    	modifierDefinition.setName(getName());
+    }
+
+    @Override
+    public ModifierDefinition getDefinition() {
+    	return modifierDefinition;
+    }
+    
     protected abstract String getSyntax();
 
     @Override
@@ -52,7 +64,9 @@ public abstract class AbstractCruncher implements IModifier{
 
     }
 
-    protected abstract String formatAddress(int address);
+    public abstract String getName();
+  
+	protected abstract String formatAddress(int address);
 
     protected abstract CrunchedObject crunch(IMemoryBlock block,
             EnumMap<Options, Object> opts, IEngine iEngine);
