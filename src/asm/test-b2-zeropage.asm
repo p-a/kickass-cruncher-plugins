@@ -4,7 +4,7 @@
 
 :BasicUpstart(start)
 
-.import source "b2_decrzero.inc"
+#import "b2_decrzero.inc"
 
 .pc = $0810
 start:

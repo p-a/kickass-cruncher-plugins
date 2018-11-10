@@ -6,7 +6,7 @@
 
 // You must set .const B2_ZP_BASE prior the import of this file
 .if (B2_ZP_BASE > $ff) {
-    .error "B2_ZP_BASE must be in zeropage. Was $" + toHexAddr(B2_ZP_BASE,4)
+    .error "B2_ZP_BASE must be in zeropage. Was $" + toHexString(B2_ZP_BASE,4)
 }
 
 
@@ -14,7 +14,7 @@
 .label bits     = zp_base
 .label put      = zp_base + 2
 
-.macro B2_DECRUNCH(addr) {
+.macro @B2_DECRUNCH(addr) {
     ldy #<addr
     ldx #>addr
     jsr b2.Decrunch

@@ -67,7 +67,7 @@ start:
         jmp loop
  
 .const BB_ZP_BASE = $02
-.import source "bb_decruncher_opt.inc"  
+#import "bb_decruncher_opt.inc"  
 
 .label crunchedMusic = *
 .modify ByteBoozer(){         

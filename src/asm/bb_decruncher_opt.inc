@@ -4,16 +4,16 @@
 
 // You must set .const BB_ZP_BASE prior the import of this file
 .if (BB_ZP_BASE > $ff) {
-    .error "BB_ZP_BASE must be in zeropage. Was $" + toHexAddr(BB_ZP_BASE,4)
+    .error "BB_ZP_BASE must be in zeropage. Was $" + toHexString(BB_ZP_BASE,4)
 }
 
-.macro BB_DECRUNCH(addr){
+.macro @BB_DECRUNCH(addr){
             ldy #<addr
             ldx #>addr
             jsr byteboozer.Decrunch
 }
 
-.macro BB_DECRUNCH_NEXT(){
+.macro @BB_DECRUNCH_NEXT(){
             jsr byteboozer.Decrunch_next
 }
 

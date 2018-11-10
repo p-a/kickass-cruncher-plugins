@@ -5,7 +5,7 @@
 .importonce
 
 // Move decruncher to zeropage and execute
-.macro B2ZERO(data, length, startAddr, relocate) {
+.macro @B2ZERO(data, length, startAddr, relocate) {
     
     sei
     lda #$34

@@ -69,7 +69,7 @@ start:
 .const EXO_LITERAL_SEQUENCES_USED = true
 .const EXO_ZP_BASE = $02
 .const EXO_DECRUNCH_TABLE = $0200
-.import source "exodecr.inc"  
+#import "exodecr.inc"  
 
 .modify MemExomizer(){         
     .pc = music.location "Music"

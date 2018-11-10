@@ -243,7 +243,7 @@ At the project root-dir, type:
 
 Please add the exomizer fallback option if you get errors on MacOS High Sierra:
 
-    mvn clean package -D EXOMIZER_COMMANDLINE_FALLBACK=/Users/blah/bin/exomizer 
+    mvn clean package -D EXOMIZER_COMMANDLINE_FALLBACK=/path/to/exomizer 
 
 This compiles, tests and packages the release zip-file, which you will find in the project's target/release directory.
 

@@ -67,7 +67,7 @@ start:
         jmp loop
  
 .const B2_ZP_BASE = $02
-.import source "b2_decruncher.inc"  
+#import "b2_decruncher.inc"  
 
 .label crunchedMusic = *
 .modify B2(){         
