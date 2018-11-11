@@ -5,7 +5,7 @@ KickAss Cruncher Plugins
 the MOS 65xx assembler **[Kick Assembler](http://www.theweb.dk/KickAssembler)**. This is done by the means of Kick Assembler's plugin support, in specific *Modifiers*.
 The current version has support for two of the most popular crunchers for the Commodore 64, *[ByteBoozer](http://csdb.dk/release/?id=109317)* and *[Exomizer](http://hem.bredband.net/magli143/exo/)*.
 
-####Example:
+#### Example:
     
     .plugin "se.booze.kickass.CruncherPlugins"
  
@@ -62,12 +62,12 @@ ByteBoozer
 
 The ByteBoozer plugin is a pure java implementation of David Malmborg's excellent cruncher.
 
-####Syntax:
+#### Syntax:
     .modify ByteBoozer(boolean reverse [false])
 
 *Square brackets denotes default values used when argument is left out*
     
-####Example:
+#### Example:
     .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify ByteBoozer() {
@@ -78,7 +78,7 @@ The ByteBoozer plugin is a pure java implementation of David Malmborg's excellen
 You can also crunch several segments of memory. The cruncher will merge these together into one block spanning
 the memory area required by all contained memory blocks, zero-filling any gaps.
 
-####Example:
+#### Example:
     .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify ByteBoozer() {
@@ -90,7 +90,7 @@ the memory area required by all contained memory blocks, zero-filling any gaps.
 
 There is also experimental support for reversed output:
    
-####Example:   
+#### Example:   
     .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify ByteBoozer(true) {
@@ -104,12 +104,12 @@ B2
 Next generation of ByteBoozer. Faster and better. Use this instead of BB if you can
 
 
-####Syntax:
+#### Syntax:
     .modify B2(int startAdress (optional for margin check))
 
 *Square brackets denotes default values used when argument is left out*
     
-####Example:
+#### Example:
     .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify B2() {
@@ -134,7 +134,7 @@ Exomized data is now cached. The caching mechanism can be disabled by setting th
 Cached data is stored as files in `java.io.tmpdir`, e.g. `/tmp` on a Linux system with the extension `.exo`.
 
 
-###MemExomizer
+### MemExomizer
 
 MemExomizer will merge all memory areas contained in the modify block into one, single block spanning the entire memory region required.
 Gaps will be zero-filled. Crunching is done either forward or backward and the use of literals is optional.
@@ -142,7 +142,7 @@ Forward crunching is often the case for loaders (e.g Krill's loader). Backward-d
 decrunched data may overlap input. Exomizer outputs a safety offset, and this is the minimum offset needed between uncrunched and decrunched data.
 The plugin can help out with asserting this if a start-address for the compressed data is provided (e.g. `*` for current PC).
 
-####Syntax:
+#### Syntax:
     .modify MemExomizer( boolean forwardCrunching [false], boolean useLiterals [true], int startAddress [no check])
 
 There is also two convenience modifiers. They are equal to calling MemExomizer with `useLiterals` set to `true`.
@@ -152,7 +152,7 @@ There is also two convenience modifiers. They are equal to calling MemExomizer w
  
 *Square brackets denotes default values used when argument is left out*
 
-####Example:
+#### Example:
     .plugin "se.booze.kickass.CruncherPlugins"
 
     // Backward-crunching using literals and also asserts that the result can be decrypted at the current PC
@@ -165,7 +165,7 @@ There is also two convenience modifiers. They are equal to calling MemExomizer w
     }
      
  
-###LevelExomizer
+### LevelExomizer
 
 LevelExomizer will crunch all memory areas contained in the modify-block as separate blocks.
 On decrunch, each block must be decrunched separately. Can be more convenient than having multiple MemExomized-blocks.
@@ -188,12 +188,12 @@ of the crunched data. The offsets can be used to calculate the address of each c
 The first offset for forward decrunching is always 0. Backward decrunching offsets are end-positions of block + 1.
  
 
-####Syntax:
+#### Syntax:
     .modify LevelExomizer( boolean forwardCrunching [false], boolean useLiterals [true], boolean outputOffsets [false])
 
 *Square brackets denotes default values used when argument is left out*
  
-####Example:
+#### Example:
     .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify LevelExomizer(){
@@ -206,14 +206,14 @@ The first offset for forward decrunching is always 0. Backward decrunching offse
     }
 
 
-###RawExomizer
+### RawExomizer
 
 RawExomizer only handles one memory block. In the case of inline crunching, you are probably better off with the Mem or Level modes.
 
-####Syntax:
+#### Syntax:
     .modify RawExomizer( boolean forwardCrunching [false], boolean useLiterals [true], boolean reverseOutput [false] )
         
-####Example:
+#### Example:
     .plugin "se.booze.kickass.CruncherPlugins"
 
     .modify RawExomizer( true, true ) {
@@ -244,7 +244,7 @@ The release zip-file contains a couple of small examples to get you going.
 Build
 -----
 
-####Prerequisites
+#### Prerequisites
 
  * [Apache Maven](http://maven.apache.org)
  * [Java SE, JDK 8+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
@@ -259,7 +259,7 @@ Please add the exomizer fallback option if you get errors on MacOS High Sierra:
 
 This compiles, tests and packages the release zip-file, which you will find in the project's target/release directory.
 
-###Build instructions for Exomizer library-files
+### Build instructions for Exomizer library-files
 
 In order to build the native libraries for Exomizer, you will need a proper toolchain.
 For example [MinGW](http://www.mingw.org) in the case of MS Windows.
@@ -283,7 +283,7 @@ Copy the resulting library-file to the correct directory for the current archite
     ${project.basedir}/src/main/resources/win32-x86-64
 
 
-###Rebuild the supporting JNA java-files
+### Rebuild the supporting JNA java-files
 
 In order to rebuild the java-files using JNA for the plugin, please download the latest version of the jnaerator jar:
 <https://code.google.com/p/jnaerator/downloads/list>
