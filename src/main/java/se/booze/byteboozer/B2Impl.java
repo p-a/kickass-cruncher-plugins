@@ -646,7 +646,7 @@ public class B2Impl {
 	}
 
 
-	private CrunchedObject doCrunch(byte[] source, int loadAddress, int packStart) {
+	public CrunchedObject crunch(byte[] source, int loadAddress, int packStart) {
 		
 		ibufSize = source.length;
 		context = new Node[ibufSize];
@@ -686,9 +686,4 @@ public class B2Impl {
 		return new CrunchedObject(target, startAddress);
 	}
 	
-	public static CrunchedObject crunch(byte[] source, int startAdress, int packStart)
-    {
-        return new B2Impl().doCrunch(source, startAdress, packStart);
-    }
-
 }

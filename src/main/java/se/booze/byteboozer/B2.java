@@ -16,6 +16,8 @@ public class B2 extends AbstractCruncher {
 
     private static final String NAME = "B2";
 
+    protected B2Impl _b2 = new B2Impl();
+    
     @Override
     public String getName() {
         return NAME;
@@ -30,7 +32,7 @@ public class B2 extends AbstractCruncher {
     protected CrunchedObject crunch(IMemoryBlock block,
             EnumMap<Options, Object> opts, IEngine iEngine) {
 
-        return B2Impl.crunch(block.getBytes(), block.getStartAddress(), (Integer) opts.get(Options.VALIDATE_SAFETY_OFFSET));
+        return _b2.crunch(block.getBytes(), block.getStartAddress(), (Integer) opts.get(Options.VALIDATE_SAFETY_OFFSET));
     }
 
     @Override

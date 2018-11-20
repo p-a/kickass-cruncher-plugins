@@ -24,7 +24,7 @@ public class TestB2 {
        
         int loadAddr = input[0] & 0xff | (input[1] & 0xff) << 8;
         byte[] inputSkip2 = Arrays.copyOfRange(input, 2, input.length);
-        byte[] result = B2Impl.crunch(inputSkip2, loadAddr, -1).data;
+        byte[] result = new B2Impl().crunch(inputSkip2, loadAddr, -1).data;
 
         Assert.assertEquals(expected.length - 2, result.length);
         for (int i =0; i < result.length; i++){

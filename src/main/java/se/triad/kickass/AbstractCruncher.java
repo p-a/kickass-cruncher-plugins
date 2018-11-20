@@ -5,6 +5,7 @@ import static se.triad.kickass.Utils.toHexString;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.function.Function;
 
 import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
@@ -21,7 +22,8 @@ public abstract class AbstractCruncher implements IModifier{
         VALIDATE_SAFETY_OFFSET,
         REVERSE_OUTPUT,
         OUTPUT_BLOCK_OFFSETS,
-        MAXIMUM_OFFSET_SIZE
+        MAXIMUM_OFFSET_SIZE,
+        JMP_ADDRESS
     }
 
 	private ModifierDefinition modifierDefinition;
@@ -38,8 +40,30 @@ public abstract class AbstractCruncher implements IModifier{
     
     protected abstract String getSyntax();
 
-    @Override
-    public byte[] execute(List<IMemoryBlock> blocks, IValue[] values, IEngine engine) {
+    class CruncherContext {
+    	List<IMemoryBlock> blocks; 
+    	IValue[] values;
+    	IEngine engine;
+    	EnumMap<Options,Object> opts;
+		List<CrunchedObject> crunchedObjects;
+    }
+    
+    class ByteArray {
+    	final byte[] bytes;
+    	ByteArray(byte[] bytes) {
+    		this.bytes = bytes;
+    	}
+    }
+
+    private Function<CruncherContext, ByteArray> defaultPostProcessFunc = context ->
+    		new ByteArray(finalizeData(context.blocks, context.opts, context.engine, context.crunchedObjects));
+   
+	@Override
+    public byte[] execute(List<IMemoryBlock> blocks, IValue[] values, IEngine engine ) {
+       return execute(blocks, values, engine, defaultPostProcessFunc).bytes;
+    }
+    
+    public <T> T execute(List<IMemoryBlock> blocks, IValue[] values, IEngine engine, Function<CruncherContext, T> postProcess) {
 
         EnumMap<Options,Object> opts = new EnumMap<AbstractCruncher.Options, Object>(Options.class);
 
@@ -59,9 +83,15 @@ public abstract class AbstractCruncher implements IModifier{
         }
 
         validateResult(blocks, opts, engine, crunchedObjects);
-
-        return finalizeData(blocks, opts, engine, crunchedObjects);
-
+        
+        CruncherContext context = new CruncherContext();
+        context.blocks = blocks;
+        context.values = values;
+        context.engine = engine;
+        context.opts = opts;
+        context.crunchedObjects = crunchedObjects;
+        
+        return postProcess.apply(context);
     }
 
     public abstract String getName();
@@ -101,7 +131,7 @@ public abstract class AbstractCruncher implements IModifier{
                     else
                         error = error + "\nPlace your data <= "+toHexString(min-safetyOffset) + " or >= " + toHexString(max);
 
-                    engine.error(error);
+                    engine.error(getName() + ": "+ error);
                 }
             }
         }
@@ -111,30 +141,30 @@ public abstract class AbstractCruncher implements IModifier{
     protected abstract void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks, IValue[] values,
             IEngine engine);
 
-    protected static void addBooleanOption(IValue[] values, int index,
+    protected void addBooleanOption(IValue[] values, int index,
             EnumMap<Options, Object> opts, Options opt, boolean defaultValue) {
         if ( values.length > index && values[index].getBoolean() || values.length <= index && defaultValue) {
             opts.put(opt,null);
         }
     }
-    protected static void addIntegerOption(IValue[] values, int index,
+    protected void addIntegerOption(IValue[] values, int index,
             EnumMap<Options, Object> opts, Options opt, int defaultValue) {
         int val = defaultValue;
         if ( values.length > index && values[index].hasIntRepresentation()) {
             val = values[index].getInt();
             if (values[index].getInt() < 1 || values[index].getInt() > 65536)
-                throw new IllegalArgumentException("Maximum offset size must be a positive 16-bit integer");
+                throw new IllegalArgumentException(getName() + ": Maximum offset size must be a positive 16-bit integer");
         }
         opts.put(opt, new Integer(val));
     }
 
-    protected static void addSafetyOffsetCheckOption(IValue[] values,
+    protected void addSafetyOffsetCheckOption(IValue[] values,
             int index, EnumMap<Options, Object> opts) {
         if ( values.length > index) {
             if (values[index].hasIntRepresentation() && values[index].getInt() >= 0 && values[index].getInt() < 65536) {
                 opts.put(Options.VALIDATE_SAFETY_OFFSET, values[index].getInt() );
             } else if (!values[index].hasIntRepresentation()){
-                throw new IllegalArgumentException("Not an integer or value of out range: "  + values[index].getInt());
+                throw new IllegalArgumentException(getName() + ": Not an integer or value of out range: "  + values[index].getInt());
             }
         }
     }
