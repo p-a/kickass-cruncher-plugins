@@ -3,7 +3,7 @@ package se.booze.deltapacker;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import kickass.plugins.interf.general.IMemoryBlock;
@@ -26,7 +26,7 @@ public class TestDeltaPacker {
 		byte[] execute = packer.execute(mem, new IValue[]{}, new StubEngine());
 	
 		byte[] expecteds = { 0, 1, (byte) 254 };
-		Assert.assertArrayEquals(expecteds, execute);
+		Assert.assertEquals(execute, expecteds);
 	}
 	
 	@Test
@@ -39,7 +39,7 @@ public class TestDeltaPacker {
 		byte[] execute = packer.execute(mem, new IValue[]{}, new StubEngine());
 	
 		byte[] expecteds = { 1,1,1,1,1,1,1,1,1,1,1,1 };
-		Assert.assertArrayEquals(expecteds, execute);
+		Assert.assertEquals(expecteds, execute);
 	}
 	
 	@Test
@@ -52,7 +52,7 @@ public class TestDeltaPacker {
 		byte[] execute = packer.execute(mem, new IValue[]{}, new StubEngine());
 	
 		byte[] expecteds = { 0, 1, (byte) 254, (byte) 255};
-		Assert.assertArrayEquals(expecteds, execute);
+		Assert.assertEquals(expecteds, execute);
 	}
 	
 	@Test
@@ -65,7 +65,7 @@ public class TestDeltaPacker {
 		byte[] execute = packer.execute(mem, new IValue[]{}, new StubEngine());
 	
 		byte[] expecteds = { 12, (byte) 255, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, };
-		Assert.assertArrayEquals(expecteds, execute);
+		Assert.assertEquals(expecteds, execute);
 	}
 	
 	@Test
@@ -78,7 +78,7 @@ public class TestDeltaPacker {
 		byte[] execute = packer.execute(mem, new IValue[]{ new BooleanValue(true) }, new StubEngine());
 	
 		byte[] expecteds = { 1,1,1,1,1,1,1,1,1,1,1,1 };
-		Assert.assertArrayEquals(expecteds, execute);
+		Assert.assertEquals(expecteds, execute);
 	}
 	
 	@Test
@@ -89,7 +89,7 @@ public class TestDeltaPacker {
 		byte[] data = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 11,0, (byte)255, (byte) 254, (byte) 127, (byte) 255, (byte) 0, (byte) 129, 0,0,(byte) 128, (byte) 63 };
 		mem.add(new MemBlock("bah", data, 0));
 		byte[] unpacked = unpack(packer.execute(mem, new IValue[]{}, new StubEngine()), false);
-		Assert.assertArrayEquals(unpacked,  data);
+		Assert.assertEquals(unpacked,  data);
 		
 	}
 	@Test
@@ -102,7 +102,7 @@ public class TestDeltaPacker {
 		byte[] output = packer.execute(mem, new IValue[]{}, new StubEngine());
 		
 		byte[] unpacked = unpack(output, false);
-		Assert.assertArrayEquals(unpacked,  data);
+		Assert.assertEquals(unpacked,  data);
 		
 	}
 	
@@ -116,7 +116,7 @@ public class TestDeltaPacker {
 		byte[] output = packer.execute(mem, new IValue[]{new BooleanValue(true)}, new StubEngine());
 		
 		byte[] unpacked = unpack(output, true);
-		Assert.assertArrayEquals(unpacked,  data);
+		Assert.assertEquals(unpacked,  data);
 		
 	}
 

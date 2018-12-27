@@ -4,6 +4,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>cml.kickass</groupId>
   <artifactId>KickAss</artifactId>
-  <version>5.1</version>
+  <version>5.2</version>
   <description>POM was created from install:install-file</description>
 </project>
