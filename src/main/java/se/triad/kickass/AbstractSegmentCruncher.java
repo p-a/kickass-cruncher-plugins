@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import kickass.nonasm.tools.tuples.Pair;
 import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
-import kickass.plugins.interf.general.IValue;
+import kickass.plugins.interf.general.IParameterMap;
 import kickass.plugins.interf.segmentmodifier.ISegmentModifier;
 import kickass.plugins.interf.segmentmodifier.SegmentModifierDefinition;
 import se.triad.kickass.AbstractCruncher.CruncherContext;
@@ -37,8 +37,8 @@ public class AbstractSegmentCruncher implements ISegmentModifier {
 	};
 	
 	@Override
-	public List<IMemoryBlock> execute(List<IMemoryBlock> blocks, List<IValue> values, IEngine engine) {
-		return abstractCruncher.execute(blocks, values.toArray(new IValue[]{}), engine, postProcessor);
+	public List<IMemoryBlock> execute(List<IMemoryBlock> blocks, IParameterMap parameters, IEngine engine) {
+		return abstractCruncher.execute(blocks, parameters, engine, postProcessor);
 	}
 
 	@Override

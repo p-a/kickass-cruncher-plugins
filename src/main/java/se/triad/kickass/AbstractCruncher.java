@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
+import kickass.plugins.interf.general.IParameterMap;
 import kickass.plugins.interf.modifier.IModifier;
 import kickass.plugins.interf.modifier.ModifierDefinition;
 import kickass.plugins.interf.general.IValue;
@@ -63,6 +65,13 @@ public abstract class AbstractCruncher implements IModifier{
        return execute(blocks, values, engine, defaultPostProcessFunc).bytes;
     }
     
+    public <T> T execute(List<IMemoryBlock> blocks, IParameterMap params, IEngine engine, Function<CruncherContext, T> postProcess) {
+
+    	IValue[] values = params.getParameterNames().stream().map(params::getValue).collect(Collectors.toList()).toArray(new IValue[] {});
+    	
+    	return execute(blocks, values, engine, postProcess);
+    }
+
     public <T> T execute(List<IMemoryBlock> blocks, IValue[] values, IEngine engine, Function<CruncherContext, T> postProcess) {
 
         EnumMap<Options,Object> opts = new EnumMap<AbstractCruncher.Options, Object>(Options.class);
