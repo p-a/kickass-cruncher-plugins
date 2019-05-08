@@ -343,10 +343,10 @@ public class ExoLibraryWithFallback implements ExoLibrary {
 				throw new RuntimeException("Exit value was: " + exec.exitValue());
 			}
 			byte[] outBytes = Files.readAllBytes(outFile.toPath());
+			outbuf.setAutoSynch(true);
 			Pointer p = new Memory(outBytes.length);
 			p.write(0, outBytes, 0, outBytes.length);
 			membuf_append(outbuf, p, outBytes.length);
-			
 			if (!decrunch) {
 				info.needed_safety_offset = 0;
 				info.literal_sequences_used = options.use_literal_sequences;
