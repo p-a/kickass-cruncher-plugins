@@ -47,12 +47,41 @@ The pre-compiled Exomizer dylib for MacOS High Sierra seems to have problems, re
 As a workaround, the plugin can fallback to execute exomizer via commandline.
 This must be added as a system property to the commandline:
 
-    java -cp "kickass-cruncher-plugins-1.1.jar:KickAss.jar" \
-        -D  EXOMIZER_COMMANDLINE_FALLBACK=path_to_exomizer_executable \
+    java -cp "kickass-cruncher-plugins-2.0.jar:KickAss.jar" \
+        -D EXOMIZER_COMMANDLINE_FALLBACK=path_to_exomizer_executable \
         kickass.KickAssembler demo.asm
+
+You can provide extra parameters to the fallback command by providing a comma separated list of parameters via the property EXOMIZER_COMMANDLINE_FALLBACK_EXTRA_PARAMS
+
+    java -cp "kickass-cruncher-plugins-2.0.jar:KickAss.jar" \
+        -D EXOMIZER_COMMANDLINE_FALLBACK=exomizer3 \
+        -D EXOMIZER_COMMANDLINE_FALLBACK_EXTRA_PARAMS=-T5
+        kickass.KickAssembler demo.asm
+
+Caching the results of the cruncher may improve performance if you have a large project.
+It is enabled by the property KICKASS_CRUNCHER_CACHE
+
+    java -cp "kickass-cruncher-plugins-2.0.jar:KickAss.jar" \
+        -D KICKASS_CRUNCHER_CACHE=true \
+        kickass.KickAssembler demo.asm
+
 
 Please note that out of laziness, the safety offset is always returned as $0000
 when using this fall back.
+
+Changelog
+=========
+
+*   Added general support for caching, via the property KICKASS_CRUNCHER_CACHE.
+    This deprecates the DISABLE_EXOMIZER_CACHE flag. 2019-05-12
+    
+*   Added support for extra parameters when using the fallback command.
+    EXOMIZER_COMMANDLINE_FALLBACK_EXTRA_PARAMS. 2019-05-11
+
+*   Experimental support for segment modifiers. All plugins are supported. WIP.
+
+*   Added experimental B2EXE cruncher which crunches and adds a basic upstart routine. WIP.
+
 
 Supported Crunchers
 ===================
@@ -228,6 +257,15 @@ Exomizer 3
 
 Using `EXOMIZER_COMMANDLINE_FALLBACK` you should be able to crunch using Exomizer 3.
 Just add `-D EXOMIZER_COMMANDLINE_FALLBACK=/path/to/exomizer3` as argument to java.
+
+Since the plugin uses the raw mode when compiling, the output will not match what
+exomizer3 mem or level will output. You will have to add the option -T5 for it to do that.
+It can be done via the EXOMIZER_COMMANDLINE_FALLBACK_EXTRA_PARAMS property.
+
+    java -cp "kickass-cruncher-plugins-2.0.jar:KickAss.jar" \
+        -D EXOMIZER_COMMANDLINE_FALLBACK=exomizer3 \
+        -D EXOMIZER_COMMANDLINE_FALLBACK_EXTRA_PARAMS=-T5
+        kickass.KickAssembler demo.asm
 
 Note. Exomizer 3 comes with a new decruncher which is not included with this package.
 
