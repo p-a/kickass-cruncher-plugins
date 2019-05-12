@@ -2,9 +2,18 @@ package se.triad.kickass;
 
 import static se.triad.kickass.Utils.toHexString;
 
-import java.util.ArrayList;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -16,6 +25,8 @@ import kickass.plugins.interf.modifier.ModifierDefinition;
 import kickass.plugins.interf.general.IValue;
 
 public abstract class AbstractCruncher implements IModifier{
+	
+	public final static String KICKASS_CRUNCHER_CACHE = "KICKASS_CRUNCHER_CACHE";
 
     public static enum Options {
         FORWARD_CRUNCHING,
@@ -71,7 +82,64 @@ public abstract class AbstractCruncher implements IModifier{
     	
     	return execute(blocks, values, engine, postProcess);
     }
+    
+    protected boolean isCachingEnabled() {
+    	return Boolean.getBoolean(KICKASS_CRUNCHER_CACHE);
+    }
 
+    private Optional<CrunchedObject> cacheLookup(IMemoryBlock block,  EnumMap<Options,Object> opts) {
+    	if (isCachingEnabled()) {
+        	File f = getCacheFile(block, opts);
+        	return getCachedObject(f);
+    	}
+		return Optional.empty();
+    }
+    
+    private void cache(CrunchedObject c, IMemoryBlock block, EnumMap<Options,Object> opts) {
+    	if (isCachingEnabled()) {
+    		File f = getCacheFile(block, opts);
+	        try (DataOutputStream os = new DataOutputStream(new FileOutputStream(f, false))) {
+	        	os.writeInt(c.address);
+	            os.write(c.data);
+	            os.flush();
+	        } catch (IOException e) {
+	            throw new RuntimeException(e);
+	        }
+    	} 
+    }
+    
+    private Optional<CrunchedObject> getCachedObject(File f) {
+        if (f.exists() && f.canRead() && f.length() > 0 ){
+	        try (DataInputStream is = new DataInputStream(new FileInputStream(f))) {
+	                f.length();
+	                int safety = is.readInt();
+	                byte[] filedata = new byte[(int)f.length() - 4];
+	                is.readFully(filedata);
+	                return Optional.of(new CrunchedObject(filedata, safety));
+	        } catch(IOException e){
+	        	throw new RuntimeException(e);
+	        }
+        }
+        return Optional.empty();
+    }
+    
+    private File getCacheFile(IMemoryBlock block,  EnumMap<Options,Object> opts) {
+        StringBuilder buildr = new StringBuilder();
+        MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD5");
+			byte[] digest = md.digest(block.getBytes());
+	        buildr.append(Base64.getUrlEncoder().encodeToString(digest));
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+		buildr.append(opts.toString());
+		buildr.append(getName());
+		String filename = Base64.getUrlEncoder().encodeToString(buildr.toString().getBytes())+".pkd";
+		String tempDir = System.getProperty("java.io.tmpdir");
+        return new File(tempDir, filename);
+    }
+    
     public <T> T execute(List<IMemoryBlock> blocks, IValue[] values, IEngine engine, Function<CruncherContext, T> postProcess) {
 
         EnumMap<Options,Object> opts = new EnumMap<AbstractCruncher.Options, Object>(Options.class);
@@ -79,17 +147,17 @@ public abstract class AbstractCruncher implements IModifier{
         validateArguments(opts, blocks,values,engine);
 
         blocks = preTransformBlocks(blocks);
-        List<CrunchedObject> crunchedObjects = new ArrayList<CrunchedObject>();
-
-        for (IMemoryBlock block: blocks){
-
-            CrunchedObject crunchedObj = crunch(block, opts, engine);
-            crunchedObjects.add(crunchedObj);
-
+        List<CrunchedObject> crunchedObjects = blocks.stream().map(block -> {
+        	CrunchedObject crunchedObj = cacheLookup(block,opts).orElseGet(() -> {
+        		CrunchedObject c = crunch(block, opts, engine);
+        		cache(c, block, opts);
+        		return c;
+        	});
             int percent = 100 * crunchedObj.data.length / block.getBytes().length;
             engine.printNow(getName() + ": " +block.getName() +  " " +toHexString(block.getStartAddress()) + " - " + toHexString(block.getStartAddress()-1+block.getBytes().length) +
                     " Packed size " + toHexString(crunchedObj.data.length)+" ("+percent+ "%) " + formatAddress(crunchedObj.address));
-        }
+            return crunchedObj;
+        }).collect(Collectors.toList());
 
         validateResult(blocks, opts, engine, crunchedObjects);
         

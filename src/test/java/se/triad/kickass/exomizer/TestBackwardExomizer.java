@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import se.triad.kickass.common.StubEngine;
@@ -16,9 +15,8 @@ import kickass.plugins.interf.general.IValue;
 @Test
 public class TestBackwardExomizer {
 
-	@BeforeTest
 	public void disableCache(){
-		System.setProperty(ExoHelper.DISABLE_EXOMIZER_CACHE, "true");
+		System.setProperty(AbstractExomizer.DISABLE_EXOMIZER_CACHE, "true");
 	}
 	
 	@Test

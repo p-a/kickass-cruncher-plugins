@@ -7,7 +7,10 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
@@ -18,7 +21,13 @@ import net.magli143.exo.membuf.ByReference;
 public class ExoLibraryWithFallback implements ExoLibrary {
 
     public static final String EXECUTABLE_FALLBACK = "EXOMIZER_COMMANDLINE_FALLBACK";
-
+    public static final String EXECUTABLE_FALLBACK_PARAMS = "EXOMIZER_COMMANDLINE_FALLBACK_EXTRA_PARAMS";
+    
+    private final static Collection<String> EXTRA_PARAMS;
+    static {
+    	final String params = System.getProperty(EXECUTABLE_FALLBACK_PARAMS, "");
+    	EXTRA_PARAMS = Arrays.asList(params.split("//s*,//s*")).stream().filter(s -> !s.isEmpty()).collect(Collectors.toList());
+	}
 	private final ExoLibrary nativeInstance;
 	private final String fallbackExecutable = System.getProperty(EXECUTABLE_FALLBACK);
 	
@@ -300,6 +309,7 @@ public class ExoLibraryWithFallback implements ExoLibrary {
 
 	protected void callExomizer(membuf inbuf, membuf outbuf, crunch_options options, crunch_info info,
 			boolean crunchBackwards, boolean decrunch, boolean reverse) {
+		
 		FileOutputStream fos = null;
 		File inFile = null, outFile = null;
 		try {
@@ -325,10 +335,12 @@ public class ExoLibraryWithFallback implements ExoLibrary {
 				if (options.use_literal_sequences == 0) {
 					cmdline.add("-c");
 				}
-				}
+			}
 			if (crunchBackwards) {
 				cmdline.add("-b");
-			}
+			} 
+			cmdline.addAll(EXTRA_PARAMS);
+			
 			cmdline.add("-o");
 			cmdline.add(outFile.getAbsolutePath());
 			cmdline.add(inFile.getAbsolutePath());

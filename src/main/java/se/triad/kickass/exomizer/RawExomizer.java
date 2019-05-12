@@ -55,7 +55,7 @@ public class RawExomizer extends AbstractExomizer {
             addBooleanOption(values, ARGNUM_FORWARD_CRUNCHING, opts, Options.FORWARD_CRUNCHING, false);
             addBooleanOption(values, ARGNUM_USE_LITERALS, opts, Options.USE_LITERALS, true);
             addBooleanOption(values, ARGNUM_REVERSE_OUTPUT, opts, Options.REVERSE_OUTPUT, false);
-            addIntegerOption(values, ARGNUM_MAX_OFFSET_SIZE, opts, Options.MAXIMUM_OFFSET_SIZE, ExoHelper.MAX_OFFSET);
+            addIntegerOption(values, ARGNUM_MAX_OFFSET_SIZE, opts, Options.MAXIMUM_OFFSET_SIZE, AbstractExomizer.MAX_OFFSET);
         } catch (Exception ex){
             engine.error(ex.getMessage() + "\n" + getSyntax());
         }

@@ -19,7 +19,7 @@ public class TestForwardExomizer {
 
 	@BeforeTest
 	public void disableCache(){
-		System.setProperty(ExoHelper.DISABLE_EXOMIZER_CACHE, "true");
+		System.setProperty(AbstractExomizer.DISABLE_EXOMIZER_CACHE, "true");
 	}
 
 	@Test
