@@ -149,7 +149,7 @@
 			<dependency>
 				<groupId>cml.kickass</groupId>
 				<artifactId>KickAss</artifactId>
-				<version>5.5</version>
+				<version>5.7</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
