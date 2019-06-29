@@ -9,6 +9,7 @@ import com.sun.jna.Pointer;
 
 import se.triad.kickass.AbstractCruncher;
 import se.triad.kickass.CrunchedObject;
+import se.triad.kickass.Options;
 import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
 import net.magli143.exo.ExoLibrary;

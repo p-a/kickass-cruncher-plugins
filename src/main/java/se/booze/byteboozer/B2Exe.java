@@ -8,6 +8,7 @@ import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
 import kickass.plugins.interf.general.IValue;
 import se.triad.kickass.CrunchedObject;
+import se.triad.kickass.Options;
 
 public class B2Exe extends B2 {
 

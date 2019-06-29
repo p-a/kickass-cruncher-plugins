@@ -2,8 +2,11 @@ package se.triad.kickass.exomizer;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import se.triad.kickass.CrunchedObject;
+import se.triad.kickass.Options;
 import se.triad.kickass.Utils;
 
 
@@ -104,6 +107,11 @@ public class LevelExomizer extends AbstractExomizer {
 		} catch (Exception ex){
 			engine.error(ex.getMessage() + "\n" + getSyntax());
 		}
+	}
+
+	@Override
+	protected Set<String> getParams() {
+		return null;
 	}
 
 }

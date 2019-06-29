@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.List;
 
 import se.triad.kickass.CrunchedObject;
+import se.triad.kickass.Options;
 import se.triad.kickass.Utils;
 
 

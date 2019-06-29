@@ -14,6 +14,7 @@ import java.util.Base64;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,18 +29,7 @@ public abstract class AbstractCruncher implements IModifier{
 	
 	public final static String KICKASS_CRUNCHER_CACHE = "KICKASS_CRUNCHER_CACHE";
 
-    public static enum Options {
-        FORWARD_CRUNCHING,
-        USE_LITERALS,
-        APPEND_IN_LOAD,
-        VALIDATE_SAFETY_OFFSET,
-        REVERSE_OUTPUT,
-        OUTPUT_BLOCK_OFFSETS,
-        MAXIMUM_OFFSET_SIZE,
-        JMP_ADDRESS
-    }
-
-	private ModifierDefinition modifierDefinition;
+    private ModifierDefinition modifierDefinition;
 
     {
     	modifierDefinition = new ModifierDefinition();
@@ -78,8 +68,8 @@ public abstract class AbstractCruncher implements IModifier{
     
     public <T> T execute(List<IMemoryBlock> blocks, IParameterMap params, IEngine engine, Function<CruncherContext, T> postProcess) {
 
-    	IValue[] values = params.getParameterNames().stream().map(params::getValue).collect(Collectors.toList()).toArray(new IValue[] {});
-    	
+    	IValue[] values = params.getParameterNames().stream().filter(v -> !"modify".equals(v)).map(params::getValue).collect(Collectors.toList()).toArray(new IValue[] {});
+  
     	return execute(blocks, values, engine, postProcess);
     }
     
@@ -142,7 +132,7 @@ public abstract class AbstractCruncher implements IModifier{
     
     public <T> T execute(List<IMemoryBlock> blocks, IValue[] values, IEngine engine, Function<CruncherContext, T> postProcess) {
 
-        EnumMap<Options,Object> opts = new EnumMap<AbstractCruncher.Options, Object>(Options.class);
+        EnumMap<Options,Object> opts = new EnumMap<Options, Object>(Options.class);
 
         validateArguments(opts, blocks,values,engine);
 
@@ -245,4 +235,6 @@ public abstract class AbstractCruncher implements IModifier{
             }
         }
     }
+
+	protected abstract Set<String> getParams();
 }

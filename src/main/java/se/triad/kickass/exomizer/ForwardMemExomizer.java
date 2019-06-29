@@ -6,6 +6,7 @@ import java.util.List;
 import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
 import kickass.plugins.interf.general.IValue;
+import se.triad.kickass.Options;
 
 public class ForwardMemExomizer extends MemExomizer {
 

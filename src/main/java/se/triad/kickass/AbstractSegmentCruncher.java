@@ -2,6 +2,7 @@ package se.triad.kickass;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -13,7 +14,7 @@ import kickass.plugins.interf.segmentmodifier.ISegmentModifier;
 import kickass.plugins.interf.segmentmodifier.SegmentModifierDefinition;
 import se.triad.kickass.AbstractCruncher.CruncherContext;
 
-public class AbstractSegmentCruncher implements ISegmentModifier {
+public abstract class AbstractSegmentCruncher implements ISegmentModifier {
 
 	private AbstractCruncher abstractCruncher;
 	private SegmentModifierDefinition segmentModifierDefinition = new SegmentModifierDefinition();
@@ -21,6 +22,7 @@ public class AbstractSegmentCruncher implements ISegmentModifier {
 	public AbstractSegmentCruncher(AbstractCruncher abstractCruncher) {
 		this.abstractCruncher = abstractCruncher;
 		this.segmentModifierDefinition.setName(abstractCruncher.getName());
+		this.segmentModifierDefinition.setAllParameters(abstractCruncher.getParams());
 	}
 
 	private Function<CruncherContext, List<IMemoryBlock>> postProcessor = context -> {
