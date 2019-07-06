@@ -2,6 +2,8 @@ package se.triad.kickass.exomizer;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import se.triad.kickass.CrunchedObject;
 import se.triad.kickass.Options;
@@ -9,6 +11,7 @@ import se.triad.kickass.Utils;
 
 import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
+import kickass.plugins.interf.general.IParameterMap;
 import kickass.plugins.interf.general.IValue;
 
 public class MemExomizer extends AbstractExomizer {
@@ -50,7 +53,7 @@ public class MemExomizer extends AbstractExomizer {
 
     @Override
     protected String getSyntax() {
-        return getName()+"( boolean forwardCrunching [false], boolean useLiterals [true], int startAddress [no check] ) ";
+        return getName()+"( boolean forwardCrunching [false], boolean useLiterals [true], int _startAddressForValidation [no check] ) ";
     }
 
     @Override
@@ -66,7 +69,27 @@ public class MemExomizer extends AbstractExomizer {
             engine.error(ex.getMessage() + "\n" + getSyntax());
         }
     }
+    
+    @Override
+	protected void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks,
+			IParameterMap params, IEngine engine) {
+        try {
+            opts.put(Options.APPEND_IN_LOAD,null);
+            addBooleanOption(params, opts, Options.FORWARD_CRUNCHING, false);
+            addBooleanOption(params, opts, Options.USE_LITERALS, true);
+            addSafetyOffsetCheckOption(params, opts);
+        } catch (Exception ex){
+            engine.error(ex.getMessage() + "\n" + getSyntax());
+        }
+    }
 
+	@Override
+	protected Set<String> getParams() {
+		return List.of(Options.FORWARD_CRUNCHING, Options.USE_LITERALS, Options.VALIDATE_SAFETY_OFFSET)
+			.stream()
+			.map(Options::getName)
+			.collect(Collectors.toSet());
+	}
 
 
 }

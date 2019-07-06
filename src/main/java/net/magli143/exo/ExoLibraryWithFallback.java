@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,11 +26,11 @@ public class ExoLibraryWithFallback implements ExoLibrary {
     
     private final static Collection<String> EXTRA_PARAMS;
     static {
-    	final String params = System.getProperty(EXECUTABLE_FALLBACK_PARAMS, "");
-    	EXTRA_PARAMS = Arrays.asList(params.split("//s*,//s*")).stream().filter(s -> !s.isEmpty()).collect(Collectors.toList());
+    	final String params = System.getProperty(EXECUTABLE_FALLBACK_PARAMS, System.getenv(EXECUTABLE_FALLBACK_PARAMS));
+    	EXTRA_PARAMS = params == null ? Collections.emptyList() : Arrays.asList(params.split("//s*,//s*")).stream().filter(s -> !s.isEmpty()).collect(Collectors.toList());
 	}
 	private final ExoLibrary nativeInstance;
-	private final String fallbackExecutable = System.getProperty(EXECUTABLE_FALLBACK);
+	private final String fallbackExecutable = System.getProperty(EXECUTABLE_FALLBACK, System.getenv(EXECUTABLE_FALLBACK));
 	
 	public final static ExoLibrary INSTANCE = new ExoLibraryWithFallback();
 	

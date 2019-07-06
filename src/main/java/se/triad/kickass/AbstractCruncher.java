@@ -43,12 +43,12 @@ public abstract class AbstractCruncher implements IModifier{
     
     protected abstract String getSyntax();
 
-    class CruncherContext {
-    	List<IMemoryBlock> blocks; 
-    	IValue[] values;
-    	IEngine engine;
-    	EnumMap<Options,Object> opts;
-		List<CrunchedObject> crunchedObjects;
+    public class CruncherContext {
+    	public List<IMemoryBlock> blocks; 
+    	//IValue[] values;
+    	public IEngine engine;
+    	public EnumMap<Options,Object> opts;
+		public List<CrunchedObject> crunchedObjects;
     }
     
     class ByteArray {
@@ -67,10 +67,7 @@ public abstract class AbstractCruncher implements IModifier{
     }
     
     public <T> T execute(List<IMemoryBlock> blocks, IParameterMap params, IEngine engine, Function<CruncherContext, T> postProcess) {
-
-    	IValue[] values = params.getParameterNames().stream().filter(v -> !"modify".equals(v)).map(params::getValue).collect(Collectors.toList()).toArray(new IValue[] {});
-  
-    	return execute(blocks, values, engine, postProcess);
+    	return execute(blocks, (Object) params, engine, postProcess);
     }
     
     protected boolean isCachingEnabled() {
@@ -130,11 +127,14 @@ public abstract class AbstractCruncher implements IModifier{
         return new File(tempDir, filename);
     }
     
-    public <T> T execute(List<IMemoryBlock> blocks, IValue[] values, IEngine engine, Function<CruncherContext, T> postProcess) {
+    public <T> T execute(List<IMemoryBlock> blocks, Object iValuesOrIParameterMap, IEngine engine, Function<CruncherContext, T> postProcess) {
 
-        EnumMap<Options,Object> opts = new EnumMap<Options, Object>(Options.class);
-
-        validateArguments(opts, blocks,values,engine);
+    	EnumMap<Options,Object> opts = new EnumMap<Options, Object>(Options.class);
+    	if (iValuesOrIParameterMap instanceof IParameterMap) {
+    		validateArguments(opts, blocks, (IParameterMap) iValuesOrIParameterMap, engine);
+    	} else {
+    		validateArguments(opts, blocks, (IValue[]) iValuesOrIParameterMap,engine);
+    	}
 
         blocks = preTransformBlocks(blocks);
         List<CrunchedObject> crunchedObjects = blocks.stream().map(block -> {
@@ -153,7 +153,7 @@ public abstract class AbstractCruncher implements IModifier{
         
         CruncherContext context = new CruncherContext();
         context.blocks = blocks;
-        context.values = values;
+        // context.values = values;
         context.engine = engine;
         context.opts = opts;
         context.crunchedObjects = crunchedObjects;
@@ -208,21 +208,38 @@ public abstract class AbstractCruncher implements IModifier{
     protected abstract void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks, IValue[] values,
             IEngine engine);
 
+	protected abstract void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks, IParameterMap params,
+		 IEngine engine);
+
     protected void addBooleanOption(IValue[] values, int index,
             EnumMap<Options, Object> opts, Options opt, boolean defaultValue) {
         if ( values.length > index && values[index].getBoolean() || values.length <= index && defaultValue) {
             opts.put(opt,null);
         }
     }
+    protected void addBooleanOption(IParameterMap params, EnumMap<Options, Object> opts, Options option,
+			boolean defaultValue) {
+		if (params.getBoolValue(option.getName(), defaultValue))
+			opts.put(option, null);
+	}
     protected void addIntegerOption(IValue[] values, int index,
             EnumMap<Options, Object> opts, Options opt, int defaultValue) {
         int val = defaultValue;
         if ( values.length > index && values[index].hasIntRepresentation()) {
             val = values[index].getInt();
-            if (values[index].getInt() < 1 || values[index].getInt() > 65536)
+            if (values[index].getInt() < 1 || values[index].getInt() > 65535)
                 throw new IllegalArgumentException(getName() + ": Maximum offset size must be a positive 16-bit integer");
         }
-        opts.put(opt, new Integer(val));
+        opts.put(opt, val);
+    }
+
+    protected void addIntegerOption(IParameterMap parameterMap,
+            EnumMap<Options, Object> opts, Options opt, int defaultValue) {
+    	int val = parameterMap.getIntValue(opt.getName(), defaultValue);
+        if (val < 1 || val > 65535) {
+            throw new IllegalArgumentException(getName() + ": Maximum offset size must be a positive 16-bit integer");
+        }
+        opts.put(opt, val);
     }
 
     protected void addSafetyOffsetCheckOption(IValue[] values,
@@ -235,6 +252,18 @@ public abstract class AbstractCruncher implements IModifier{
             }
         }
     }
+    
+    protected void addSafetyOffsetCheckOption(IParameterMap parameterMap, EnumMap<Options, Object> opts) {
+    	if (parameterMap.exist(Options.VALIDATE_SAFETY_OFFSET.getName())) {
+    		int val = parameterMap.getIntValue(Options.VALIDATE_SAFETY_OFFSET.getName(), -1);
+    		if (val >= 0 && val < 65536) {
+                opts.put(Options.VALIDATE_SAFETY_OFFSET, val );
+            } else {
+                throw new IllegalArgumentException(getName() + ": Not an integer or value of out range: "  + val);
+            }
+        }
+    }
 
 	protected abstract Set<String> getParams();
+
 }

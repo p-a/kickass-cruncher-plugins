@@ -20,7 +20,7 @@ public class crunch_options extends Structure {
 	public crunch_options() {
 		super();
 	}
-	protected List<? > getFieldOrder() {
+	protected List<String> getFieldOrder() {
 		return Arrays.asList("exported_encoding", "max_passes", "max_len", "max_offset", "use_literal_sequences", "use_imprecise_rle");
 	}
 	/** @param exported_encoding C type : const char* */

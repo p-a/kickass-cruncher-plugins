@@ -2,6 +2,8 @@ package se.triad.kickass.exomizer;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import se.triad.kickass.CrunchedObject;
 import se.triad.kickass.Options;
@@ -10,6 +12,7 @@ import se.triad.kickass.Utils;
 
 import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
+import kickass.plugins.interf.general.IParameterMap;
 import kickass.plugins.interf.general.IValue;
 
 public class RawExomizer extends AbstractExomizer {
@@ -61,6 +64,32 @@ public class RawExomizer extends AbstractExomizer {
             engine.error(ex.getMessage() + "\n" + getSyntax());
         }
     }
+    
+    @Override
+   	protected void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks,
+   			IParameterMap params, IEngine engine) {
+    	
+        if (blocks.size() > 1){
+            engine.error(NAME + " only handles one, single memory block");
+        }
+
+	       try {
+	    	   addBooleanOption(params, opts, Options.FORWARD_CRUNCHING, false);
+	           addBooleanOption(params, opts, Options.USE_LITERALS, true);
+	           addBooleanOption(params, opts, Options.REVERSE_OUTPUT, false);
+	           addIntegerOption(params, opts, Options.MAXIMUM_OFFSET_SIZE, AbstractExomizer.MAX_OFFSET);
+	       } catch (Exception ex){
+	           engine.error(ex.getMessage() + "\n" + getSyntax());
+	       }
+       }
+
+	@Override
+	protected Set<String> getParams() {
+		return List.of(Options.FORWARD_CRUNCHING, Options.USE_LITERALS, Options.REVERSE_OUTPUT, Options.MAXIMUM_OFFSET_SIZE)
+			.stream()
+			.map(Options::getName)
+			.collect(Collectors.toSet());
+	}
 
 
 

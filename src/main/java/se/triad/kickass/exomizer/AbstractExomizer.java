@@ -53,10 +53,8 @@ public abstract class AbstractExomizer extends AbstractCruncher {
 
         crunch_options options = new crunch_options(null, PASSES, max_offset, MAX_LENGTH, useLiterals ? 1 : 0, USE_IMPRECISE_RLE);
         crunch_info info = new crunch_info();
-
         membuf in = new membuf();
-        membuf crunched = new membuf();
-
+		membuf crunched = new membuf();
         exolib.membuf_init(in);
         exolib.membuf_init(crunched);
 
@@ -64,7 +62,6 @@ public abstract class AbstractExomizer extends AbstractCruncher {
         m.write(0, data, 0, data.length);
 
         exolib.membuf_append(in,m, data.length);
-
         if (forward){
 
             if (in_load > -1){
@@ -83,7 +80,6 @@ public abstract class AbstractExomizer extends AbstractCruncher {
             }
 
         }
-
         int length = exolib.membuf_memlen(crunched);
 
         return new CrunchedObject(exolib.membuf_get(crunched).getByteArray(0, length), info.needed_safety_offset);

@@ -17,7 +17,7 @@ public class common_flags extends Structure {
 	public common_flags() {
 		super();
 	}
-	protected List<? > getFieldOrder() {
+	protected List<String> getFieldOrder() {
 		return Arrays.asList("options", "outfile");
 	}
 	/**

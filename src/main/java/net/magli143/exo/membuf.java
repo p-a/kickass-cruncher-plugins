@@ -17,7 +17,7 @@ public class membuf extends Structure {
 	public membuf() {
 		super();
 	}
-	protected List<? > getFieldOrder() {
+	protected List<String> getFieldOrder() {
 		return Arrays.asList("buf", "len", "size");
 	}
 	/** @param buf C type : void* */

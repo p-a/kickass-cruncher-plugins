@@ -1,17 +1,20 @@
 package se.triad.kickass.exomizer;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import se.triad.kickass.CrunchedObject;
 import se.triad.kickass.Options;
 import se.triad.kickass.Utils;
-
-
+import se.triad.kickass.AbstractCruncher.CruncherContext;
+import kickass.nonasm.tools.tuples.Pair;
 import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
+import kickass.plugins.interf.general.IParameterMap;
 import kickass.plugins.interf.general.IValue;
 
 public class LevelExomizer extends AbstractExomizer {
@@ -87,12 +90,14 @@ public class LevelExomizer extends AbstractExomizer {
 
 	@Override
 	protected List<IMemoryBlock> preTransformBlocks(final List<IMemoryBlock> blocks) {
-		return blocks;
+		System.err.println("blocks:");
+		blocks.stream().map(IMemoryBlock::getName).forEach(System.err::println);
+		return Utils.mergeBlocks(blocks);
 	}
 
 	@Override
 	protected String getSyntax() {
-		return getName()+"( boolean forwardCrunching [false], boolean useLiterals [true]) ";
+		return getName()+"( boolean _forwardCrunching [false], boolean _useLiterals [true], boolean _outputBlockOffsets [false]) ";
 	}
 
 	@Override
@@ -108,10 +113,50 @@ public class LevelExomizer extends AbstractExomizer {
 			engine.error(ex.getMessage() + "\n" + getSyntax());
 		}
 	}
+	
+	@Override
+	protected void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks,
+			IParameterMap params, IEngine engine) {
+
+		try {
+			opts.put(Options.APPEND_IN_LOAD,null);
+			addBooleanOption(params, opts, Options.FORWARD_CRUNCHING, false); 
+			addBooleanOption(params, opts, Options.USE_LITERALS, true); 
+			addBooleanOption(params, opts, Options.OUTPUT_BLOCK_OFFSETS, false);
+		} catch (Exception ex){
+			engine.error(ex.getMessage() + "\n" + getSyntax());
+		}
+	}
 
 	@Override
 	protected Set<String> getParams() {
-		return null;
+		return List.of(Options.FORWARD_CRUNCHING, Options.USE_LITERALS, Options.OUTPUT_BLOCK_OFFSETS)
+			.stream()
+			.map(Options::getName)
+			.collect(Collectors.toSet());
 	}
-
+	
+	private Function<CruncherContext, List<IMemoryBlock>> postProcessor = context -> {
+		List<Pair<IMemoryBlock, CrunchedObject>> tuples = new ArrayList<>();
+		for (int i = 0; i < context.blocks.size(); i++) {
+			System.err.println("wtf" + context.blocks.get(i).getName());
+			tuples.add(new Pair<>(context.blocks.get(i), context.crunchedObjects.get(i)));
+		}
+		final int[] address = { tuples.get(0).getB().address };
+		return tuples.stream().sequential().map(
+				tuple -> { IMemoryBlock block = context.engine.createMemoryBlock(
+						tuple.getA().getName(),
+						address[0],
+						tuple.getB().data);
+						address[0] += tuple.getB().data.length;
+				return block;}
+				
+				)
+				.collect(Collectors.toList());
+	};
+	
+	@Override
+    public <T> T execute(List<IMemoryBlock> blocks, Object iValuesOrIParameterMap, IEngine engine, Function<CruncherContext, T> postProcess) {
+		return (T) super.execute(blocks, iValuesOrIParameterMap, engine, postProcessor);
+	}
 }
