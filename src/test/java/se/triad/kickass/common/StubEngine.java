@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
 import kickass.plugins.interf.general.ISourceRange;
-import se.triad.kickass.exomizer.MemBlock;
+import se.triad.kickass.MemBlock;
 
 public class StubEngine implements IEngine {
 

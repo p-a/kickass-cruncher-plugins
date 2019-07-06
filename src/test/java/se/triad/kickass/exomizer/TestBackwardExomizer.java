@@ -8,6 +8,7 @@ import java.util.List;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import se.triad.kickass.MemBlock;
 import se.triad.kickass.common.StubEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
 import kickass.plugins.interf.general.IValue;

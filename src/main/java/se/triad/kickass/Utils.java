@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import se.triad.kickass.exomizer.MemBlock;
-
 import kickass.plugins.interf.general.IMemoryBlock;
 
 public class Utils {

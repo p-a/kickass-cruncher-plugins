@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import se.triad.kickass.MemBlock;
 import se.triad.kickass.common.BooleanValue;
 import se.triad.kickass.common.IntValue;
 import se.triad.kickass.common.StubEngine;

@@ -8,7 +8,8 @@ public enum Options {
     REVERSE_OUTPUT("_reverseOutput"),
     OUTPUT_BLOCK_OFFSETS("_outputBlockOffsets"),
     MAXIMUM_OFFSET_SIZE("_maximumOffsetSize"),
-    JMP_ADDRESS("_jmpAdress");
+    JMP_ADDRESS("_jmpAdress"), 
+    USE_CRUNCHER_CACHE("_useCruncherCache");
     
     private String name;
 

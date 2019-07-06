@@ -75,7 +75,7 @@ public abstract class AbstractCruncher implements IModifier{
     }
 
     private Optional<CrunchedObject> cacheLookup(IMemoryBlock block,  EnumMap<Options,Object> opts) {
-    	if (isCachingEnabled()) {
+    	if (opts.containsKey(Options.USE_CRUNCHER_CACHE) || isCachingEnabled()) {
         	File f = getCacheFile(block, opts);
         	return getCachedObject(f);
     	}
@@ -83,7 +83,7 @@ public abstract class AbstractCruncher implements IModifier{
     }
     
     private void cache(CrunchedObject c, IMemoryBlock block, EnumMap<Options,Object> opts) {
-    	if (isCachingEnabled()) {
+    	if (opts.containsKey(Options.USE_CRUNCHER_CACHE) || isCachingEnabled()) {
     		File f = getCacheFile(block, opts);
 	        try (DataOutputStream os = new DataOutputStream(new FileOutputStream(f, false))) {
 	        	os.writeInt(c.address);
@@ -132,6 +132,7 @@ public abstract class AbstractCruncher implements IModifier{
     	EnumMap<Options,Object> opts = new EnumMap<Options, Object>(Options.class);
     	if (iValuesOrIParameterMap instanceof IParameterMap) {
     		validateArguments(opts, blocks, (IParameterMap) iValuesOrIParameterMap, engine);
+    		addBooleanOption((IParameterMap) iValuesOrIParameterMap, opts, Options.USE_CRUNCHER_CACHE, false);
     	} else {
     		validateArguments(opts, blocks, (IValue[]) iValuesOrIParameterMap,engine);
     	}

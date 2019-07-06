@@ -5,6 +5,7 @@ import java.util.List;
 
 import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
+import kickass.plugins.interf.general.IParameterMap;
 import kickass.plugins.interf.general.IValue;
 import se.triad.kickass.Options;
 
@@ -35,5 +36,17 @@ public class BackwardMemExomizer extends MemExomizer {
 			engine.error(ex.getMessage() + "\n" + getSyntax());
 		}
 	}
+	
+    @Override
+	protected void validateArguments(EnumMap<Options, Object> opts, List<IMemoryBlock> blocks,
+			IParameterMap params, IEngine engine) {
+        try {
+            opts.put(Options.APPEND_IN_LOAD,null);
+            addBooleanOption(params, opts, Options.USE_LITERALS, true);
+            addSafetyOffsetCheckOption(params, opts);
+        } catch (Exception ex){
+            engine.error(ex.getMessage() + "\n" + getSyntax());
+        }
+    }
 
 }

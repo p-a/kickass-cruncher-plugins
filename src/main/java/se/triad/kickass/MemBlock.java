@@ -1,4 +1,4 @@
-package se.triad.kickass.exomizer;
+package se.triad.kickass;
 
 import java.util.Arrays;
 

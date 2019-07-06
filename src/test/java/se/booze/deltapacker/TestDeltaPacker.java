@@ -8,10 +8,10 @@ import org.testng.annotations.Test;
 
 import kickass.plugins.interf.general.IMemoryBlock;
 import kickass.plugins.interf.general.IValue;
+import se.triad.kickass.MemBlock;
 import se.triad.kickass.common.BooleanValue;
 import se.triad.kickass.common.StubEngine;
 import se.triad.kickass.common.TestUtils;
-import se.triad.kickass.exomizer.MemBlock;
 
 @Test
 public class TestDeltaPacker {
