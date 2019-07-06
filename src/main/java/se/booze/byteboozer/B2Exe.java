@@ -3,9 +3,11 @@ package se.booze.byteboozer;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Set;
 
 import kickass.plugins.interf.general.IEngine;
 import kickass.plugins.interf.general.IMemoryBlock;
+import kickass.plugins.interf.general.IParameterMap;
 import kickass.plugins.interf.general.IValue;
 import se.triad.kickass.CrunchedObject;
 import se.triad.kickass.Options;
@@ -86,8 +88,21 @@ public class B2Exe extends B2 {
     @Override
     protected void validateArguments(EnumMap<Options, Object> opts,
             List<IMemoryBlock> blocks, IValue[] values, IEngine engine) {
-
+    	super.validateArguments(opts, blocks, values, engine);
         addIntegerOption(values, 0, opts, Options.JMP_ADDRESS, blocks.get(0).getStartAddress());
     }
+    
+    @Override
+    protected void validateArguments(EnumMap<Options, Object> opts,
+            List<IMemoryBlock> blocks, IParameterMap params, IEngine engine) {
 
+    	super.validateArguments(opts, blocks, params, engine);
+        addIntegerOption(params, opts, Options.JMP_ADDRESS, blocks.get(0).getStartAddress());
+    }
+
+	protected Set<String> getParams() {
+		Set<String> params = super.getParams();
+		params.add(Options.JMP_ADDRESS.getName());
+		return params;
+	}
 }
