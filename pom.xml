@@ -24,7 +24,7 @@
 					 <systemProperties combine.children="append">
 					   <property>
 					       <name>KICKASS_CRUNCHER_CACHE</name>
-					       <value>true</value>
+					       <value>false</value>
 					   </property>
 					</systemProperties>
 				</configuration>

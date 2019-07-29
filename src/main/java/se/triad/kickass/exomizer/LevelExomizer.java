@@ -86,7 +86,7 @@ public class LevelExomizer extends AbstractExomizer {
 
 	@Override
 	protected List<IMemoryBlock> preTransformBlocks(final List<IMemoryBlock> blocks) {
-		return Utils.mergeBlocks(blocks);
+		return blocks; // Utils.mergeBlocks(blocks);
 	}
 
 	@Override

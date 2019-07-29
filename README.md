@@ -72,20 +72,28 @@ when using this fall back.
 Changelog
 =========
 
+*   Kickass 5.7 is now required.
+
 *   Added general support for caching, via the property KICKASS_CRUNCHER_CACHE.
     This deprecates the DISABLE_EXOMIZER_CACHE flag. 2019-05-12
     
 *   Added support for extra parameters when using the fallback command.
     EXOMIZER_COMMANDLINE_FALLBACK_EXTRA_PARAMS. 2019-05-11
 
-*   Experimental support for segment modifiers. All plugins are supported. WIP.
+*   Support for segment modifiers. All plugins are supported.
 
-*   Added experimental B2EXE cruncher which crunches and adds a basic upstart routine. WIP.
+*   Added B2EXE cruncher which crunches and adds a basic upstart routine.
 
 
 Supported Crunchers
 ===================
 
+All crunchers now are available as segment modifiers. Parameters given for modifiers are supported too,
+but has to be prefixed with an underscore.
+Like jmpAdress and useCruncherCache in this example:
+
+    .file [name="plasma-b2exe.prg", segments="Code, Data, SpeedCode", modify="B2exe", _jmpAdress=start, _useCruncherCache]
+    
 ByteBoozer
 ----------
 
@@ -146,6 +154,16 @@ Next generation of ByteBoozer. Faster and better. Use this instead of BB if you 
         //code
     }
 
+B2exe
+-----
+
+B2exe crunches and adds a decruncher with a Basic upstart routine.
+Best used as a segment modifier.
+
+#### Example:
+    .plugin "se.booze.kickass.CruncherPlugins"
+    .file [name="plasma-b2exe.prg", segments="Code, Data, SpeedCode", modify="B2exe", _jmpAdress=start, _useCruncherCache]
+    
 
 
 Exomizer
@@ -259,12 +277,12 @@ Using `EXOMIZER_COMMANDLINE_FALLBACK` you should be able to crunch using Exomize
 Just add `-D EXOMIZER_COMMANDLINE_FALLBACK=/path/to/exomizer3` as argument to java.
 
 Since the plugin uses the raw mode when compiling, the output will not match what
-exomizer3 mem or level will output. You will have to add the option -T5 for it to do that.
+exomizer3 mem or level will output. You will have to add the option -T4 for it to do that.
 It can be done via the EXOMIZER_COMMANDLINE_FALLBACK_EXTRA_PARAMS property.
 
     java -cp "kickass-cruncher-plugins-2.0.jar:KickAss.jar" \
         -D EXOMIZER_COMMANDLINE_FALLBACK=exomizer3 \
-        -D EXOMIZER_COMMANDLINE_FALLBACK_EXTRA_PARAMS=-T5
+        -D EXOMIZER_COMMANDLINE_FALLBACK_EXTRA_PARAMS=-T4
         kickass.KickAssembler demo.asm
 
 Note. Exomizer 3 comes with a new decruncher which is not included with this package.
