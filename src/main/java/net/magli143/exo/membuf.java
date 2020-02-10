@@ -17,6 +17,7 @@ public class membuf extends Structure {
 	public membuf() {
 		super();
 	}
+	@Override
 	protected List<String> getFieldOrder() {
 		return Arrays.asList("buf", "len", "size");
 	}

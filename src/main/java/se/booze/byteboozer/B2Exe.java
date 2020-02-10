@@ -100,6 +100,7 @@ public class B2Exe extends B2 {
         addIntegerOption(params, opts, Options.JMP_ADDRESS, blocks.get(0).getStartAddress());
     }
 
+    @Override
 	protected Set<String> getParams() {
 		Set<String> params = super.getParams();
 		params.add(Options.JMP_ADDRESS.getName());

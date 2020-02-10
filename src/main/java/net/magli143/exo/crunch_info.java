@@ -14,6 +14,7 @@ public class crunch_info extends Structure {
 	public crunch_info() {
 		super();
 	}
+	@Override
 	protected List<String> getFieldOrder() {
 		return Arrays.asList("literal_sequences_used", "needed_safety_offset");
 	}
