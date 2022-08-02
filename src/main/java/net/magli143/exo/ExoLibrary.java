@@ -17,9 +17,10 @@ import java.nio.ByteBuffer;
  */
 public interface ExoLibrary extends Library {
 	public static final String JNA_LIBRARY_NAME =
-			Platform.isMac() ? "libexo.dylib" :
+			Platform.isMac() ? Platform.isARM() ? "libexoarm.dylib" : "libexo.dylib" :
 			Platform.isLinux() ? "libexo.so" :
 			Platform.isWindows() ? "libexo.dll" : "die";
+	
 	
 	public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(ExoLibrary.JNA_LIBRARY_NAME);
 	public static final ExoLibrary INSTANCE = (ExoLibrary)Native.loadLibrary(ExoLibrary.JNA_LIBRARY_NAME, ExoLibrary.class);

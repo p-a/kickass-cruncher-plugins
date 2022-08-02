@@ -67,5 +67,10 @@ public class StubEngine implements IEngine {
 	public byte[] stringToBytes(String arg0) {
 		return arg0.getBytes();
 	}
+
+	@Override
+	public String normalizeFileName(String arg0) {
+		return arg0;
+	}
 	
 }
